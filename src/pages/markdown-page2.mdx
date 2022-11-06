@@ -1,0 +1,37 @@
+---
+title: Who is 5L-Labs really?
+---
+
+const project_list = require('./data.json');
+
+import JSONFeatures from '@site/src/components/FeaturesFromYaml'
+
+export const Highlight = ({children, color}) => (
+  <span
+    style={{
+      backgroundColor: color,
+      borderRadius: '20px',
+      color: '#fff',
+      padding: '10px',
+      cursor: 'pointer',
+    }}
+    onClick={() => {
+      alert(`You clicked the color ${color} with label ${children}`)
+    }}>
+    {children}
+  </span>
+);
+
+# Fantastic
+
+This is <Highlight color="#25c2a0">Docusaurus green</Highlight> !
+
+This is <Highlight color="#1877F2">Facebook blue</Highlight> !
+
+# Markdown page example
+
+You don't need React to write simple standalone pages.
+
+How does it work?
+
+<JSONFeatures />
