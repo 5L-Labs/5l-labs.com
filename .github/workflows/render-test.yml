@@ -35,7 +35,7 @@ jobs:
           node-version: '19.x'
           cache: yarn
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
       - name: Build website
         run: yarn build
       - name: Upload Build Artifact
