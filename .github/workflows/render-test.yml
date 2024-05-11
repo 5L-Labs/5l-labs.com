@@ -22,9 +22,6 @@ concurrency:
 jobs:
   test-case:
     name: test-job
-    environment:
-      name: NODE_VERSION
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -32,13 +29,13 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '19.x'
+          node-version: 18
           cache: yarn
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
       - name: Build website
         run: yarn build
-      - name: Upload Build Artifact
+      - name: upload
         uses: actions/upload-pages-artifact@v3
         with:
           path: build

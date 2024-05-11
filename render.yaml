@@ -6,9 +6,9 @@ services:
     buildCommand: npx docusaurus build
     staticPublishPath: ./build
     pullRequestPreviewsEnabled: true # optional
-    branch: initial_commit
+    branch: main
 envVarGroups:
   - name: node_version
     envVars:
       - key: NODE_VERSION
-        value: 16.16.0
+        value: 18
