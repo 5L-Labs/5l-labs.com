@@ -33,8 +33,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '19.x'
-      - name: Install Dependencies
-        run: | 
-            npm install
-            npm run build
-            npm test
+          cache: yarn
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build website
+        run: yarn build
+      - name: Upload Build Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build
