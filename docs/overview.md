@@ -1,47 +1,46 @@
 ---
 sidebar_position: 1
+slug: /
 ---
 
-# Tutorial Intro
+<a href="mailto:inquiries 5l-labs.com" class="button button--primary button--lg">Inquiries at 5l-labs.com</a>
 
-Let's discover **Docusaurus in less than 5 minutes**.
+*At 5L Labs, we believe privacy is a fundamental right, not a premium feature.*
 
-## Getting Started
+# 5L Labs - Privacy-First Technology Solutions
 
-Get started by **creating a new site**.
+Welcome to 5L Labs, where we provide cutting-edge technology consulting with privacy at the core of everything we do.
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+## Our Services
 
-### What you'll need
+### 🔒 Private Home Security
+Protect your home with state-of-the-art security systems that don't compromise your privacy. Our solutions include:
 
-- [Node.js](https://nodejs.org/en/download/) version 16.14 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+- Offline-first security camera systems
+- Local-processing smart doorbells
+- Network security assessment and hardening
+- Privacy-focused home automation
+- Secure storage solutions for security footage
 
-## Generate a new site
+### 🧠 Privacy-Minded AI and AI Agents
+Leverage the power of artificial intelligence without sacrificing your data privacy:
 
-Generate a new Docusaurus site using the **classic template**.
+- Local AI model deployment
+- Edge computing solutions
+- Privacy-preserving machine learning
+- Custom AI agents for personal productivity
+- Data anonymization strategies
 
-The classic template will automatically be added to your project after you run the command:
+### 🌐 General Internet and Home Internet Security
+Secure your digital life with comprehensive protection:
 
-```bash
-npm init docusaurus@latest my-website classic
-```
+- Home network security audits
+- VPN setup and configuration
+- Password management solutions
+- Secure browsing practices training
+- IoT device security hardening
+- Protection against common cyber threats
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+## Ready to Enhance Your Privacy?
 
-The command also installs all necessary dependencies you need to run Docusaurus.
-
-## Start your site
-
-Run the development server:
-
-```bash
-cd my-website
-npm run start
-```
-
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
-
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
-
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+We're committed to helping you navigate the technology landscape with your privacy intact.
