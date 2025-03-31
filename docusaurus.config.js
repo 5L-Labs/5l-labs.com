@@ -88,7 +88,7 @@ const config = {
         },
         items: [
           { to: "/privatehome", label: "Private IoT", position: "left" },
-          { to: "/blog", label: "Blog", position: "left" },
+          { to: "/blog", label: "Private AI/ML", position: "left" },
           { to: "/docs", label: "Consulting Services", position: "left" },
           {
             href: "https://github.com/orgs/5L-Labs/",

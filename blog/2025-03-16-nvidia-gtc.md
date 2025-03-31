@@ -1,6 +1,6 @@
 ---
 slug: nvdia-gtc
-title: 5L Labs
+title: Off to Nvidia GTC
 authors: [njl]
 tags: [blog, nvidia, ai, gpu, deep-learning, machine-learning]
 ---

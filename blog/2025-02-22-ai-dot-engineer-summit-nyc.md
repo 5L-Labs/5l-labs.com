@@ -1,6 +1,6 @@
 ---
 slug: ai-dot-engineer-summit-nyc
-title: 5L Labs
+title: ai.engineer summit nyc
 authors: [njl]
 tags: [blog]
 ---
@@ -17,7 +17,7 @@ The [AI Engineering Summit](https://www.ai.engineer/) was a definite eye-opener 
 * How are we protecting state?
 * Where are we storing state?
 
-
+<!-- truncate -->
 
 Base Research for a federated system of local agents:
 * [Model Control Protocol](https://www.anthropic.com/news/model-context-protocol)
@@ -29,4 +29,3 @@ Base Research for a federated system of local agents:
 
 - Outstanding documentation Items
 - Add more details about the network architecture
-- Include diagrams and screenshots of the setup

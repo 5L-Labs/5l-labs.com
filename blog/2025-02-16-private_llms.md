@@ -1,6 +1,6 @@
 ---
 slug: offline-llms
-title: 5L Labs
+title: Entirely Private Machine Learning Home Setup
 authors: [njl]
 tags: [blog]
 ---
@@ -10,7 +10,9 @@ tags: [blog]
 # Title: Entirely Private Machine Learning Home Setup
 
 ## Background
-**Caveat Emptor**: This is a public blog of what probably should be a private note.
+**Caveat Emptor**: This is a public blog of what probably should be a private note (quality wise).
+:::
+
 
 ### Machine Specification:
 * CPU: Mac M2 Pro
@@ -19,7 +21,7 @@ tags: [blog]
 
 Tonight turned into an unexpected journey through the rabbit holes of self-hosted technologies. I decided to venture out of my comfort zone, and boy, was it an enlightening experience! Here's a rundown of gotchas:
 
-
+<!-- truncate -->
 ## Models
 
 ## Tools / Components
@@ -73,3 +75,14 @@ Do let me know if you try any of these out or if you have any other cool self-ho
 #### podman-machine
 
 For those unfamiliar, Podman is a daemonless container engine for developing, managing, and running OCI Containers on your Linux System.
+
+
+#### Apple Secure Enclaves
+
+https://security.apple.com/blog/private-cloud-compute/
+
+#### Securify H100 GPUs
+https://developer.nvidia.com/blog/confidential-computing-on-h100-gpus-for-secure-and-trustworthy-ai/
+
+#### Confident Security
+https://confident.security/
