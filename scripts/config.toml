@@ -8,7 +8,7 @@ embedding_api_url = "http://localhost:11434/v1"
 # The base URL of the content pages that the script will fetch for embedding.
 # This is typically the local development server URL.
 # This URL will be replaced by the `replacement_base_url` in the output file.
-embedding_content_base_url = "http://localhost:3002"
+embedding_content_base_url = "http://localhost:3000"
 
 # The public base URL to replace the `embedding_content_base_url` with.
 # This makes the embedding URIs point to the production site.
