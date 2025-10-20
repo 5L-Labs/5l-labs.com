@@ -1,5 +1,5 @@
 ---
-slug: iot-ml-on-the-ceap
+slug: iot-ml-on-the-cheap
 title: Adventures in CheapML for IoT
 authors: [njl]
 tags: [homekit, wyze, scripted, quartz, xterm and cloner]
