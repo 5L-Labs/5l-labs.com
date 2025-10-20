@@ -19,7 +19,7 @@ I've spent some time firming up the Home Network Kill Switch project due to some
 
 ## Did AI Help?
   No, not really. It did do some scaffolding and documentation, but the core logic was still human led.
-  I do plan to use [Jules]([http//](https://jules.google.com/session) to keep ripping out dead code paths.
+  I do plan to use [Jules](https://jules.google.com/session) to keep ripping out dead code paths.
 
 ## Recent Changes
 
