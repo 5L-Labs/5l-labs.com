@@ -3,8 +3,7 @@ import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
-import HomepageFeatures from "@site/src/components/HomepageFeatures";
-import FeaturesFromYaml from "@site/src/components/FeaturesFromYaml";
+import HomepageContent from "../components/HomepageContent";
 import styles from "./index.module.css";
 
 function HomepageHeader() {
@@ -14,11 +13,6 @@ function HomepageHeader() {
       <div className="container">
         <h1 className="hero__title">{siteConfig.title}</h1>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
-          <Link className="button button--secondary button--lg" to="/blog/">
-            Read the Latest ⏱️
-          </Link>
-        </div>
       </div>
     </header>
   );
@@ -32,7 +26,9 @@ export default function Home() {
       description="Description will go into a meta tag in <head />"
     >
       <HomepageHeader />
-      <main></main>
+      <main>
+        <HomepageContent />
+      </main>
     </Layout>
   );
 }
