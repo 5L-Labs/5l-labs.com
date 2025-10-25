@@ -15,8 +15,8 @@ const homepageConfig = {
       description: "Building secure and decentralized IoT solutions that protect user data and privacy.",
     },
     {
-        title: "Consulting Services",
-        description: "Providing expert guidance on integrating privacy-preserving technologies into your products and services.",
+      title: "Consulting Services",
+      description: "Providing expert guidance on integrating privacy-preserving technologies into your products and services.",
     },
   ],
   products: [
