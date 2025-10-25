@@ -37,16 +37,16 @@ export default function HomepageContent() {
           <Section title="Products" items={homepageConfig.products} />
         </div>
         <div className="row">
-            <div className="col col--12">
-                <div className="text--center padding-horiz--md">
-                    <h2>Contact Us</h2>
-                    <p>
-                        <a href={`mailto:${homepageConfig.contactInfo.email}`}>Email</a> |{' '}
-                        <a href={homepageConfig.contactInfo.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a> |{' '}
-                        <a href={homepageConfig.contactInfo.twitter} target="_blank" rel="noopener noreferrer">Twitter</a>
-                    </p>
-                </div>
+          <div className="col col--12">
+            <div className="text--center padding-horiz--md">
+              <h2>Contact Us</h2>
+              <p>
+                <a href={`mailto:${homepageConfig.contactInfo.email}`}>Email</a> |{' '}
+                <a href={homepageConfig.contactInfo.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a> |{' '}
+                <a href={homepageConfig.contactInfo.twitter} target="_blank" rel="noopener noreferrer">Twitter</a>
+              </p>
             </div>
+          </div>
         </div>
       </div>
     </section>
