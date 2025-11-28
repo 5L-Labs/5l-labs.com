@@ -111,10 +111,26 @@ const config = {
           src: "img/5L-Labs.svg",
         },
         items: [
-          { to: "/self-hosted-iot", label: "Self-Hosted IOT", position: "left" },
-          { to: "/applied-home-ml-iot", label: "Applied Home ML IOT", position: "left" },
-          { to: "/applied-ai-engineering", label: "Applied AI Engineering", position: "left" },
-          { to: "/frontier-research", label: "Frontier Research", position: "left" },
+          {
+            label: "Blog(s)",
+            position: "left",
+            items: [
+              { to: "/self-hosted-iot", label: "Self-Hosted IOT" },
+              { to: "/applied-home-ml-iot", label: "Applied Home ML IOT" },
+              { to: "/applied-ai-engineering", label: "Applied AI Engineering" },
+              { to: "/frontier-research", label: "Frontier Research" },
+            ],
+          },
+          {
+            label: "Products/Projects",
+            position: "left",
+            items: [
+              {
+                label: "Overlord Network Kill Switch",
+                href: "https://github.com/5L-Labs/overlord-network-kill-switch",
+              },
+            ],
+          },
           { to: "/docs", label: "Consulting Services", position: "left" },
           {
             href: "https://github.com/orgs/5L-Labs/",

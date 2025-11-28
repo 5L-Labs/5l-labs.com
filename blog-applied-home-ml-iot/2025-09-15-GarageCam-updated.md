@@ -1,6 +1,6 @@
 ---
-slug: iot-ml-on-the-cheap
-title: Adventures in CheapML for IoT
+slug: continued-iot-ml-on-the-cheap
+title: Continued Adventures in CheapML for IoT
 authors: [njl]
 tags: [homekit, wyze, scripted, quartz, xterm and cloner]
 ---
@@ -15,5 +15,3 @@ I have probably bit off more than I can chew with this project.
 
 ### New Things
 * PyTorch -> ONNX -> TFLite -> Latest
-* TFLite -
-* ONNX Runtime -
