@@ -1,36 +1,96 @@
-/**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+ * 5L Labs Design System
  */
 
-/* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #7B2BFC; /* Cyber Purple */
-  --ifm-color-primary-dark: #6A24D9;
-  --ifm-color-primary-darker: #6121C5;
-  --ifm-color-primary-darkest: #4F1A9E;
-  --ifm-color-primary-light: #8C32FF;
-  --ifm-color-primary-lighter: #9642FF;
-  --ifm-color-primary-lightest: #AE6BFF;
-  --ifm-background-color: #FFFFFF; /* Clean White */
-  --ifm-font-color-base: #333333; /* Dark Gray */
-  --ifm-color-secondary: #00C49A; /* Bright Teal */
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+    /* Light Mode Variables */
+    --bg-page: #f8fafc;
+    --bg-card: rgba(255, 255, 255, 0.7);
+    
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    
+    --brand-primary: #7c3aed;
+    --brand-light: #f5f3ff;
+    
+    --border-color: #ffffff;
+
+    /* Typography */
+    --font-heading: 'Plus Jakarta Sans', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* UI Globals */
+    --radius: 1.5rem;
+    --shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+
+    /* Docusaurus Overrides for Light Mode */
+    --ifm-color-primary: var(--brand-primary);
+    --ifm-background-color: var(--bg-page);
+    --ifm-font-color-base: var(--text-main);
+    --ifm-font-family-base: var(--font-body);
+    --ifm-heading-font-family: var(--font-heading);
+    --ifm-code-font-family: var(--font-mono);
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #7B2BFC; /* Cyber Purple */
-  --ifm-color-primary-dark: #6A24D9;
-  --ifm-color-primary-darker: #6121C5;
-  --ifm-color-primary-darkest: #4F1A9E;
-  --ifm-color-primary-light: #8C32FF;
-  --ifm-color-primary-lighter: #9642FF;
-  --ifm-color-primary-lightest: #AE6BFF;
-  --ifm-background-color: #1A1A1A; /* Dark Charcoal */
-  --ifm-font-color-base: #E0E0E0; /* Light Gray */
-  --ifm-color-secondary: #00C49A; /* Bright Teal */
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+    /* Dark Mode Variables */
+    --bg-page: #0d1117;
+    --bg-card: #161b22;
+    
+    --text-main: #c9d1d9;
+    --text-muted: #8b949e;
+    
+    --brand-primary: #238636;
+    --brand-light: rgba(56, 139, 253, 0.15);
+    
+    --border-color: #30363d;
+
+    /* Typography */
+    --font-heading: 'JetBrains Mono', monospace;
+    --font-body: 'JetBrains Mono', monospace;
+
+    /* UI Globals */
+    --radius: 0.375rem;
+    --shadow: none;
+
+    /* Docusaurus Overrides for Dark Mode */
+    --ifm-color-primary: var(--brand-primary);
+    --ifm-background-color: var(--bg-page);
+    --ifm-font-color-base: var(--text-main);
+    --ifm-font-family-base: var(--font-body);
+    --ifm-heading-font-family: var(--font-heading);
+    --ifm-code-font-family: var(--font-mono);
+}
+
+/* Base Resets & Utilities */
+body {
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    font-family: var(--font-body);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+}
+
+.card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.btn-primary {
+    background-color: var(--brand-primary);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius);
+    font-weight: 600;
 }
