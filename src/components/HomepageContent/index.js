@@ -38,7 +38,7 @@ function LatestPost() {
             <h3><a href={latestPost.url}>{latestPost.title}</a></h3>
             <small>{new Date(latestPost.date).toLocaleDateString()}</small>
           </div>
-          <div className="card__body text--left">
+          <div className="card__body text--center">
             <ReactMarkdown>{latestPost.content}</ReactMarkdown>
           </div>
           <div className="card__footer">
@@ -62,7 +62,7 @@ export default function HomepageContent() {
             </div>
           </div>
         </div>
-        <div className="row">
+        <div className="row" style={{ justifyContent: 'center' }}>
           <Section title="Major Research Areas" items={homepageConfig.researchAreas} />
           <LatestPost />
         </div>

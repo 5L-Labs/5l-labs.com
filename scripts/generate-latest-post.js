@@ -23,11 +23,11 @@ function getLatestPost() {
             if (!file.endsWith('.md') && !file.endsWith('.mdx')) return;
 
             // Extract date from filename (YYYY-MM-DD-...)
-            const match = file.match(/^(\d{4}-\d{2}-\d{2})/);
+            const match = file.match(/^(\d{4})-(\d{2})-(\d{2})/);
             if (!match) return;
 
-            const dateStr = match[1];
-            const date = new Date(dateStr);
+            const [_, yearStr, monthStr, dayStr] = match;
+            const date = new Date(`${yearStr}-${monthStr}-${dayStr}`);
 
             if (!latestPost || date > latestPost.date) {
                 const content = fs.readFileSync(path.join(dirPath, file), 'utf-8');
@@ -37,11 +37,22 @@ function getLatestPost() {
                 const postContent = markdownContent.trim();
                 const truncated = postContent.length > 150 ? postContent.substring(0, 150) + '...' : postContent;
 
+                const slug = data.slug || file.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.(md|mdx)$/, '');
+
+                const routeBasePath = dir.replace('blog-', '');
+
+                let url;
+                if (data.slug) {
+                    url = `/${routeBasePath}/${data.slug}`;
+                } else {
+                    url = `/${routeBasePath}/${yearStr}/${monthStr}/${dayStr}/${slug}`;
+                }
+
                 latestPost = {
                     date: date,
-                    title: data.title || file.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.(md|mdx)$/, ''),
+                    title: data.title || slug,
                     content: truncated,
-                    url: `/${dir.replace('blog-', '')}/${file.replace(/\.(md|mdx)$/, '')}`
+                    url: url
                 };
             }
         });
