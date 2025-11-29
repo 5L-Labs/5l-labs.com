@@ -34,22 +34,37 @@ const config = {
     [
       "@docusaurus/plugin-content-blog",
       {
-        /**
-         * Required for any multi-instance plugin
-         */
-        id: "privatehome",
-        /**
-         * URL route for the blog section of your site.
-         * *DO NOT* include a trailing slash.
-         */
-        routeBasePath: "privatehome",
-        /**
-         * Path to data on filesystem relative to site dir.
-         */
-        path: "./blog-privatehome",
+        id: "self-hosted-iot",
+        routeBasePath: "self-hosted-iot",
+        path: "./blog-self-hosted-iot",
         showReadingTime: true,
-        // Please change this to your repo.
-        // Remove this to remove the "edit this page" links.
+      },
+    ],
+    [
+      "@docusaurus/plugin-content-blog",
+      {
+        id: "applied-home-ml-iot",
+        routeBasePath: "applied-home-ml-iot",
+        path: "./blog-applied-home-ml-iot",
+        showReadingTime: true,
+      },
+    ],
+    [
+      "@docusaurus/plugin-content-blog",
+      {
+        id: "applied-ai-engineering",
+        routeBasePath: "applied-ai-engineering",
+        path: "./blog-applied-ai-engineering",
+        showReadingTime: true,
+      },
+    ],
+    [
+      "@docusaurus/plugin-content-blog",
+      {
+        id: "frontier-research",
+        routeBasePath: "frontier-research",
+        path: "./blog-frontier-research",
+        showReadingTime: true,
       },
     ],
   ],
@@ -60,15 +75,8 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
         },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-        },
-
+        blog: false, // Disable the default blog
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
@@ -103,8 +111,26 @@ const config = {
           src: "img/5L-Labs.svg",
         },
         items: [
-          { to: "/privatehome", label: "Private IoT", position: "left" },
-          { to: "/blog", label: "Private AI/ML", position: "left" },
+          {
+            label: "Blog(s)",
+            position: "left",
+            items: [
+              { to: "/self-hosted-iot", label: "Self-Hosted IOT" },
+              { to: "/applied-home-ml-iot", label: "Applied Home ML IOT" },
+              { to: "/applied-ai-engineering", label: "Applied AI Engineering" },
+              { to: "/frontier-research", label: "Frontier Research" },
+            ],
+          },
+          {
+            label: "Products/Projects",
+            position: "left",
+            items: [
+              {
+                label: "Overlord Network Kill Switch",
+                href: "https://github.com/5L-Labs/overlord-network-kill-switch",
+              },
+            ],
+          },
           { to: "/docs", label: "Consulting Services", position: "left" },
           {
             href: "https://github.com/orgs/5L-Labs/",
@@ -126,14 +152,26 @@ const config = {
             title: "Private AI",
             items: [
               {
-                label: "Blog",
-                to: "/blog/",
+                label: "Applied AI Engineering",
+                to: "/applied-ai-engineering",
+              },
+              {
+                label: "Frontier Research",
+                to: "/frontier-research",
               },
             ],
           },
           {
             title: "Private IoT",
             items: [
+              {
+                label: "Self-Hosted IOT",
+                to: "/self-hosted-iot",
+              },
+              {
+                label: "Applied Home ML IOT",
+                to: "/applied-home-ml-iot",
+              },
               {
                 label: "Tasmota Templates",
                 href: "https://templates.blakadder.com/",
