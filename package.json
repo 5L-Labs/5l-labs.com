@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "docusaurus start",
-    "build": "docusaurus build",
+    "start": "node scripts/generate-latest-post.js && docusaurus start",
+    "build": "node scripts/generate-latest-post.js && docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
@@ -22,7 +22,8 @@
     "clsx": "2.1.1",
     "prism-react-renderer": "2.4.1",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "react-markdown": "^10.1.0"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.9.2",
@@ -30,6 +31,7 @@
     "@docusaurus/types": "3.9.2",
     "@types/react": "18.2.29",
     "autoprefixer": "^10.4.22",
+    "gray-matter": "^4.0.3",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.18",
     "typescript": "5.2.2"

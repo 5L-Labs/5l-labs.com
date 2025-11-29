@@ -9,14 +9,17 @@ const homepageConfig = {
     {
       title: "Private AI/ML",
       description: "Developing machine learning models that learn from sensitive data without compromising individual privacy.",
+      link: "/applied-ai-engineering",
     },
     {
       title: "Private IoT",
       description: "Building secure and decentralized IoT solutions that protect user data and privacy.",
+      link: "/self-hosted-iot",
     },
     {
       title: "Consulting Services",
       description: "Providing expert guidance on integrating privacy-preserving technologies into your products and services.",
+      link: "/docs",
     },
   ],
   products: [
