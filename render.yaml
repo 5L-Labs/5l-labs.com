@@ -1,14 +1,8 @@
 services:
-  # A static site
   - type: web
-    name: 5L Labs.com
-    env: static
-    buildCommand: npx docusaurus build
-    staticPublishPath: ./build
-    pullRequestPreviewsEnabled: true # optional
-    branch: main
-envVarGroups:
-  - name: node_version
-    envVars:
-      - key: NODE_VERSION
-        value: 18.17.0
+    name: 5l-labs-com
+    env: docker
+    plan: free
+    region: oregon
+    healthCheckPath: /health.json
+    autoDeploy: true

@@ -1,0 +1,14 @@
+node_modules
+build
+.docusaurus
+.git
+.github
+.gitignore
+.gitmodules
+Dockerfile
+README.md
+*.log
+.DS_Store
+embeddings
+.venv
+src/generated

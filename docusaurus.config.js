@@ -14,6 +14,11 @@ const config = {
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
 
+  // Observability: Scripts for Analytics/RUM (e.g., Plausible, Google Analytics)
+  scripts: [
+    // {src: 'https://plausible.io/js/script.js', defer: true, 'data-domain': '5l-labs.com'},
+  ],
+
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: "5L-Labs", // Usually your GitHub org/user name.

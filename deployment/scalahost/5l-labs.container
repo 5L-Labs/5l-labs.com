@@ -1,0 +1,13 @@
+[Unit]
+Description=5L Labs Website Container
+After=network-online.target
+
+[Container]
+Image=ghcr.io/5l-labs/5l-labs.com:latest
+ContainerName=5l-labs-website
+PublishPort=8080:80
+# Auto-update the image if a new version is pushed
+AutoUpdate=registry
+
+[Install]
+WantedBy=default.target
