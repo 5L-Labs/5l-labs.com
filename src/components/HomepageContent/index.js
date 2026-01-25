@@ -42,7 +42,13 @@ function LatestPost() {
             <ReactMarkdown>{latestPost.content}</ReactMarkdown>
           </div>
           <div className="card__footer">
-            <a href={latestPost.url} className="button button--primary button--block">Read More</a>
+            <a
+              href={latestPost.url}
+              className="button button--primary button--block"
+              aria-label={`Read more about ${latestPost.title}`}
+            >
+              Read More
+            </a>
           </div>
         </div>
       </div>
