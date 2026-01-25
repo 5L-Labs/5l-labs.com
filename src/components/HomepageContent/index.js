@@ -54,17 +54,57 @@ export default function HomepageContent() {
   return (
     <section className={styles.features}>
       <div className="container">
-        <div className="row">
-          <div className="col col--12">
-            <div className="text--center padding-horiz--md margin-bottom--xl">
-              <h2>Mission Statement</h2>
-              <p>{homepageConfig.missionStatement}</p>
+        {/* Mission Statement Section */}
+        <div className="row margin-bottom--xl">
+          <div className="col col--8 col--offset-2">
+            <div className="text--center padding-horiz--md">
+              <h1 className="hero__title margin-bottom--md">Mission Statement</h1>
+              <p className="hero__subtitle shadow--lw padding--md" style={{ borderRadius: 'var(--radius)', background: 'var(--bg-card)' }}>
+                {homepageConfig.missionStatement}
+              </p>
             </div>
           </div>
         </div>
+
+        {/* Products Section */}
+        <div className="row margin-bottom--xl">
+          <div className="col col--10 col--offset-1">
+            <div className="text--center margin-bottom--lg">
+              <h2 style={{ fontSize: '2.5rem' }}>Products</h2>
+            </div>
+            <div className="row">
+              {homepageConfig.products.map((product, idx) => (
+                <div key={idx} className="col col--6 margin-bottom--md">
+                  <div className="card shadow--md h-100">
+                    <div className="card__header">
+                      <h3>{product.link ? <a href={product.link}>{product.title}</a> : product.title}</h3>
+                    </div>
+                    <div className="card__body">
+                      <p>{product.description}</p>
+                    </div>
+                    {product.link && (
+                      <div className="card__footer">
+                        <a href={product.link} className="button button--outline button--primary button--block">Learn More</a>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Research Areas & Latest Update Section */}
         <div className="row" style={{ justifyContent: 'center' }}>
-          <Section title="Major Research Areas" items={homepageConfig.researchAreas} />
-          <LatestPost />
+          <div className="col col--10 col--offset-1">
+            <div className="text--center margin-bottom--lg">
+              <h2 style={{ fontSize: '2.5rem' }}>Research & Updates</h2>
+            </div>
+            <div className="row">
+              <Section title="Major Research Areas" items={homepageConfig.researchAreas} />
+              <LatestPost />
+            </div>
+          </div>
         </div>
       </div>
     </section>
