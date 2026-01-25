@@ -1,6 +1,6 @@
 {
-  "date": "2025-12-10T00:00:00.000Z",
-  "title": "Time",
-  "content": "The below is an evolving thought process on how to deal with information aging out in machine learning models.\n\nInformation aging out for learning (human and machine) requires thinking about the problem space from two different angles:\n1.) Embeddings\n2.) Weights / Models\n\nOf which there are three scenarios:\n1.) Explicitly dated information\n2.) Implicity dated information\n3.) Undated information\n\nOf sources across a different set of vectors:\na.) Mostly Trusted\nb.) Untrusted\n\nfrom multiple sources including, but not limited to:\n1. Books (our olde...",
-  "url": "/frontier-research/information-aging-out"
+  "date": "2026-01-10T00:00:00.000Z",
+  "title": "predictions",
+  "content": ":::warning\n\nThese blog entries are not getting enough care and feeding to be fully fleshed out statements, and instead have become a set of working notes. For 2026, we'll look to change that situation slowly. You may see existing entries updated after publishing to make them more polished and accessible.\n\n:::\n\n# Predictions for 2026\n\nLast year, we did not set out any predictions formally which make it hard to hold ourselves accountable despite many promising areas getting fleshed out. Let's change that. \n\n## Area 1: Token Efficiency through aut...",
+  "url": "/frontier-research/2026 Predictions"
 }
