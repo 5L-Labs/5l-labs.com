@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
-import styles from "./index.module.css"; // Keeping for safety, though we mainly use global custom.css now
 
 function MinimalHero() {
-  const { siteConfig } = useDocusaurusContext();
   return (
     <section className="hero-minimal">
       <div className="container">
@@ -28,19 +25,29 @@ function MinimalHero() {
 
 function ServiceItem({ number, title, content, children }) {
   const [expanded, setExpanded] = useState(false);
+  const contentId = `service-content-${number}`;
 
   return (
     <div 
       className="service-item" 
       data-expanded={expanded}
-      onClick={() => setExpanded(!expanded)}
     >
-      <div className="service-header">
+      <button
+        type="button"
+        className="service-header"
+        onClick={() => setExpanded(!expanded)}
+        aria-expanded={expanded}
+        aria-controls={contentId}
+      >
         <span className="service-number">{number}</span>
         <h3 className="service-title">{title}</h3>
         <span className="service-icon">+</span>
-      </div>
-      <div className="service-content">
+      </button>
+      <div 
+        id={contentId}
+        className="service-content"
+        hidden={!expanded}
+      >
         <p>{content}</p>
         {children}
       </div>
