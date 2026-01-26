@@ -4,7 +4,6 @@ import styles from './styles.module.css';
 import homepageConfig from '../../config/homepage';
 
 import latestPost from '../../generated/latest-post.json';
-import ReactMarkdown from 'react-markdown';
 
 function Section({ title, items }) {
   return (
@@ -39,7 +38,7 @@ function LatestPost() {
             <small>{new Date(latestPost.date).toLocaleDateString()}</small>
           </div>
           <div className="card__body text--center">
-            <ReactMarkdown>{latestPost.content}</ReactMarkdown>
+            <p>{latestPost.content}</p>
           </div>
           <div className="card__footer">
             <a
