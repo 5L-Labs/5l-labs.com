@@ -15,6 +15,8 @@ export default function OpenEmbeddingsBadge() {
                 to="https://www.open-embeddings.org/"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Open Embeddings Website"
+                title="Open Embeddings"
                 style={{
                     display: 'flex',
                     alignItems: 'center',
