@@ -14,7 +14,8 @@ function HomepageHeader() {
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
       <div className="container">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
-          <img src={Logo} alt="5L Labs Logo" style={{ height: '150px' }} />
+          {/* Bolt: Optimized image with explicit dimensions to prevent CLS and reduced file size */}
+          <img src={Logo} alt="5L Labs Logo" height="150" width="138" style={{ height: '150px' }} />
           <div style={{ textAlign: 'left' }}>
             <h1 className="hero__title">{siteConfig.title}</h1>
             <p className="hero__subtitle">{siteConfig.tagline}</p>
