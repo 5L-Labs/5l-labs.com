@@ -6,7 +6,7 @@ import Layout from "@theme/Layout";
 import HomepageContent from "../components/HomepageContent";
 import styles from "./index.module.css";
 
-import Logo from "@site/static/img/5L_Labs_Logo.png";
+import Logo from "@site/static/img/5L_Labs_Logo_opt.png";
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
@@ -14,7 +14,7 @@ function HomepageHeader() {
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
       <div className="container">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
-          <img src={Logo} alt="5L Labs Logo" style={{ height: '150px' }} />
+          <img src={Logo} alt="5L Labs Logo" width="276" height="300" style={{ height: '150px', width: 'auto' }} />
           <div style={{ textAlign: 'left' }}>
             <h1 className="hero__title">{siteConfig.title}</h1>
             <p className="hero__subtitle">{siteConfig.tagline}</p>
