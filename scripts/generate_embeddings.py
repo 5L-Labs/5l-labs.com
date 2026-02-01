@@ -6,7 +6,10 @@ import logging
 import os
 import sys
 import time
-import xml.etree.ElementTree as ET
+try:
+    import defusedxml.ElementTree as ET
+except ImportError:
+    raise ImportError("defusedxml is required. Install it with: pip install defusedxml")
 from datetime import datetime
 from io import StringIO
 from pathlib import Path
