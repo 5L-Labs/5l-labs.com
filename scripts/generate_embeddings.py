@@ -6,7 +6,10 @@ import logging
 import os
 import sys
 import time
-import xml.etree.ElementTree as ET
+try:
+    import defusedxml.ElementTree as ET
+except ImportError:
+    raise ImportError("defusedxml is required. Install it with: pip install defusedxml")
 from datetime import datetime
 from io import StringIO
 from pathlib import Path
@@ -65,7 +68,9 @@ def get_embedding(text, api_base, api_key, model):
     data = {"model": model, "input": text}
 
     try:
-        response = requests.post(f"{api_base}/embeddings", headers=headers, json=data)
+        response = requests.post(
+            f"{api_base}/embeddings", headers=headers, json=data, timeout=30
+        )
         response.raise_for_status()
         embedding_data = response.json()
         return embedding_data["data"][0]["embedding"]
@@ -126,6 +131,20 @@ def save_embedding(
     Saves an individual embedding to a file based on the URL path.
     """
     file_path = url_to_file_path(url, base_url, embeddings_dir)
+
+    # Security check: Prevent path traversal
+    try:
+        # Resolve both paths to absolute paths to compare
+        # Note: file_path might not exist yet, but we resolve the path string
+        abs_file_path = file_path.resolve()
+        abs_embeddings_dir = Path(embeddings_dir).resolve()
+
+        # Check if the file path is within the embeddings directory
+        # relative_to checks containment and handles path separators correctly
+        abs_file_path.relative_to(abs_embeddings_dir)
+    except Exception as e:
+        logger.error(f"Security check failed for {url}: {e}")
+        raise ValueError(f"Security check failed: Path traversal detected for {url}")
 
     # Create directory structure if it doesn't exist
     file_path.parent.mkdir(parents=True, exist_ok=True)
