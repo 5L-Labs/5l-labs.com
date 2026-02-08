@@ -15,6 +15,8 @@ export default function OpenEmbeddingsBadge() {
                 to="https://www.open-embeddings.org/"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Open Embeddings"
+                title="Open Embeddings"
                 style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -33,6 +35,8 @@ export default function OpenEmbeddingsBadge() {
                 }}
                 onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
                 onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                onFocus={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                onBlur={(e) => e.currentTarget.style.transform = 'scale(1)'}
             >
                 OE
             </Link>

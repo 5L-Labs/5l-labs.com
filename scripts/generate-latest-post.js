@@ -11,6 +11,23 @@ const BLOG_DIRS = [
 
 const OUTPUT_FILE = path.join(__dirname, '../src/generated/latest-post.json');
 
+function stripMarkdown(markdown) {
+    if (!markdown) return '';
+    return markdown
+        .replace(/<!-- truncate -->[\s\S]*$/, '') // Remove everything after truncate
+        .replace(/<[^>]*>/g, '') // Remove HTML tags
+        .replace(/!\[(.*?)\]\(.*?\)/g, '') // Remove images
+        .replace(/\[(.*?)\]\(.*?\)/g, '$1') // Remove links but keep text
+        .replace(/^#+\s+/gm, '') // Remove headings
+        .replace(/^>\s+/gm, '') // Remove blockquotes
+        .replace(/```[\s\S]*?```/g, '') // Remove code blocks
+        .replace(/`([^`]+)`/g, '$1') // Remove inline code
+        .replace(/[*_]{1,3}(.*?)[*_]{1,3}/g, '$1') // Remove bold/italic
+        .replace(/^-{3,}$/gm, '') // Remove hr
+        .replace(/\n+/g, ' ') // Collapse newlines
+        .trim();
+}
+
 function getLatestPost() {
     let latestPost = null;
 
@@ -33,8 +50,13 @@ function getLatestPost() {
                 const content = fs.readFileSync(path.join(dirPath, file), 'utf-8');
                 const { data, content: markdownContent } = matter(content);
 
-                // Keep markdown but truncate
-                const postContent = markdownContent.trim();
+                let postContent = '';
+                if (data.description) {
+                    postContent = data.description;
+                } else {
+                    postContent = stripMarkdown(markdownContent);
+                }
+
                 const truncated = postContent.length > 550 ? postContent.substring(0, 550) + '...' : postContent;
 
                 const slug = data.slug || file.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.(md|mdx)$/, '');
