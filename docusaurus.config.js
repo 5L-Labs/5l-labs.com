@@ -14,6 +14,24 @@ const config = {
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.svg",
 
+  // Optimization: Preconnect to Google Fonts and load stylesheet in parallel
+  // to avoid render-blocking @import in CSS.
+  stylesheets: [
+    {
+      href: 'https://fonts.googleapis.com',
+      rel: 'preconnect',
+    },
+    {
+      href: 'https://fonts.gstatic.com',
+      rel: 'preconnect',
+      crossOrigin: true,
+    },
+    {
+      href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap',
+      rel: 'stylesheet',
+    },
+  ],
+
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: "5L-Labs", // Usually your GitHub org/user name.
