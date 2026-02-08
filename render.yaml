@@ -3,7 +3,7 @@ services:
   - type: web
     name: 5L Labs.com
     env: static
-    buildCommand: npx docusaurus build
+    buildCommand: bun run build
     staticPublishPath: ./build
     pullRequestPreviewsEnabled: true # optional
     branch: main
