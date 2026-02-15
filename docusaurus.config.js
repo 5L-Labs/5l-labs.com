@@ -34,7 +34,7 @@ const config = {
     {
       href: "https://fonts.gstatic.com",
       rel: "preconnect",
-      crossorigin: true,
+      crossOrigin: "anonymous",
     },
     // Load fonts via stylesheet link instead of @import for faster First Contentful Paint (FCP)
     // and parallel downloading
