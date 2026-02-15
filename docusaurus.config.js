@@ -25,6 +25,21 @@ const config = {
     defaultLocale: "en",
     locales: ["en", "ja"],
   },
+  stylesheets: [
+    // Preconnect to Google Fonts domains to reduce connection latency
+    {
+      href: "https://fonts.googleapis.com",
+      rel: "preconnect",
+    },
+    {
+      href: "https://fonts.gstatic.com",
+      rel: "preconnect",
+      crossorigin: true,
+    },
+    // Load fonts via stylesheet link instead of @import for faster First Contentful Paint (FCP)
+    // and parallel downloading
+    "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap",
+  ],
   markdown: {
     format: "detect",
     mermaid: true,
