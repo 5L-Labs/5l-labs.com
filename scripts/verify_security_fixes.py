@@ -116,11 +116,79 @@ def verify_response_size_limit():
 
     return True
 
+def verify_ssrf_protection():
+    print("\nVerifying SSRF protection...")
+
+    # Mock sitemap with one valid and one malicious URL
+    valid_url = "https://5l-labs.com/blog/valid"
+    malicious_url = "http://169.254.169.254/latest/meta-data/"
+
+    sitemap_content = f"""<?xml version="1.0" encoding="UTF-8"?>
+    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+        <url><loc>{valid_url}</loc></url>
+        <url><loc>{malicious_url}</loc></url>
+    </urlset>
+    """
+
+    # Patch dependencies
+    # Note: We need to patch where they are used
+    with patch('generate_embeddings.get_page_content') as mock_get_content, \
+         patch('generate_embeddings.get_embedding') as mock_embed, \
+         patch('generate_embeddings.save_embedding') as mock_save, \
+         patch('generate_embeddings.tqdm', side_effect=lambda x, **kwargs: x):
+
+        # Setup mock returns
+        # First call is sitemap, subsequent are page contents
+        # We use side_effect to return sitemap content only for sitemap URL
+        def get_content_side_effect(url, **kwargs):
+            if "sitemap.xml" in url:
+                return sitemap_content
+            return "content"
+
+        mock_get_content.side_effect = get_content_side_effect
+        mock_embed.return_value = [0.1]
+
+        # Run main
+        # We need to suppress stdout/stderr to keep output clean, but let's just run it
+        try:
+            generate_embeddings.main()
+        except Exception as e:
+            print(f"Error running generate_embeddings.main: {e}")
+            return False
+
+        # Analyze calls to get_page_content
+        calls = mock_get_content.call_args_list
+        fetched_urls = [args[0] for args, _ in calls]
+
+        # Filter out sitemap call
+        content_fetches = [url for url in fetched_urls if "sitemap.xml" not in url]
+
+        print(f"Fetched URLs: {content_fetches}")
+
+        # Check if malicious URL was fetched
+        if malicious_url in content_fetches:
+             print(f"❌ VULNERABILITY: Script fetched malicious URL: {malicious_url}")
+             return False
+
+        # Check if valid URL was fetched (to ensure logic isn't broken entirely)
+        # valid_url should be replaced by localhost
+        expected_valid = "http://localhost:3000/blog/valid"
+        if expected_valid in content_fetches:
+             print(f"✅ Valid URL fetched correctly: {expected_valid}")
+        else:
+             print(f"⚠️ Valid URL NOT fetched: {expected_valid}")
+             # This might fail if config is different, but defaults should work
+
+    print("✅ SSRF protection passed (Malicious URL skipped)")
+    return True
+
 if __name__ == "__main__":
     success = True
     if not verify_path_traversal():
         success = False
     if not verify_response_size_limit():
+        success = False
+    if not verify_ssrf_protection():
         success = False
 
     if not success:

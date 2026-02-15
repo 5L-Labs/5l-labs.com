@@ -243,8 +243,21 @@ def main():
     error_count = 0
 
     for url in tqdm(urls, desc="Generating embeddings"):
+        # Security check: Ensure URL belongs to the site
+        if not url.startswith(replacement_base_url):
+            logger.warning(f"Skipping {url}: URL does not start with base URL {replacement_base_url}")
+            error_count += 1
+            continue
+
         # Replace the base URL for fetching content
-        fetch_url = url.replace(replacement_base_url, embedding_content_base_url)
+        fetch_url = url.replace(replacement_base_url, embedding_content_base_url, 1)
+
+        # Double check to prevent partial replacement attacks
+        if not fetch_url.startswith(embedding_content_base_url):
+            logger.warning(f"Skipping {url}: Fetched URL {fetch_url} is invalid")
+            error_count += 1
+            continue
+
         logger.debug(f"Processing {fetch_url}...")
 
         content = get_page_content(fetch_url)
