@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "node scripts/generate-latest-post.js && mkdir -p static/embeddings && cp -r embeddings/* static/embeddings/ && docusaurus start",
-    "build": "node scripts/generate-latest-post.js && mkdir -p static/embeddings && cp -r embeddings/* static/embeddings/ && docusaurus build",
+    "start": "node scripts/generate-latest-post.js && mkdir -p static/embeddings && rsync -a --exclude .git embeddings/ static/embeddings/ && docusaurus start",
+    "build": "node scripts/generate-latest-post.js && mkdir -p static/embeddings && rsync -a --exclude .git embeddings/ static/embeddings/ && docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
