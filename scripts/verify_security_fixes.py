@@ -82,7 +82,7 @@ def verify_response_size_limit():
     with patch('requests.get') as mock_get:
         mock_resp = MagicMock()
         mock_resp.is_redirect = False
-        mock_resp.headers = {'Content-Length': str(20 * 1024 * 1024)} # 20MB
+        mock_resp.headers = {'Content-Length': str(20 * 1024 * 1024), 'Content-Type': 'text/html'} # 20MB
         mock_resp.raise_for_status.return_value = None
         mock_get.return_value = mock_resp
 
@@ -97,7 +97,7 @@ def verify_response_size_limit():
     with patch('requests.get') as mock_get:
         mock_resp = MagicMock()
         mock_resp.is_redirect = False
-        mock_resp.headers = {}
+        mock_resp.headers = {'Content-Type': 'text/html'}
         mock_resp.raise_for_status.return_value = None
         # Generator yielding 1MB chunks
         def oversized_generator():
@@ -193,7 +193,7 @@ def verify_redirect_protection():
         mock_resp_2 = MagicMock()
         mock_resp_2.status_code = 200
         mock_resp_2.is_redirect = False
-        mock_resp_2.headers = {}
+        mock_resp_2.headers = {'Content-Type': 'text/html'}
         mock_resp_2.iter_content.return_value = iter(["Success"])
 
         mock_get.side_effect = [mock_resp_1, mock_resp_2]
@@ -209,6 +209,63 @@ def verify_redirect_protection():
 
     return True
 
+def verify_content_type_check():
+    print("\nVerifying Content-Type check...")
+
+    base_url = "http://example.com"
+
+    # Test 1: Invalid Content-Type (image/jpeg)
+    with patch('requests.get') as mock_get:
+        mock_resp = MagicMock()
+        mock_resp.is_redirect = False
+        mock_resp.headers = {'Content-Type': 'image/jpeg'}
+        mock_resp.raise_for_status.return_value = None
+        mock_get.return_value = mock_resp
+
+        result = generate_embeddings.get_page_content("http://example.com/image.jpg", base_url)
+
+        if result is None:
+            print("✅ Invalid Content-Type correctly rejected (returned None)")
+        else:
+            print(f"❌ Invalid Content-Type was NOT rejected (returned {result})")
+            return False
+
+    # Test 2: Valid Content-Type (text/html)
+    with patch('requests.get') as mock_get:
+        mock_resp = MagicMock()
+        mock_resp.is_redirect = False
+        mock_resp.headers = {'Content-Type': 'text/html'}
+        mock_resp.raise_for_status.return_value = None
+        mock_resp.iter_content.return_value = iter(["<html>Content</html>"])
+        mock_get.return_value = mock_resp
+
+        result = generate_embeddings.get_page_content("http://example.com/page.html", base_url)
+
+        if result == "<html>Content</html>":
+            print("✅ Valid Content-Type (text/html) accepted")
+        else:
+            print(f"❌ Valid Content-Type (text/html) failed (returned {result})")
+            return False
+
+    # Test 3: Valid Content-Type with charset (text/html; charset=utf-8)
+    with patch('requests.get') as mock_get:
+        mock_resp = MagicMock()
+        mock_resp.is_redirect = False
+        mock_resp.headers = {'Content-Type': 'text/html; charset=utf-8'}
+        mock_resp.raise_for_status.return_value = None
+        mock_resp.iter_content.return_value = iter(["<html>UTF-8 Content</html>"])
+        mock_get.return_value = mock_resp
+
+        result = generate_embeddings.get_page_content("http://example.com/utf8.html", base_url)
+
+        if result == "<html>UTF-8 Content</html>":
+            print("✅ Valid Content-Type with charset accepted")
+        else:
+            print(f"❌ Valid Content-Type with charset failed (returned {result})")
+            return False
+
+    return True
+
 if __name__ == "__main__":
     success = True
     if not verify_path_traversal():
@@ -218,6 +275,8 @@ if __name__ == "__main__":
     if not verify_ssrf_protection():
         success = False
     if not verify_redirect_protection():
+        success = False
+    if not verify_content_type_check():
         success = False
 
     if not success:

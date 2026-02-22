@@ -132,6 +132,25 @@ def get_page_content(url, base_url, max_size=10 * 1024 * 1024, max_redirects=5):
 
             response.raise_for_status()
 
+            # Security Check: Verify Content-Type
+            content_type = response.headers.get("Content-Type", "").lower()
+            # Split to handle charset (e.g. text/html; charset=utf-8)
+            mime_type = content_type.split(";")[0].strip()
+
+            allowed_types = [
+                "text/html",
+                "application/xml",
+                "text/xml",
+                "application/xhtml+xml",
+                "application/rss+xml",
+                "application/atom+xml"
+            ]
+
+            if mime_type not in allowed_types:
+                response.close()
+                logger.warning(f"Skipping {current_url}: Invalid Content-Type {content_type}")
+                return None
+
             # Check Content-Length if available
             if 'Content-Length' in response.headers:
                 try:
