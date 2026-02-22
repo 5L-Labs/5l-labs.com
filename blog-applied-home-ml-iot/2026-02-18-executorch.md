@@ -1,28 +1,29 @@
 ---
 slug: executorch-bootstrap
-title: GarageCam Lives! Boring stuff, that's exciting!
+title: GarageCam Lives! ExecuTorch on RPi 5
 authors: [njl]
-tags: [oasr, semantic-router, privateai, executorch, raspberry-pi-5, mqtt]
-description: Finished implementing a local ML pipeline for GarageCam using ExecuTorch on Raspberry Pi 5. Achieve private, efficient home automation with Thingino and MQTT integration.
+tags: [vllm-sr, semantic-router, privateai, executorch, raspberry-pi-5, mqtt, scrypted, thingino]
+description: A deep dive into deploying a private ML pipeline for GarageCam using ExecuTorch on Raspberry Pi 5, featuring real-time inference and MQTT integration.
+embedding_url: /embeddings/applied-home-ml-iot/executorch-bootstrap.embedding.json
 ---
 
-Due to competing priorities, getting our first "baby" model out the door on ExecuTorch took far longer than anticipated. 
+Due to competing priorities, getting the first "baby" model out the door on **ExecuTorch** took far longer than anticipated. 
 
 ## What does the model do? 
-The model monitors a webcam powered by [Thingino](https://thingino.com/) and served to homekit via [scrypted](https://www.scrypted.app/) and come to two predictions that are published to MQTT (and then [mqtt-things](https://github.com/arachnetech/homebridge-mqttthing) will export to HomeKit via [Homebridge](https://homebridge.io/)):
+The model monitors a webcam powered by [Thingino](https://thingino.com/) and served to HomeKit via [Scrypted](https://www.scrypted.app/). It produces two primary predictions published to MQTT, which are then exported to HomeKit via [Homebridge](https://homebridge.io/) using [mqtt-things](https://github.com/arachnetech/homebridge-mqttthing):
 - Door Open/Closed
 - Car Home/Away
 
-{/* truncate */}
+<!-- truncate -->
 
-Please see the post from last year on [GarageCam](./2025-09-15-GarageCam-updated.md)
+Please see the previous post on [GarageCam](./2025-09-15-GarageCam-updated.md) for context on the evolution of this project.
 
 ![](./static/garagecam-20250608_195709.jpeg)
 
 ## How does it run?
 
-- **RaspberryPi 5** - set to poll every 30s.
-- **RaspberryPi 4** - Currently sidelined due to a build mismatch. 
+- **Raspberry Pi 5** - set to poll every 30s.
+- **Raspberry Pi 4** - Currently sidelined due to a build mismatch. 
 
 The underlying code maps PyTorch operations to specific CPU sets via ExecuTorch, but this process is currently error-prone. Aligning the right instruction sets with the target architecture requires precise configuration, which led to the RPi 4 hiccups.
 
@@ -55,11 +56,11 @@ The underlying code maps PyTorch operations to specific CPU sets via ExecuTorch,
 
 ## How does it perform?
 
-Surprisingly well! The Raspberry Pi 5 handles the inference load with ease:  maintaining a consistent polling interval without thermal or resource issues.
+Surprisingly well! The Raspberry Pi 5 handles the inference load with ease, maintaining a consistent polling interval without thermal or resource issues.
 
-### How efficient is it?:
+### How efficient is it?
 
-- **Model Size:** Optimized for edge deployment.
+- **Model Size:** Optimized for edge deployment using PTE formats.
 - **CPU Consumed:** Minimal impact on the Pi 5's quad-core processor.
 - **Memory Consumed:** Low footprint, leaving plenty of headroom for other services.
 
@@ -69,65 +70,67 @@ While the resource usage is excellent, I'm still refining the observability stac
 
 ## Does this help avoid [Frigate](https://frigate.video/) / [Scrypted NVR](https://docs.scrypted.app/scrypted-nvr/) fees?
 
-Nope, you should still pay them. Eventually, my answer may change. But not yet without some more observability work and scaling this across cameras. 
+Nope, you should still pay them. Eventually, my answer may change, but not without more observability work and scaling this across more cameras. 
 
 ## Where is the code?
 
-Next Time - It's not presentable to the public (yet) largely as there is still a lot of hard-coded stuff with PII that I want to remove. 
+Next Time—it's not presentable to the public (yet) largely as there is still a lot of hard-coded stuff with PII that I want to remove. 
 
 ### ExecuTorch and the CompileVM
 
-Rather than bloat my main workstation with cross-compilation support, I've added a QEMU/UTM Debian VM for compiling the python wheels for executorch. This will be factored out of the main repo, as a more generic solution.
+Rather than bloat my main workstation with cross-compilation support, I've added a QEMU/UTM Debian VM for compiling the Python wheels for ExecuTorch. This will be factored out of the main repo as a more generic solution.
 
-* NB: I have a compile container as well, but in principle I could have run this on an x86 box so it wasn't a generic cross-compile / arch agnostic pipeline.
+* **Note**: I have a compile container as well, but in principle, I could have run this on an x86 box so it wasn't a generic cross-compile/arch-agnostic pipeline.
 
-### Did [PyLightning](https://lightning.ai/pytorch-lightning) help?
+### Did [PyTorch Lightning](https://lightning.ai/pytorch-lightning) help?
 
-Tremendously versus straight pytorch. At some point, I need to dig into what is going on under the hood. 
+Tremendously versus straight PyTorch. At some point, I need to dig into what is going on under the hood. 
 
 ### Did AI Assist with the coding / testing / design?
 
-Yes. It was used for boilerplate and autocomplete. Sadly, as some of the Tech ([Executorch](https://pytorch.org/executorch/)/[Onnx](https://onnx.ai/)/[TFLite](https://www.tensorflow.org/lite)), [Daytona](https://daytona.io/), BaseTen and [Modal](https://modal.com/) was not familiar to me. Gemini / Opus / Grok and friends helpfully jumped in to help - but the subtle bugs hurt, a lot.
+Yes. It was used for boilerplate and autocomplete. Sadly, as some of the tech ([ExecuTorch](https://pytorch.org/executorch/), [ONNX](https://onnx.ai/), [TFLite](https://www.tensorflow.org/lite)), [Daytona](https://daytona.io/), BaseTen, and [Modal](https://modal.com/) was not familiar to me, Gemini, Claude (Opus), and Grok helpfully jumped in to help—but the subtle bugs hurt, a lot.
 
 ## How does this really help?
 
-I've done nothing special here - but it opens the door to to a generic home-ml pipeline of using bigger Teacher models to train smaller student models that can run on non-specialized hardware thanks to the efforts of many. While part of broader vision of Private AI, the most germane ideas here for stationary cameras:
+I've done nothing special here—but it opens the door to a generic home-ML pipeline of using bigger "Teacher" models to train smaller "Student" models that can run on non-specialized hardware. 
 
 ```mermaid
-sequenceDiagram
-    participant Cam as Camera (Thingino/Scrypted)
-    participant WS as Workstation (Qwen/Local)
-    participant Train as Training (Local/Remote)
-    participant Build as Builder
-    participant Edge as Edge Device (RPi)
-
-    Cam->>WS: Snapshot URL
-    Note over WS: 1. Fetch Images
-    WS->>WS: 2. Classify & Annotate (Qwen)
-    WS->>WS: 3. Verify Data (Partial)
+flowchart TD
+    Cam["Camera (Thingino/Scrypted)"] <--> WS["Data Pipeline"]
     
-    WS->>Train: 4. Submit Training Job
-    Note right of Train: Options: Metal, AMD,<br/>Modal, Daytona, BaseTen
-    Train->>Train: Train Model
-    Train->>WS: Return Trained Model
+    subgraph Local_Process [Local Processing]
+        WS -->|2. Classify & Annotate| Qwen["Local Teacher (Qwen3-VL)"]
+        Qwen --> WS
+        WS -->|3. Verify Data| Verify[Data Verification]
+    end
     
-    WS->>WS: 5. Export (ExecuTorch/Onnx)
-    WS->>Build: 6. Containerize
-    Build->>Edge: 7. Deploy Model
+    Verify --> Train{Training Options}
+    
+    subgraph Training_Env [4. Training Environment]
+        Train -->|Local| Metal[Metal]
+        Train -->|Local| Halo[AMD Strix Halo]
+        Train -->|Remote| Modal["Modal (NVIDIA)"]
+        Train -->|Remote| Daytona["Daytona (NVIDIA)"]
+        Train -->|Remote| BaseTen["BaseTen (NVIDIA)"]
+    end
+    
+    Metal --> Trained[5. Trained Model]
+    Halo --> Trained
+    Modal --> Trained
+    Daytona --> Trained
+    BaseTen --> Trained
+    
+    Trained --> Export[ 6. Export ExecuTorch / ONNX]
+    Export --> Build[7. Build Container Image]
+    Build --> Edge["8. Edge Device (RPi)"]
 ```
 
-
-
 ## Next Steps for GarageCam
-- Model Perf Tracking
-  - Need to add in Sentry (Arize), etc 
-- Model Architecture
-  - See next post in frontier(s) - where I may reveal my ignorance.
-- Model Inference Footprint 
-  - Fix the RPI4
-  - See about other smaller processors
-- Add in Bounding / Labelling / Masking of Private Data with the local Teacher
-  - Once properly data masked, Daytona/Modal/Baseten/Lightning etc are GREAT for beefy training  
-- Additional Multi-Modal Differential Privacy topics are a break out project (*)
-  - i.e. How much noise can be added to the picture without breaking the classifier?
-  - What about audio?
+- **Model Perf Tracking**: Need to add in [Arize Phoenix](https://phoenix.arize.com/) or [Sentry](https://sentry.io/) for tracking model drift and inference performance.
+- **Model Architecture**: See the next post in the Frontier Research blog where I may reveal my ignorance.
+- **Model Inference Footprint**: Fix the RPi 4 and explore other smaller processors.
+- **Data Privacy**: Add in bounding, labeling, and masking of private data with the local Teacher. Once properly masked, Daytona/Modal/BaseTen/Lightning are excellent for beefy training.
+- **Differential Privacy**: Exploring how much noise can be added to the picture without breaking the classifier.
+
+---
+*This post was cleaned up with Automation to clarify thoughts for the reader.*

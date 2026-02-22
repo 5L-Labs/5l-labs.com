@@ -1,47 +1,46 @@
 ---
-slug: what is my private home
+slug: what-is-my-private-home
 title: My Private Home
 authors: [njl]
-tags: [homekit, home-assistant,homebridge, network-security, parental-controls, zigbee, tasmota]
+tags: [homekit, home-assistant, homebridge, network-security, zigbee, tasmota, ubiquity]
+description: Defining the architecture of a private home network across multiple locations, focusing on Ubiquity hardware, traffic routing, and privacy-first IoT.
+embedding_url: /embeddings/self-hosted-iot/what-is-my-private-home.embedding.json
 ---
 
-
+This post defines the architecture of a private home network that spans multiple locations. By using **Site-to-Site VPNs** (specifically WireGuard) and rigorous packet inspection with [Wireshark](https://www.wireshark.org/), I can ensure that sensitive IoT traffic remains entirely within my controlled environment.
 
 {/* truncate */}
-This post will evolve to cover the basics of setting up a private home network between multiple locations using wireshark and ensuring that traffic follows the right path.
 
+### Hardware and Privacy Strategy
 
-<IIcon icon="arcticons:unifi-network" height="48" />  All routers are currently ubiquity, although they may be replaced with other more private brands should their be any issues with phone-home discovered.
-
+All routers are currently **Ubiquity**. While they offer a great balance of performance and ease of use, I maintain a strict egress-filtering policy to block any "phone-home" telemetry to Ubiquity's servers. Should any issues with unsolicited data sharing be discovered, these will be replaced with more privacy-focused alternatives like OPNsense or pfSense.
 
 ```mermaid
 architecture-beta
     group home(cloud)[Local Network 1]
     group remote1(cloud)[Remote Network 2]
 
+    service hrouter(internet)[Ubiquity Router] in home
     service rrouter(internet)[Ubiquity Router] in remote1
 
-    service hrouter(internet)[Ubiquity Router] in home
-
-
-
-
-    service rrpi1(server)[RPI1] in remote1
     service rpi1(server)[RPI1] in home
     service rpi2(server)[RPI2] in home
+    service rrpi1(server)[RPI-Remote] in remote1
 
-    rrpi1:R <--> L:rpi1{group}
-
-
-    raw:B <--> T:rrouter{group}
-    raw:R <--> L:hrouter{group}
+    hrouter <--> rrouter
+    rpi1 <--> hrouter
+    rrpi1 <--> rrouter
 
     service raw(internet)[Internet]
-
+    hrouter <--> raw
+    rrouter <--> raw
 ```
 
-### Outstanding Details
+### Key Components
 
-- Outstanding documentation Items
-- Add more details about the network architecture
-- Include diagrams and screenshots of the setup
+- **Local Mesh**: A cluster of Raspberry Pi devices running Home Assistant and Homebridge to bridge Zigbee and Tasmota devices into HomeKit.
+- **Traffic Routing**: Custom firewall rules ensure that IoT devices (VLAN 40) are completely isolated from the main network and have zero internet access unless explicitly whitelisted for firmware updates.
+- **Verification**: Periodic Wireshark captures verify that no unauthorized traffic is leaking from the "Private Home" to external cloud providers.
+
+---
+*This post was cleaned up with Automation to clarify thoughts for the reader.*

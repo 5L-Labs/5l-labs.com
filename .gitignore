@@ -27,3 +27,4 @@ embedding_generation.log
 .venv
 __pycache__/
 server.log
+\n# OpenSpec Agent Configs\n.agent/\n.claude/\n.gemini/\n.kilocode/\n

@@ -1,36 +1,34 @@
 ---
 slug: network-manager-forced-updates
-title: NetworkManager Forced Updates
+title: NetworkManager and VPN Tunneling
 authors: [njl]
-tags: [homekit, homebridge, pihole, ubiquiti, network, dnsmasq, nmcli]
+tags: [homekit, homebridge, pihole, ubiquiti, network, dnsmasq, nmcli, wireguard, debian]
+description: A technical guide to configuring NetworkManager, static IPs, and WireGuard VPN tunneling on Debian Bookworm/Trixie for private home networking.
+embedding_url: /embeddings/self-hosted-iot/network-manager-forced-updates.embedding.json
 ---
 
-
+With the cold and the early darkness, it's time for more TV than less. With that in mind, I needed to fix a few things that "broke" over the last few months. This entry is a technical "brain dump" to document the NetworkManager and WireGuard configurations required to maintain a private, multi-site network.
 
 <!-- truncate -->
-With the cold and the early darkness, it's time for more TV than less. With that in mind, I needed to fix a few things that "broke" over the last few months. This entry is more of a mental dump so that in the future I can remember what I did to fix things.
 
+## Future Architecture: VLAN Trunking
+The goal is to move to an **802.1Q trunked VLAN** on the Raspberry Pi, allowing a single ethernet cable to carry multiple isolated networks. The Pi would then act as a central DHCP and VPN gateway for each, providing a clean and scalable home networking backbone.
 
-## Future Idea:
-Move to an 802.11 trunked VLAN and serve DHCP/VPN tunneling from a single RPi.
+## NetworkManager on Debian Trixie
 
+I thought it was Debian Bookworm, but Trixie finally forced me into a shotgun wedding with **NetworkManager (NM)**. While I initially resisted, the unified CLI (`nmcli`) for managing Wi-Fi, ethernet, and VPN interfaces is actually quite powerful once you get past the initial learning curve.
 
-## NetworkManager 
-
-I thought it was Debian Bookworm, but Trixie finally forced me into a shotgun wedding with NetworkManager (NM). I'm going to rely on Ansible wrappers for interface configuration, but I haven't yet automated this so:
-
-### Static IP Configuration with nmcli looks like this:
+### Static IP Configuration with nmcli
+To set up a reliable static IP for a local gateway:
 ```bash 
-           $ nmcli con add con-name my-con-em1 ifname em1 type ethernet \
-             ip4 192.168.100.100/24 gw4 192.168.100.1 ip4 1.2.3.4 ip6 abbe::cafe
-           $ nmcli con mod my-con-em1 ipv4.dns "8.8.8.8 8.8.4.4"
+$ nmcli con add con-name my-con-em1 ifname em1 type ethernet \
+  ip4 192.168.100.100/24 gw4 192.168.100.1
+$ nmcli con mod my-con-em1 ipv4.dns "1.1.1.1 8.8.8.8"
+$ nmcli con up my-con-em1
 ```
 
-### DNSMasq DHCP
-A nice feature of Ubiquiti is that it can act as a meshed AP and let one of the Raspberry Pis be the gateway for that VLAN. 
-
-### Network Forwarding
-This needs to be more granular and live in the playbook for the interface.
+### DHCP and Network Forwarding
+A nice feature of the Ubiquiti ecosystem is that it can act as a meshed AP, allowing a Raspberry Pi to serve as the DHCP server and gateway for a specific VLAN. This requires enabling IPv4 forwarding:
 ```bash
 sysctl -w net.ipv4.ip_forward=1
 ```
@@ -38,7 +36,7 @@ sysctl -w net.ipv4.ip_forward=1
 ```mermaid
 graph TD
     subgraph "Local VLAN"
-        Client[<i class="fa fa-mobile-phone"></i> Client Device] -- WiFi --> AP[Ubiquiti AP]
+        Client[Client Device] -- WiFi --> AP[Ubiquiti AP]
         AP -- "DHCP Request" --> RPI[Raspberry Pi<br/>DHCP & VPN Gateway]
         RPI -- "DHCP Lease" --> AP
         AP -- "DHCP Lease" --> Client
@@ -52,53 +50,22 @@ graph TD
 
 ## The Other Problem(s)
 
-### Mixed up switch VLANs
-
-Upgrading to the PoE 2.5 GHz switch, I swapped wires and mixed up the DHCP-addressable VLANs, so Remote2 was booting on Remote1 and vice-versa. 
-
-
 ### Stale WireGuard Connections
-One of the endpoints changed IPs, which required a DNS update and a tunnel restart. I've been too lazy to automate the end-to-end of this workflow, so we'll just have to fix it when it breaks.
+When a remote endpoint changes its public IP, the WireGuard tunnel can become stale. While I've been manual about restarts so far, a [Systemd Timer](https://www.freedesktop.org/software/systemd/man/latest/systemd.timer.html) combined with a simple health check script (pinging the remote gateway) could easily automate this recovery workflow.
 
-## WireGuard General Config
-
-
-### Entry Point
+### WireGuard Configuration: The Gateway Entrance
 ```ini
-root@local:/etc/NetworkManager/dnsmasq.d# cat /etc/wireguard/remote_gateway.conf 
 [Interface]
 Address = 10.253.120.7/32
 ListenPort = 21001
-PrivateKey = #<cat privatekey>
+PrivateKey = <local-private-key>
 
-
-#local Gateway Entrance
 [Peer]
-Endpoint = <gateway-domain>:XXXXXXX
-PublicKey = #<cat privatekey | wg pubkey>
-AllowedIPs = 0.0.0.0/0,::/0
+Endpoint = <gateway-domain>:21001
+PublicKey = <remote-public-key>
+AllowedIPs = 0.0.0.0/0, ::/0
+PersistentKeepalive = 25
 ```
 
-### Exit Point
-```ini
-root@remote:~# cat /etc/wireguard/wg0.conf 
-[Interface]
-#Address = 10.253.120.1/32, fd02:e6c1:d3b9:bca7:0070::1/76
-Address = 10.253.120.1/32
-ListenPort = 21001
-PrivateKey = #<cat privatekey>
-PostUp = nft add chain ip nat POSTROUTING '{ type nat hook postrouting priority 100; }'
-PostUp = nft add rule ip nat POSTROUTING ip saddr 192.168.31.0/24 oif eth0 masquerade
-PreDown = nft -j list ruleset ip | jq '.nftables[] | select (.rule.chain == "POSTROUTING" and (.rule.expr[2] | has("masquerade"))) | .rule.handle'  | while read handle; do nft delete rule ip nat POSTROUTING handle $handle;done
-
-
-# Remote Gateway
-[Peer]
-PublicKey = #<cat privatekey | wg pubkey>
-AllowedIPs = 10.253.120.7/32,192.168.131.0/24
-
-#laptop
-[Peer]
-PublicKey = <laptop-public-key>
-AllowedIPs = 10.253.120.2/32,fd02:e6c1:d3b9:bca7::2/128
-```
+---
+*This post was cleaned up with Automation to clarify thoughts for the reader.*

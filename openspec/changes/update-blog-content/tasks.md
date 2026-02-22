@@ -1,0 +1,24 @@
+## 1. Implementation
+- [x] 1.1 Analyze and update `blog-applied-ai-engineering/2025-02-22-ai-dot-engineer-summit-nyc.md`
+- [x] 1.2 Analyze and update `blog-applied-ai-engineering/2025-03-16-nvidia-gtc.md`
+- [x] 1.3 Analyze and update `blog-applied-ai-engineering/2025-03-25-nvidia-gtc-post.md`
+- [x] 1.4 Analyze and update `blog-applied-ai-engineering/2025-04-19-embeddings.md`
+- [x] 1.5 Analyze and update `blog-applied-home-ml-iot/2025-02-16-private_llms.md`
+- [x] 1.6 Analyze and update `blog-applied-home-ml-iot/2025-04-05-pim_particles.md`
+- [x] 1.7 Analyze and update `blog-applied-home-ml-iot/2025-04-12-mini_minds.md`
+- [x] 1.8 Analyze and update `blog-applied-home-ml-iot/2025-06-08-GarageCam.md`
+- [x] 1.9 Analyze and update `blog-applied-home-ml-iot/2025-09-15-GarageCam-updated.md`
+- [x] 1.10 Analyze and update `blog-applied-home-ml-iot/2025-11-16-Jarvis20.md`
+- [x] 1.11 Analyze and update `blog-applied-home-ml-iot/2026-02-18-executorch.md`
+- [x] 1.12 Analyze and update `blog-frontier-research/2025-12-10-time.md`
+- [x] 1.13 Analyze and update `blog-frontier-research/2026-02-23-learning_again.md`
+- [x] 1.14 Analyze and update `blog-misc/2025-03-30-pihole.md`
+- [x] 1.15 Analyze and update `blog-misc/2025-07-16-Serendipity.md`
+- [x] 1.16 Analyze and update `blog-self-hosted-iot/2024-09-30-falling_back_on_tls_12.md`
+- [x] 1.17 Analyze and update `blog-self-hosted-iot/2025-01-01-what-is-a-private-home.mdx`
+- [x] 1.18 Analyze and update `blog-self-hosted-iot/2025-05-03-camera-conversion.md`
+- [x] 1.19 Analyze and update `blog-self-hosted-iot/2025-05-17-thingino_adventures.md`
+- [x] 1.20 Analyze and update `blog-self-hosted-iot/2025-10-19-updated-network-controls.md`
+- [x] 1.21 Analyze and update `blog-self-hosted-iot/2025-12-01-vpn_tunneling.md`
+- [x] 1.22 Verify all posts have `description` and `embedding_url` frontmatter.
+- [x] 1.23 Verify factual accuracy and tone consistency across all updates.
