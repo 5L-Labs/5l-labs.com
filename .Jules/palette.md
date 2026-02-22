@@ -36,3 +36,7 @@
 ## 2026-02-16 - Bun Lockfile Compatibility
 **Learning:** Render's default environment may not support modern text-based `bun.lock` files, causing deployment failures.
 **Action:** If deployment fails with Bun, switch to standard Node/NPM for greater compatibility, especially for static site generation. Ensure `package-lock.json` is not ignored in `.gitignore`.
+
+## 2026-02-18 - External Link Indicators
+**Learning:** Exposing hidden content & using distinct indicators for external links improves discoverability and sets clear expectations.
+**Action:** Use an `ExternalLinkIcon` (e.g., arrow up-right) for external links in lists to differentiate them from internal navigation.

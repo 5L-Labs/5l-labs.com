@@ -26,29 +26,57 @@ function ArrowIcon({ className }) {
   );
 }
 
+function ExternalLinkIcon({ className }) {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+      <polyline points="15 3 21 3 21 9" />
+      <line x1="10" y1="14" x2="21" y2="3" />
+    </svg>
+  );
+}
+
 function Section({ title, items }) {
   return (
     <div className={clsx('col col--6')}>
       <div className="text--center padding-horiz--md">
         <h3>{title}</h3>
         <ul style={{ listStyle: 'none', padding: 0 }}>
-          {items.map((item, idx) => (
-            <li key={idx} style={{ marginBottom: '1.5rem' }}>
-              <div style={{ marginBottom: '0.25rem' }}>
-                <strong>
-                  {item.link ? (
-                    <Link to={item.link} className="inline-flex items-center gap-1 group">
-                      {item.title}
-                      <ArrowIcon className="transition-transform group-hover:translate-x-1" />
-                    </Link>
-                  ) : item.title}
-                </strong>
-              </div>
-              <div className="text--secondary">
-                {item.description}
-              </div>
-            </li>
-          ))}
+          {(items || []).map((item, idx) => {
+            const isExternal = item.link && item.link.startsWith('http');
+            return (
+              <li key={idx} style={{ marginBottom: '1.5rem' }}>
+                <div style={{ marginBottom: '0.25rem' }}>
+                  <strong>
+                    {item.link ? (
+                      <Link to={item.link} className="inline-flex items-center gap-1 group">
+                        {item.title}
+                        {isExternal ? (
+                          <ExternalLinkIcon className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                        ) : (
+                          <ArrowIcon className="transition-transform group-hover:translate-x-1" />
+                        )}
+                      </Link>
+                    ) : (
+                      item.title
+                    )}
+                  </strong>
+                </div>
+                <div className="text--secondary">{item.description}</div>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </div>
@@ -115,6 +143,7 @@ export default function HomepageContent() {
         <div className="row" style={{ justifyContent: 'center' }}>
           <Section title="Major Research Areas" items={homepageConfig.researchAreas} />
           <LatestPost />
+          <Section title="Products/Projects" items={homepageConfig.products || []} />
         </div>
       </div>
     </section>
