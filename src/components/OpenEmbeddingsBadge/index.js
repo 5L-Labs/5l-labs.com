@@ -9,7 +9,7 @@ export default function OpenEmbeddingsBadge() {
                 to="https://www.open-embeddings.org/"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Open Embeddings"
+                aria-label="Open Embeddings (opens in a new tab)"
                 title="Open Embeddings"
                 className={styles.badgeLink}
             >
