@@ -38,7 +38,8 @@ function ExternalLinkIcon({ className }) {
       strokeLinecap="round"
       strokeLinejoin="round"
       className={className}
-      aria-hidden="true"
+      role="img"
+      aria-label="(opens in new tab)"
     >
       <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
       <polyline points="15 3 21 3 21 9" />
@@ -63,9 +64,9 @@ function Section({ title, items }) {
                       <Link to={item.link} className="inline-flex items-center gap-1 group">
                         {item.title}
                         {isExternal ? (
-                          <ExternalLinkIcon className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                          <ExternalLinkIcon className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 group-focus-visible:translate-x-1 group-focus-visible:-translate-y-1" />
                         ) : (
-                          <ArrowIcon className="transition-transform group-hover:translate-x-1" />
+                          <ArrowIcon className="transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1" />
                         )}
                       </Link>
                     ) : (
@@ -95,7 +96,7 @@ function LatestPost() {
             <h3>
               <Link to={latestPost.url} className="inline-flex items-center gap-1 group">
                 {latestPost.title}
-                <ArrowIcon className="transition-transform group-hover:translate-x-1" />
+                <ArrowIcon className="transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1" />
               </Link>
             </h3>
             <small>
@@ -119,7 +120,7 @@ function LatestPost() {
               aria-label={`Read more about ${latestPost.title}`}
             >
               Read More
-              <ArrowIcon className="transition-transform group-hover:translate-x-1" />
+              <ArrowIcon className="transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1" />
             </Link>
           </div>
         </div>
