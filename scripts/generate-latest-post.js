@@ -28,67 +28,97 @@ function stripMarkdown(markdown) {
         .trim();
 }
 
-function getLatestPost() {
-    let latestPost = null;
+// ⚡ Bolt Optimization:
+// Use a two-pass algorithm to avoid reading the contents of every blog post file.
+// Pass 1: Asynchronously read directory listings and parse dates from filenames to identify the latest post.
+// Pass 2: Asynchronously read and parse only the single latest file's content.
+async function getLatestPost() {
+    let latestFileMeta = null;
 
-    BLOG_DIRS.forEach(dir => {
+    // Pass 1: Find the latest file by scanning directories and parsing filenames
+    for (const dir of BLOG_DIRS) {
         const dirPath = path.join(__dirname, '..', dir);
-        if (!fs.existsSync(dirPath)) return;
 
-        const files = fs.readdirSync(dirPath);
-        files.forEach(file => {
-            if (!file.endsWith('.md') && !file.endsWith('.mdx')) return;
+        try {
+            await fs.promises.access(dirPath);
+        } catch (error) {
+            continue; // Directory does not exist
+        }
+
+        const files = await fs.promises.readdir(dirPath);
+        for (const file of files) {
+            if (!file.endsWith('.md') && !file.endsWith('.mdx')) continue;
 
             // Extract date from filename (YYYY-MM-DD-...)
             const match = file.match(/^(\d{4})-(\d{2})-(\d{2})/);
-            if (!match) return;
+            if (!match) continue;
 
             const [_, yearStr, monthStr, dayStr] = match;
             const date = new Date(`${yearStr}-${monthStr}-${dayStr}`);
 
-            if (!latestPost || date > latestPost.date) {
-                const content = fs.readFileSync(path.join(dirPath, file), 'utf-8');
-                const { data, content: markdownContent } = matter(content);
-
-                let postContent = '';
-                if (data.description) {
-                    postContent = data.description;
-                } else {
-                    postContent = stripMarkdown(markdownContent);
-                }
-
-                const truncated = postContent.length > 550 ? postContent.substring(0, 550) + '...' : postContent;
-
-                const slug = data.slug || file.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.(md|mdx)$/, '');
-
-                const routeBasePath = dir.replace('blog-', '');
-
-                let url;
-                if (data.slug) {
-                    url = `/${routeBasePath}/${data.slug}`;
-                } else {
-                    url = `/${routeBasePath}/${yearStr}/${monthStr}/${dayStr}/${slug}`;
-                }
-
-                latestPost = {
-                    date: date,
-                    title: data.title || slug,
-                    content: truncated,
-                    url: url
+            if (!latestFileMeta || date > latestFileMeta.date) {
+                latestFileMeta = {
+                    dirPath,
+                    dir,
+                    file,
+                    date,
+                    yearStr,
+                    monthStr,
+                    dayStr
                 };
             }
-        });
-    });
+        }
+    }
 
-    return latestPost;
+    if (!latestFileMeta) return null;
+
+    // Pass 2: Read and parse the content of only the latest file
+    const { dirPath, dir, file, date, yearStr, monthStr, dayStr } = latestFileMeta;
+
+    const content = await fs.promises.readFile(path.join(dirPath, file), 'utf-8');
+    const { data, content: markdownContent } = matter(content);
+
+    let postContent = '';
+    if (data.description) {
+        postContent = data.description;
+    } else {
+        postContent = stripMarkdown(markdownContent);
+    }
+
+    const truncated = postContent.length > 550 ? postContent.substring(0, 550) + '...' : postContent;
+
+    const slug = data.slug || file.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.(md|mdx)$/, '');
+
+    const routeBasePath = dir.replace('blog-', '');
+
+    let url;
+    if (data.slug) {
+        url = `/${routeBasePath}/${data.slug}`;
+    } else {
+        url = `/${routeBasePath}/${yearStr}/${monthStr}/${dayStr}/${slug}`;
+    }
+
+    return {
+        date: date,
+        title: data.title || slug,
+        content: truncated,
+        url: url
+    };
 }
 
-const latestPost = getLatestPost();
+(async () => {
+    try {
+        const latestPost = await getLatestPost();
 
-if (latestPost) {
-    fs.writeFileSync(OUTPUT_FILE, JSON.stringify(latestPost, null, 2));
-    console.log(`Latest post generated: ${latestPost.title}`);
-} else {
-    console.log('No blog posts found.');
-    fs.writeFileSync(OUTPUT_FILE, JSON.stringify({}, null, 2));
-}
+        if (latestPost) {
+            await fs.promises.writeFile(OUTPUT_FILE, JSON.stringify(latestPost, null, 2));
+            console.log(`Latest post generated: ${latestPost.title}`);
+        } else {
+            console.log('No blog posts found.');
+            await fs.promises.writeFile(OUTPUT_FILE, JSON.stringify({}, null, 2));
+        }
+    } catch (err) {
+        console.error('Error generating latest post:', err);
+        process.exit(1);
+    }
+})();
