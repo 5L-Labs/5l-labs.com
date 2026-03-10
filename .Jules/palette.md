@@ -40,3 +40,7 @@
 ## 2026-02-18 - External Link Indicators
 **Learning:** Exposing hidden content & using distinct indicators for external links improves discoverability and sets clear expectations.
 **Action:** Use an `ExternalLinkIcon` (e.g., arrow up-right) for external links in lists to differentiate them from internal navigation.
+
+## 2026-03-08 - Keyboard parity for hover interactions
+**Learning:** Adding animation classes only to hover states (e.g., `group-hover:translate-x-1`) means keyboard users miss out on visual interaction feedback when focusing on links or buttons.
+**Action:** Always pair `hover` or `group-hover` interactive classes with equivalent `focus-visible` or `group-focus-visible` classes to ensure equitable visual feedback for keyboard navigation.
