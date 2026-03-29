@@ -45,3 +45,7 @@
 ## 2026-03-01 - External Links and Interactive Icons
 **Learning:** Setting `aria-hidden="true"` on custom external link icons prevents screen readers from announcing that the link opens in a new tab. Additionally, using only `hover` classes on interactive icons within a link omits keyboard users from seeing the same visual interactions.
 **Action:** Always assign `role="img"` and `aria-label="(opens in new tab)"` to SVG icons indicating external links. Furthermore, apply equivalent `focus-visible` classes to any hover interactions inside interactive elements to ensure visual feedback parity for keyboard users.
+
+## 2026-03-29 - Heading Hierarchy in Nested UI Components
+**Learning:** Using hardcoded `<h3>` tags for titles inside reusable cards can break semantic heading hierarchy if the card is placed within another `<h3>` section, confusing screen reader users who navigate by headings.
+**Action:** Avoid hardcoding generic heading levels inside cards; ensure headings properly increment relative to their parent container, e.g., using `<h4>` when nested inside an `<h3>` section.
