@@ -93,12 +93,12 @@ function LatestPost() {
         <h3>Latest Update</h3>
         <div className="card shadow--md">
           <div className="card__header">
-            <h3>
+            <h4>
               <Link to={latestPost.url} className="inline-flex items-center gap-1 group">
                 {latestPost.title}
                 <ArrowIcon className="transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1" />
               </Link>
-            </h3>
+            </h4>
             <small>
               <time dateTime={latestPost.date}>
                 {new Date(latestPost.date).toLocaleDateString('en-US', {
