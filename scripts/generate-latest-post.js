@@ -42,8 +42,15 @@ function stripMarkdown(markdown) {
 
 function getLatestPost() {
     let latestPost = null;
+    let latestPostMeta = null;
     const DATE_REGEX = /^(\d{4})-(\d{2})-(\d{2})/;
 
+    // ⚡ Bolt: Two-pass algorithm optimization.
+    // Instead of reading and parsing frontmatter for every file that happens to be newer
+    // than the current max during iteration, we first find the single newest file by just
+    // examining filenames (O(1) memory, O(1) reads). Then we read and parse ONLY that file.
+
+    // First pass: find the newest file path and its metadata
     BLOG_DIRS.forEach(dir => {
         const dirPath = path.join(__dirname, '..', dir);
         if (!fs.existsSync(dirPath)) return;
@@ -59,39 +66,54 @@ function getLatestPost() {
             const [_, yearStr, monthStr, dayStr] = match;
             const date = new Date(`${yearStr}-${monthStr}-${dayStr}`);
 
-            if (!latestPost || date > latestPost.date) {
-                const content = fs.readFileSync(path.join(dirPath, file), 'utf-8');
-                const { data, content: markdownContent } = matter(content);
-
-                let postContent = '';
-                if (data.description) {
-                    postContent = data.description;
-                } else {
-                    postContent = stripMarkdown(markdownContent);
-                }
-
-                const truncated = postContent.length > 550 ? postContent.substring(0, 550) + '...' : postContent;
-
-                const slug = data.slug || file.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.(md|mdx)$/, '');
-
-                const routeBasePath = dir.replace('blog-', '');
-
-                let url;
-                if (data.slug) {
-                    url = `/${routeBasePath}/${data.slug}`;
-                } else {
-                    url = `/${routeBasePath}/${yearStr}/${monthStr}/${dayStr}/${slug}`;
-                }
-
-                latestPost = {
-                    date: date,
-                    title: data.title || slug,
-                    content: truncated,
-                    url: url
+            if (!latestPostMeta || date > latestPostMeta.date) {
+                latestPostMeta = {
+                    date,
+                    file,
+                    dirPath,
+                    dir,
+                    yearStr,
+                    monthStr,
+                    dayStr
                 };
             }
         });
     });
+
+    // Second pass: read and parse ONLY the newest file discovered
+    if (latestPostMeta) {
+        const { date, file, dirPath, dir, yearStr, monthStr, dayStr } = latestPostMeta;
+
+        const content = fs.readFileSync(path.join(dirPath, file), 'utf-8');
+        const { data, content: markdownContent } = matter(content);
+
+        let postContent = '';
+        if (data.description) {
+            postContent = data.description;
+        } else {
+            postContent = stripMarkdown(markdownContent);
+        }
+
+        const truncated = postContent.length > 550 ? postContent.substring(0, 550) + '...' : postContent;
+
+        const slug = data.slug || file.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.(md|mdx)$/, '');
+
+        const routeBasePath = dir.replace('blog-', '');
+
+        let url;
+        if (data.slug) {
+            url = `/${routeBasePath}/${data.slug}`;
+        } else {
+            url = `/${routeBasePath}/${yearStr}/${monthStr}/${dayStr}/${slug}`;
+        }
+
+        latestPost = {
+            date: date,
+            title: data.title || slug,
+            content: truncated,
+            url: url
+        };
+    }
 
     return latestPost;
 }
