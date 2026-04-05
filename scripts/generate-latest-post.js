@@ -41,9 +41,16 @@ function stripMarkdown(markdown) {
 }
 
 function getLatestPost() {
-    let latestPost = null;
+    let latestFile = null;
+    let latestDate = null;
+    let latestDir = null;
+    let latestMatch = null;
+
     const DATE_REGEX = /^(\d{4})-(\d{2})-(\d{2})/;
 
+    // Pass 1: Find the latest file by just reading filenames
+    // This optimization avoids O(N) file system reads and markdown parsing.
+    // We only inspect the filenames and find the most recent date.
     BLOG_DIRS.forEach(dir => {
         const dirPath = path.join(__dirname, '..', dir);
         if (!fs.existsSync(dirPath)) return;
@@ -59,41 +66,49 @@ function getLatestPost() {
             const [_, yearStr, monthStr, dayStr] = match;
             const date = new Date(`${yearStr}-${monthStr}-${dayStr}`);
 
-            if (!latestPost || date > latestPost.date) {
-                const content = fs.readFileSync(path.join(dirPath, file), 'utf-8');
-                const { data, content: markdownContent } = matter(content);
-
-                let postContent = '';
-                if (data.description) {
-                    postContent = data.description;
-                } else {
-                    postContent = stripMarkdown(markdownContent);
-                }
-
-                const truncated = postContent.length > 550 ? postContent.substring(0, 550) + '...' : postContent;
-
-                const slug = data.slug || file.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.(md|mdx)$/, '');
-
-                const routeBasePath = dir.replace('blog-', '');
-
-                let url;
-                if (data.slug) {
-                    url = `/${routeBasePath}/${data.slug}`;
-                } else {
-                    url = `/${routeBasePath}/${yearStr}/${monthStr}/${dayStr}/${slug}`;
-                }
-
-                latestPost = {
-                    date: date,
-                    title: data.title || slug,
-                    content: truncated,
-                    url: url
-                };
+            if (!latestDate || date > latestDate) {
+                latestDate = date;
+                latestFile = file;
+                latestDir = dir;
+                latestMatch = match;
             }
         });
     });
 
-    return latestPost;
+    // Pass 2: Read and parse ONLY the latest file
+    if (latestFile) {
+        const dirPath = path.join(__dirname, '..', latestDir);
+        const [_, yearStr, monthStr, dayStr] = latestMatch;
+        const content = fs.readFileSync(path.join(dirPath, latestFile), 'utf-8');
+        const { data, content: markdownContent } = matter(content);
+
+        let postContent = '';
+        if (data.description) {
+            postContent = data.description;
+        } else {
+            postContent = stripMarkdown(markdownContent);
+        }
+
+        const truncated = postContent.length > 550 ? postContent.substring(0, 550) + '...' : postContent;
+        const slug = data.slug || latestFile.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.(md|mdx)$/, '');
+        const routeBasePath = latestDir.replace('blog-', '');
+
+        let url;
+        if (data.slug) {
+            url = `/${routeBasePath}/${data.slug}`;
+        } else {
+            url = `/${routeBasePath}/${yearStr}/${monthStr}/${dayStr}/${slug}`;
+        }
+
+        return {
+            date: latestDate,
+            title: data.title || slug,
+            content: truncated,
+            url: url
+        };
+    }
+
+    return null;
 }
 
 const latestPost = getLatestPost();
