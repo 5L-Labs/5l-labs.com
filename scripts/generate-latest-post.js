@@ -41,9 +41,16 @@ function stripMarkdown(markdown) {
 }
 
 function getLatestPost() {
-    let latestPost = null;
+    let latestPostCandidate = null;
+    let latestPostFilePath = null;
+    let latestPostDirName = null;
+    let latestPostYearStr = null;
+    let latestPostMonthStr = null;
+    let latestPostDayStr = null;
+
     const DATE_REGEX = /^(\d{4})-(\d{2})-(\d{2})/;
 
+    // Pass 1: Find the latest post by filename ONLY
     BLOG_DIRS.forEach(dir => {
         const dirPath = path.join(__dirname, '..', dir);
         if (!fs.existsSync(dirPath)) return;
@@ -59,41 +66,51 @@ function getLatestPost() {
             const [_, yearStr, monthStr, dayStr] = match;
             const date = new Date(`${yearStr}-${monthStr}-${dayStr}`);
 
-            if (!latestPost || date > latestPost.date) {
-                const content = fs.readFileSync(path.join(dirPath, file), 'utf-8');
-                const { data, content: markdownContent } = matter(content);
-
-                let postContent = '';
-                if (data.description) {
-                    postContent = data.description;
-                } else {
-                    postContent = stripMarkdown(markdownContent);
-                }
-
-                const truncated = postContent.length > 550 ? postContent.substring(0, 550) + '...' : postContent;
-
-                const slug = data.slug || file.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.(md|mdx)$/, '');
-
-                const routeBasePath = dir.replace('blog-', '');
-
-                let url;
-                if (data.slug) {
-                    url = `/${routeBasePath}/${data.slug}`;
-                } else {
-                    url = `/${routeBasePath}/${yearStr}/${monthStr}/${dayStr}/${slug}`;
-                }
-
-                latestPost = {
-                    date: date,
-                    title: data.title || slug,
-                    content: truncated,
-                    url: url
-                };
+            // We only need to check the date here.
+            // Tie-breaking by filename discovery order, matching original behavior implicitly.
+            if (!latestPostCandidate || date > latestPostCandidate.date) {
+                latestPostCandidate = { date, file };
+                latestPostFilePath = path.join(dirPath, file);
+                latestPostDirName = dir;
+                latestPostYearStr = yearStr;
+                latestPostMonthStr = monthStr;
+                latestPostDayStr = dayStr;
             }
         });
     });
 
-    return latestPost;
+    if (!latestPostCandidate) return null;
+
+    // Pass 2: Read and parse only the actual latest file
+    const content = fs.readFileSync(latestPostFilePath, 'utf-8');
+    const { data, content: markdownContent } = matter(content);
+
+    let postContent = '';
+    if (data.description) {
+        postContent = data.description;
+    } else {
+        postContent = stripMarkdown(markdownContent);
+    }
+
+    const truncated = postContent.length > 550 ? postContent.substring(0, 550) + '...' : postContent;
+
+    const slug = data.slug || latestPostCandidate.file.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.(md|mdx)$/, '');
+
+    const routeBasePath = latestPostDirName.replace('blog-', '');
+
+    let url;
+    if (data.slug) {
+        url = `/${routeBasePath}/${data.slug}`;
+    } else {
+        url = `/${routeBasePath}/${latestPostYearStr}/${latestPostMonthStr}/${latestPostDayStr}/${slug}`;
+    }
+
+    return {
+        date: latestPostCandidate.date,
+        title: data.title || slug,
+        content: truncated,
+        url: url
+    };
 }
 
 const latestPost = getLatestPost();
