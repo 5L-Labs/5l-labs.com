@@ -1,0 +1,64 @@
+--- scripts/verify_security_fixes.py
++++ scripts/verify_security_fixes.py
+@@ -85,6 +85,7 @@
+         mock_resp.headers = {'Content-Length': str(20 * 1024 * 1024), 'Content-Type': 'text/html'} # 20MB
+         mock_resp.raise_for_status.return_value = None
+         mock_get.return_value = mock_resp
++        mock_resp.__enter__.return_value = mock_resp
+
+         result = generate_embeddings.get_page_content("http://example.com/huge-header", "http://example.com")
+         if result is None:
+@@ -99,6 +100,7 @@
+         mock_resp.is_redirect = False
+         mock_resp.headers = {'Content-Type': 'text/html'}
+         mock_resp.raise_for_status.return_value = None
++        mock_resp.__enter__.return_value = mock_resp
+         # Generator yielding 1MB chunks
+         def oversized_generator():
+             chunk = "A" * (1024 * 1024) # 1MB
+@@ -166,6 +168,7 @@
+         mock_resp.is_redirect = True
+         mock_resp.headers = {'Location': 'http://malicious.com'}
+         mock_get.return_value = mock_resp
++        mock_resp.__enter__.return_value = mock_resp
+
+         url = "http://example.com/redirect"
+         result = generate_embeddings.get_page_content(url, base_url)
+@@ -188,11 +191,13 @@
+         mock_resp_1.status_code = 301
+         mock_resp_1.is_redirect = True
+         mock_resp_1.headers = {'Location': '/foo/bar'} # Relative redirect
++        mock_resp_1.__enter__.return_value = mock_resp_1
+
+         # 2nd call: 200 OK
+         mock_resp_2 = MagicMock()
+         mock_resp_2.status_code = 200
+         mock_resp_2.is_redirect = False
+         mock_resp_2.headers = {'Content-Type': 'text/html'}
+         mock_resp_2.iter_content.return_value = iter(["Success"])
++        mock_resp_2.__enter__.return_value = mock_resp_2
+
+         mock_get.side_effect = [mock_resp_1, mock_resp_2]
+@@ -222,6 +227,7 @@
+         mock_resp.headers = {'Content-Type': 'image/jpeg'}
+         mock_resp.raise_for_status.return_value = None
+         mock_get.return_value = mock_resp
++        mock_resp.__enter__.return_value = mock_resp
+
+         result = generate_embeddings.get_page_content("http://example.com/image.jpg", base_url)
+
+@@ -238,6 +244,7 @@
+         mock_resp.raise_for_status.return_value = None
+         mock_resp.iter_content.return_value = iter(["<html>Content</html>"])
+         mock_get.return_value = mock_resp
++        mock_resp.__enter__.return_value = mock_resp
+
+         result = generate_embeddings.get_page_content("http://example.com/page.html", base_url)
+
+@@ -255,6 +262,7 @@
+         mock_resp.raise_for_status.return_value = None
+         mock_resp.iter_content.return_value = iter(["<html>UTF-8 Content</html>"])
+         mock_get.return_value = mock_resp
++        mock_resp.__enter__.return_value = mock_resp
+
+         result = generate_embeddings.get_page_content("http://example.com/utf8.html", base_url)
