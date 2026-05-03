@@ -25,3 +25,7 @@ This journal documents critical performance learnings for the 5L Labs project.
 ## 2026-02-23 - Python HTTP Connection Pooling
 **Learning:** Using standalone `requests.get()` and `requests.post()` in a loop to fetch multiple URLs or hit an API causes a new TCP/TLS handshake per request, leading to massive latency overhead for large jobs.
 **Action:** Always refactor iterative network operations to use a shared `requests.Session()` passed down via arguments to implement Keep-Alive connection pooling.
+
+## 2026-05-24 - Redundant Embedding Generation
+**Learning:** Checking for the existence of previously generated embedding files (e.g., via `file_path.exists()`) before executing network requests to fetch page content and API calls to generate embeddings avoids O(N) redundant operations, yielding a massive speedup on repeated script executions.
+**Action:** Always implement a caching or existence-check mechanism for expensive batch processing scripts where inputs map deterministically to outputs.
