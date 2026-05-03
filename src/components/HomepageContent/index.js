@@ -61,7 +61,18 @@ function Section({ title, items }) {
                 <div style={{ marginBottom: '0.25rem' }}>
                   <strong>
                     {item.link ? (
-                      <Link to={item.link} className="inline-flex items-center gap-1 group">
+                      <Link
+                        to={item.link}
+                        className="inline-flex items-center gap-1 group"
+                        {...(isExternal
+                          ? {
+                              target: "_blank",
+                              rel: "noopener noreferrer",
+                              "aria-label": `${item.title} (opens in a new tab)`,
+                              title: item.title,
+                            }
+                          : {})}
+                      >
                         {item.title}
                         {isExternal ? (
                           <ExternalLinkIcon className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 group-focus-visible:translate-x-1 group-focus-visible:-translate-y-1" />
@@ -93,12 +104,12 @@ function LatestPost() {
         <h3>Latest Update</h3>
         <div className="card shadow--md">
           <div className="card__header">
-            <h3>
+            <h4>
               <Link to={latestPost.url} className="inline-flex items-center gap-1 group">
                 {latestPost.title}
                 <ArrowIcon className="transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1" />
               </Link>
-            </h3>
+            </h4>
             <small>
               <time dateTime={latestPost.date}>
                 {new Date(latestPost.date).toLocaleDateString('en-US', {

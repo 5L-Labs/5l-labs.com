@@ -1,0 +1,173 @@
+[
+  {
+    "date": "2026-02-23T00:00:00.000Z",
+    "dateLabel": "2026-02-23",
+    "title": "Learning about learning?",
+    "area": "frontier",
+    "type": "writing",
+    "url": "/frontier-research/learning-again",
+    "excerpt": "Exploring the limits of Transformer architectures, the Platonic Representation Hypothesis, and the role of curiosity-driven learning in the next generation of AI."
+  },
+  {
+    "date": "2026-02-18T00:00:00.000Z",
+    "dateLabel": "2026-02-18",
+    "title": "GarageCam Lives! ExecuTorch on RPi 5",
+    "area": "home-ml-iot",
+    "type": "writing",
+    "url": "/applied-home-ml-iot/executorch-bootstrap",
+    "excerpt": "A deep dive into deploying a private ML pipeline for GarageCam using ExecuTorch on Raspberry Pi 5, featuring real-time inference and MQTT integration."
+  },
+  {
+    "date": "2025-12-10T00:00:00.000Z",
+    "dateLabel": "2025-12-10",
+    "title": "Time Decay of Information",
+    "area": "frontier",
+    "type": "writing",
+    "url": "/frontier-research/information-aging-out",
+    "excerpt": "Exploring the \"Time Decay\" of information in AI models—how embeddings and weights handle the aging of explicit, implicit, and undated knowledge."
+  },
+  {
+    "date": "2025-12-01T00:00:00.000Z",
+    "dateLabel": "2025-12-01",
+    "title": "NetworkManager and VPN Tunneling",
+    "area": "self-hosted-iot",
+    "type": "writing",
+    "url": "/self-hosted-iot/network-manager-forced-updates",
+    "excerpt": "A technical guide to configuring NetworkManager, static IPs, and WireGuard VPN tunneling on Debian Bookworm/Trixie for private home networking."
+  },
+  {
+    "date": "2025-11-16T00:00:00.000Z",
+    "dateLabel": "2025-11-16",
+    "title": "Thoughts on Jarvis 2.0",
+    "area": "home-ml-iot",
+    "type": "writing",
+    "url": "/applied-home-ml-iot/jarvis2.0",
+    "excerpt": "Conceptualizing \"Jarvis 2.0\"—a private, multi-modal AI assistant for the home, utilizing semantic routing and local speech recognition."
+  },
+  {
+    "date": "2025-10-19T00:00:00.000Z",
+    "dateLabel": "2025-10-19",
+    "title": "Overlord - Home Network Kill Switch",
+    "area": "self-hosted-iot",
+    "type": "writing",
+    "url": "/self-hosted-iot/updated-network-controls",
+    "excerpt": "Updates on the Overlord Network Kill Switch project, supporting Pi-hole v6 and Ubiquiti 9.4.19 for simple, one-tap parental controls in HomeKit."
+  },
+  {
+    "date": "2025-09-15T00:00:00.000Z",
+    "dateLabel": "2025-09-15",
+    "title": "Continued Adventures in CheapML for IoT",
+    "area": "home-ml-iot",
+    "type": "writing",
+    "url": "/applied-home-ml-iot/continued-iot-ml-on-the-cheap",
+    "excerpt": "A progress update on the GarageCam project, focusing on VLM labeling (Qwen), model conversion (PyTorch to TFLite), and the challenges of running ML on an RPi 4."
+  },
+  {
+    "date": "2025-06-08T00:00:00.000Z",
+    "dateLabel": "2025-06-08",
+    "title": "Adventures in CheapML - GarageCam",
+    "area": "home-ml-iot",
+    "type": "writing",
+    "url": "/applied-home-ml-iot/garage-cam-on-the-cheap",
+    "excerpt": "A DIY approach to garage door and car presence detection using a Wyze Cam v3, Thingino, and a custom Python script for cheap ML at the edge."
+  },
+  {
+    "date": "2025-05-17T00:00:00.000Z",
+    "dateLabel": "2025-05-17",
+    "title": "Almost Bricking a v3 Wyze Cam (and back again...)",
+    "area": "self-hosted-iot",
+    "type": "writing",
+    "url": "/self-hosted-iot/getting-off-of-wyze-camv3",
+    "excerpt": "A personal account of flashing the custom Thingino firmware onto a Wyze Cam v3 to achieve local-only control and escape the cloud."
+  },
+  {
+    "date": "2025-05-03T00:00:00.000Z",
+    "dateLabel": "2025-05-03",
+    "title": "Wyzely Saying Goodbye to Wyze!",
+    "area": "self-hosted-iot",
+    "type": "writing",
+    "url": "/self-hosted-iot/getting-off-of-wyze",
+    "excerpt": "Transitioning away from Wyze's cloud-dependent cameras to a local-only setup using Scrypted, ONVIF, and HomeKit for better privacy and control."
+  },
+  {
+    "date": "2025-04-19T00:00:00.000Z",
+    "dateLabel": "2025-04-19",
+    "title": "Private Agents - Pim Particles (Embeddings)",
+    "area": "applied-ai",
+    "type": "writing",
+    "url": "/applied-ai-engineering/embeddings-pim-particles",
+    "excerpt": "Exploring the role of embeddings (Pim Particles) in private agent architectures and how federated learning fits into the local-first AI model."
+  },
+  {
+    "date": "2025-04-12T00:00:00.000Z",
+    "dateLabel": "2025-04-12",
+    "title": "Interoperability and Mini Minds",
+    "area": "home-ml-iot",
+    "type": "writing",
+    "url": "/applied-home-ml-iot/interoperability-and-monetization",
+    "excerpt": "Exploring how multiple small language models (Mini Minds) can collaborate in a local IoT ecosystem, and the potential monetization models for private AI."
+  },
+  {
+    "date": "2025-04-05T00:00:00.000Z",
+    "dateLabel": "2025-04-05",
+    "title": "Private Agents - Pim Particles",
+    "area": "home-ml-iot",
+    "type": "writing",
+    "url": "/applied-home-ml-iot/pim_particles",
+    "excerpt": "Exploring model shrinkage techniques like LoRA and quantization to run private agents on low-power hardware like Raspberry Pi 4."
+  },
+  {
+    "date": "2025-03-25T00:00:00.000Z",
+    "dateLabel": "2025-03-25",
+    "title": "NVIDIA GTC Recap",
+    "area": "applied-ai",
+    "type": "writing",
+    "url": "/applied-ai-engineering/nvdia-gtc-recap",
+    "excerpt": "A recap of NVIDIA GTC 2025 focusing on private agency, home-based ML, and the technical ingredients for secure, local AI systems."
+  },
+  {
+    "date": "2025-03-16T00:00:00.000Z",
+    "dateLabel": "2025-03-16",
+    "title": "Off to Nvidia GTC",
+    "area": "applied-ai",
+    "type": "writing",
+    "url": "/applied-ai-engineering/nvdia-gtc",
+    "excerpt": "Exploring the privacy landscape at NVIDIA GTC 2025, with a focus on Distributed Training and Private LLMs."
+  },
+  {
+    "date": "2025-02-22T00:00:00.000Z",
+    "dateLabel": "2025-02-22",
+    "title": "ai.engineer summit nyc",
+    "area": "applied-ai",
+    "type": "writing",
+    "url": "/applied-ai-engineering/ai-dot-engineer-summit-nyc",
+    "excerpt": "Key takeaways from the AI Engineering Summit in NYC, focusing on private agents, federated systems, and the Model Context Protocol (MCP)."
+  },
+  {
+    "date": "2025-02-16T00:00:00.000Z",
+    "dateLabel": "2025-02-16",
+    "title": "Entirely Private Machine Learning Home Setup",
+    "area": "home-ml-iot",
+    "type": "writing",
+    "url": "/applied-home-ml-iot/offline-llms",
+    "excerpt": "A deep dive into setting up a private, local machine learning environment using Podman, Langfuse, Milvus, and more on a Mac M2 Pro."
+  },
+  {
+    "date": "2025-01-01T00:00:00.000Z",
+    "dateLabel": "2025-01-01",
+    "title": "My Private Home",
+    "area": "self-hosted-iot",
+    "type": "writing",
+    "url": "/self-hosted-iot/what-is-my-private-home",
+    "excerpt": "Defining the architecture of a private home network across multiple locations, focusing on Ubiquity hardware, traffic routing, and privacy-first IoT."
+  },
+  {
+    "date": "2024-09-30T00:00:00.000Z",
+    "dateLabel": "2024-09-30",
+    "title": "School Laptop - When You Don't Have Control",
+    "area": "self-hosted-iot",
+    "type": "writing",
+    "url": "/self-hosted-iot/school-chromebook-bypassing-content-filters",
+    "excerpt": "Tackling the challenges of managing school-issued Chromebooks that bypass home network controls using TLS 1.2 fallback and enterprise-managed proxies."
+  }
+]

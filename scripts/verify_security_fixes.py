@@ -81,6 +81,7 @@ def verify_response_size_limit():
     # 1. Content-Length check
     with patch('requests.get') as mock_get:
         mock_resp = MagicMock()
+        mock_resp.__enter__.return_value = mock_resp
         mock_resp.is_redirect = False
         mock_resp.headers = {'Content-Length': str(20 * 1024 * 1024), 'Content-Type': 'text/html'} # 20MB
         mock_resp.raise_for_status.return_value = None
@@ -96,6 +97,7 @@ def verify_response_size_limit():
     # 2. Stream size check
     with patch('requests.get') as mock_get:
         mock_resp = MagicMock()
+        mock_resp.__enter__.return_value = mock_resp
         mock_resp.is_redirect = False
         mock_resp.headers = {'Content-Type': 'text/html'}
         mock_resp.raise_for_status.return_value = None
@@ -161,6 +163,7 @@ def verify_redirect_protection():
     with patch('requests.get') as mock_get:
         # Simulate a 302 redirect to external
         mock_resp = MagicMock()
+        mock_resp.__enter__.return_value = mock_resp
         mock_resp.status_code = 302
         mock_resp.is_redirect = True
         mock_resp.headers = {'Location': 'http://malicious.com'}
@@ -185,12 +188,14 @@ def verify_redirect_protection():
     with patch('requests.get') as mock_get:
         # 1st call: 301 Redirect
         mock_resp_1 = MagicMock()
+        mock_resp_1.__enter__.return_value = mock_resp_1
         mock_resp_1.status_code = 301
         mock_resp_1.is_redirect = True
         mock_resp_1.headers = {'Location': '/foo/bar'} # Relative redirect
 
         # 2nd call: 200 OK
         mock_resp_2 = MagicMock()
+        mock_resp_2.__enter__.return_value = mock_resp_2
         mock_resp_2.status_code = 200
         mock_resp_2.is_redirect = False
         mock_resp_2.headers = {'Content-Type': 'text/html'}
@@ -217,6 +222,7 @@ def verify_content_type_check():
     # Test 1: Invalid Content-Type (image/jpeg)
     with patch('requests.get') as mock_get:
         mock_resp = MagicMock()
+        mock_resp.__enter__.return_value = mock_resp
         mock_resp.is_redirect = False
         mock_resp.headers = {'Content-Type': 'image/jpeg'}
         mock_resp.raise_for_status.return_value = None
@@ -233,6 +239,7 @@ def verify_content_type_check():
     # Test 2: Valid Content-Type (text/html)
     with patch('requests.get') as mock_get:
         mock_resp = MagicMock()
+        mock_resp.__enter__.return_value = mock_resp
         mock_resp.is_redirect = False
         mock_resp.headers = {'Content-Type': 'text/html'}
         mock_resp.raise_for_status.return_value = None
@@ -250,6 +257,7 @@ def verify_content_type_check():
     # Test 3: Valid Content-Type with charset (text/html; charset=utf-8)
     with patch('requests.get') as mock_get:
         mock_resp = MagicMock()
+        mock_resp.__enter__.return_value = mock_resp
         mock_resp.is_redirect = False
         mock_resp.headers = {'Content-Type': 'text/html; charset=utf-8'}
         mock_resp.raise_for_status.return_value = None

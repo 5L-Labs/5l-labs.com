@@ -4,7 +4,7 @@ title: Privacy Policy
 
 # Privacy Policy
 
-**Last Updated:** March 22, 2025
+**Last Updated:** April 26, 2026
 
 ---
 

@@ -28,3 +28,10 @@ embedding_generation.log
 __pycache__/
 server.log
 \n# OpenSpec Agent Configs\n.agent/\n.claude/\n.gemini/\n.kilocode/\n
+
+# Generated at build time — do not commit
+src/generated/all-posts.json
+src/generated/latest-post.json
+
+# Local Claude Code settings (contain machine-specific absolute paths)
+openspec/tooling/claude/settings.local.json

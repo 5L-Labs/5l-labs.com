@@ -45,3 +45,12 @@
 ## 2026-03-01 - External Links and Interactive Icons
 **Learning:** Setting `aria-hidden="true"` on custom external link icons prevents screen readers from announcing that the link opens in a new tab. Additionally, using only `hover` classes on interactive icons within a link omits keyboard users from seeing the same visual interactions.
 **Action:** Always assign `role="img"` and `aria-label="(opens in new tab)"` to SVG icons indicating external links. Furthermore, apply equivalent `focus-visible` classes to any hover interactions inside interactive elements to ensure visual feedback parity for keyboard users.
+
+## 2026-03-02 - Dynamic Link Attributes
+
+**Learning:** When dynamically rendering `<Link>` components, simply inserting attributes like `target="_blank"` or `aria-label` inside a loop can accidentally pollute internal links with external behaviors or unnecessary labels.
+**Action:** Use an object spread with a conditional (e.g., `{...(isExternal ? { target: "_blank", rel: "noopener noreferrer", "aria-label": \`\${title} (opens in a new tab)\`, title: title } : {})}`) to apply specific accessibility and behavioral attributes only when appropriate, keeping the DOM clean and accessible.
+
+## 2026-04-26 - Hardcoded Heading Levels in Reusable Components
+**Learning:** Hardcoding specific heading levels (like `<h3>`) inside reusable UI components (like cards) often breaks semantic document structure when the component is placed in different contexts on a page, causing screen readers to skip levels or announce confusing hierarchies.
+**Action:** Always ensure nested headings (like card titles) properly increment relative to their parent container's heading level, or consider passing the appropriate heading level as a prop to the component to maintain strict HTML semantics.

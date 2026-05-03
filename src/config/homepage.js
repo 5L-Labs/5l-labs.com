@@ -1,10 +1,24 @@
+import areaLabels from './areas.json';
+
 const homepageConfig = {
   missionStatement: "Advancing Technology for Humans and Bots with Privacy in mind.",
+
   contactInfo: {
     email: "inquiries@5l-labs.com",
     linkedin: "https://www.linkedin.com/company/5l-labs/",
     twitter: "https://twitter.com/5l_labs",
   },
+
+  // Canonical list derived from src/config/areas.json (shared with generate-latest-post.js)
+  areas: Object.values(areaLabels),
+
+  consulting: {
+    availability: 'Q3 2026',
+    blurb: 'We take on a small number of engagements each quarter.',
+    services: 'Private ML systems, on-device inference, and IoT architecture audits.',
+    inquireUrl: '/inquiry',
+  },
+
   researchAreas: [
     {
       title: "Private AI/ML",
@@ -17,6 +31,7 @@ const homepageConfig = {
       link: "/self-hosted-iot",
     },
   ],
+
   products: [
     {
       title: "Recruiter Rankings (Preview)",
