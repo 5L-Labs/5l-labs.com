@@ -387,6 +387,13 @@ def main():
                 error_count += 1
                 continue
 
+            # Performance Optimization: Check if embedding already exists to avoid network request
+            expected_file_path = url_to_file_path(url, replacement_base_url, embeddings_dir)
+            if expected_file_path.exists():
+                logger.debug(f"Skipping {url} - embedding already exists")
+                success_count += 1
+                continue
+
             logger.debug(f"Processing {fetch_url}...")
 
             content = get_page_content(
