@@ -72,9 +72,11 @@
 .indexTable thead th:last-child { text-align: right; }
 
 .indexTable tbody tr {
+  position: relative;
   border-bottom: 1px dashed color-mix(in srgb, var(--text-muted) 30%, transparent);
 }
 .indexTable tbody tr:hover { background: color-mix(in srgb, var(--text-muted) 8%, transparent); }
+.indexTable tbody tr:focus-within { outline: 2px solid var(--brand-primary); outline-offset: -2px; }
 
 .indexTable tbody td {
   padding: 10px 6px;
@@ -92,8 +94,25 @@
   color: var(--text-main);
   text-decoration: none;
 }
+.indexTable tbody td.colTitle a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
 .indexTable tbody td.colTitle a:hover { color: var(--brand-primary); }
 .indexTable tbody td:last-child { text-align: right; }
+.indexTable tbody td:last-child a {
+  display: inline-block;
+  transition: transform 0.2s ease, color 0.2s ease;
+  z-index: 2;
+  position: relative;
+}
+.indexTable tbody tr:hover td:last-child a,
+.indexTable tbody tr:focus-within td:last-child a {
+  transform: translate(2px, -2px);
+  color: var(--brand-primary);
+}
 
 .loadMore {
   text-align: center;

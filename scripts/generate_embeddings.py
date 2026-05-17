@@ -373,7 +373,10 @@ def main():
 
     # Process each URL
     success_count = 0
+    skipped_count = 0
     error_count = 0
+
+    abs_embeddings_dir = Path(embeddings_dir).resolve()
 
     with requests.Session() as session:
         for url in tqdm(urls, desc="Generating embeddings"):
@@ -385,6 +388,20 @@ def main():
             if not fetch_url:
                 logger.warning(f"Skipping {url} - failed to resolve fetch URL safely")
                 error_count += 1
+                continue
+
+            # Performance Optimization: Check if embedding already exists to avoid network request.
+            # Verify containment first so a malformed URL can't probe arbitrary filesystem paths.
+            expected_file_path = url_to_file_path(url, replacement_base_url, embeddings_dir)
+            try:
+                expected_file_path.resolve().relative_to(abs_embeddings_dir)
+            except ValueError:
+                logger.warning(f"Skipping {url} - resolved path escapes embeddings dir")
+                error_count += 1
+                continue
+            if expected_file_path.exists():
+                logger.debug(f"Skipping {url} - embedding already exists")
+                skipped_count += 1
                 continue
 
             logger.debug(f"Processing {fetch_url}...")
@@ -417,6 +434,7 @@ def main():
 
     logger.info("\nEmbedding generation complete!")
     logger.info(f"Successfully generated: {success_count}")
+    logger.info(f"Skipped (already existed): {skipped_count}")
     logger.info(f"Errors: {error_count}")
     logger.info(f"Output directory: {embeddings_dir}/")
 

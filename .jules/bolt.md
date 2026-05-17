@@ -26,6 +26,10 @@ This journal documents critical performance learnings for the 5L Labs project.
 **Learning:** Using standalone `requests.get()` and `requests.post()` in a loop to fetch multiple URLs or hit an API causes a new TCP/TLS handshake per request, leading to massive latency overhead for large jobs.
 **Action:** Always refactor iterative network operations to use a shared `requests.Session()` passed down via arguments to implement Keep-Alive connection pooling.
 
+## 2023-10-27 - Caching Network I/O
+**Learning:** For batch processing scripts that perform slow network I/O or downstream API calls, not checking if the work has already been done on previous runs leads to redundant requests and N times the API cost.
+**Action:** Always check local file system state (e.g., using `.exists()` on the target output path) and skip operations like fetching remote content if the result is already available locally.
+
 ## 2026-05-17 - React useMemo Caching Regression
 **Learning:** Naively skipping work based on the existence of an output file without checking for source changes (like file hash or ETag) causes regressions by serving stale data.
 **Action:** Never optimize data pipelines by blindly caching outputs; always validate if the source input has been modified before returning cached results.
