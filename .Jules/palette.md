@@ -61,3 +61,7 @@
 ## 2026-05-10 - Expanding Hit Areas for Block Elements
 **Learning:** Having only text as the clickable area within a larger logical block (like a project listing or card) violates Fitts's Law and frustrates mobile users who try to tap the area around the text.
 **Action:** Always wrap the entire logical block in a `<Link>` (or `<a>` tag) and apply `display: block` to expand the interactive hit area. Pair this with hover and `:focus-visible` styles on the entire block, and use transforms on trailing icons (e.g., `↗`) to provide clear visual affordance.
+
+## 2026-05-18 - Expanding Hit Areas for Table Rows
+**Learning:** Having only text as the clickable area within a table row violates Fitts's Law. Wrapping an entire `<tr>` in an `<a>` or `<Link>` tag is invalid HTML and breaks semantic document structure.
+**Action:** Use relative positioned rows (`position: relative` on `tr`) and absolute positioned `::after` pseudo-elements (`inset: 0; position: absolute; z-index: 1`) on the primary link to safely expand the interactive hit area. Pair this with `:focus-within` styles on the entire row and `z-index: 2` on secondary interactive elements within the row.
