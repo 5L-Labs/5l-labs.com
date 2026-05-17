@@ -25,3 +25,7 @@ This journal documents critical performance learnings for the 5L Labs project.
 ## 2026-02-23 - Python HTTP Connection Pooling
 **Learning:** Using standalone `requests.get()` and `requests.post()` in a loop to fetch multiple URLs or hit an API causes a new TCP/TLS handshake per request, leading to massive latency overhead for large jobs.
 **Action:** Always refactor iterative network operations to use a shared `requests.Session()` passed down via arguments to implement Keep-Alive connection pooling.
+
+## 2026-05-17 - React useMemo Caching Regression
+**Learning:** Naively skipping work based on the existence of an output file without checking for source changes (like file hash or ETag) causes regressions by serving stale data.
+**Action:** Never optimize data pipelines by blindly caching outputs; always validate if the source input has been modified before returning cached results.
