@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
@@ -13,7 +13,8 @@ export default function Home() {
   const { siteConfig } = useDocusaurusContext();
   const [area, setArea] = useState('all');
 
-  const filtered = area === 'all' ? allPosts : allPosts.filter(p => p.area === area);
+  // ⚡ Bolt Perf: Memoize array filtering to prevent redundant O(N) operations on every component re-render unless the area filter changes.
+  const filtered = useMemo(() => area === 'all' ? allPosts : allPosts.filter(p => p.area === area), [area]);
   const entries = filtered.slice(0, PREVIEW_COUNT);
   const remaining = filtered.length - PREVIEW_COUNT;
 
