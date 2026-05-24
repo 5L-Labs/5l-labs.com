@@ -1,0 +1,22 @@
+**💡 What**
+Added accessibility properties to the interactive toggle buttons in the Homepage wireframe preview application. Specifically:
+- Added `aria-pressed` states to the Toolbar view buttons, density tweaks, and annotation tweaks to communicate their active state to screen readers.
+- Added `aria-label`, `title`, and `aria-pressed` to the icon-only color swatches so screen readers can interpret them.
+- Injected `:focus-visible` styles into `sketch.css` to provide a high-contrast visual outline for keyboard navigators inside the preview controls.
+
+**🎯 Why**
+Previously, the interactive toggle buttons and color swatches provided visual cues for selections via CSS changes but omitted semantic `aria-pressed` indicators or accessible labels, making them inaccessible to screen readers. Moreover, keyboard users had no visual feedback to know which element was currently focused.
+
+**📸 Before/After**
+*Before:*
+- Color buttons had no labels: `<button style="background: #1e5f8a;" />`
+- Toggles lacked pressed state: `<button class="on">Tight</button>`
+- Tabbing through controls showed no focus ring.
+
+*After:*
+- Color buttons have labels: `<button style="background: #1e5f8a;" aria-label="Select accent color #1e5f8a" title="Accent color #1e5f8a" aria-pressed="true" />`
+- Toggles communicate state: `<button class="on" aria-pressed="true">Tight</button>`
+- Tabbing clearly highlights the focused control.
+
+**♿ Accessibility**
+Improves keyboard navigation and screen reader comprehension by leveraging standard `aria-*` attributes and providing standard focus-visible rings for interactive components.

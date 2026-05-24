@@ -30,7 +30,7 @@ function Toolbar({ view, onSetView }) {
       {buttons.map((b, i) => (
         <React.Fragment key={b.id}>
           {i === 1 && <div className="sep" />}
-          <button className={view === b.id ? 'active' : ''} onClick={() => onSetView(b.id)}>
+          <button className={view === b.id ? 'active' : ''} onClick={() => onSetView(b.id)} aria-pressed={view === b.id}>
             {b.label}
           </button>
         </React.Fragment>
@@ -48,7 +48,7 @@ function TweaksPanel({ tweaks, onTweak }) {
         <label>Density</label>
         <div className="seg">
           {['tight', 'roomy'].map(v => (
-            <button key={v} className={tweaks.density === v ? 'on' : ''} onClick={() => onTweak('density', v)}>
+            <button key={v} className={tweaks.density === v ? 'on' : ''} onClick={() => onTweak('density', v)} aria-pressed={tweaks.density === v}>
               {v.charAt(0).toUpperCase() + v.slice(1)}
             </button>
           ))}
@@ -64,6 +64,9 @@ function TweaksPanel({ tweaks, onTweak }) {
               className={tweaks.accent === c ? 'on' : ''}
               style={{ background: c }}
               onClick={() => onTweak('accent', c)}
+              aria-label={`Select accent color ${c}`}
+              title={`Accent color ${c}`}
+              aria-pressed={tweaks.accent === c}
             />
           ))}
         </div>
@@ -73,7 +76,7 @@ function TweaksPanel({ tweaks, onTweak }) {
         <label>Annotation notes</label>
         <div className="seg">
           {['show', 'hide'].map(v => (
-            <button key={v} className={tweaks.notes === v ? 'on' : ''} onClick={() => onTweak('notes', v)}>
+            <button key={v} className={tweaks.notes === v ? 'on' : ''} onClick={() => onTweak('notes', v)} aria-pressed={tweaks.notes === v}>
               {v.charAt(0).toUpperCase() + v.slice(1)}
             </button>
           ))}
