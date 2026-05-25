@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import { useLocation } from '@docusaurus/router';
@@ -20,7 +20,8 @@ export default function Archive() {
     }
   }, [location.hash]);
 
-  const entries = area === 'all' ? allPosts : allPosts.filter(p => p.area === area);
+  // ⚡ Bolt Perf: Memoize array filtering to prevent redundant O(N) operations on every component re-render unless the area filter changes.
+  const entries = useMemo(() => area === 'all' ? allPosts : allPosts.filter(p => p.area === area), [area]);
 
   return (
     <Layout

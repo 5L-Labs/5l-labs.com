@@ -29,3 +29,7 @@ This journal documents critical performance learnings for the 5L Labs project.
 ## 2023-10-27 - Caching Network I/O
 **Learning:** For batch processing scripts that perform slow network I/O or downstream API calls, not checking if the work has already been done on previous runs leads to redundant requests and N times the API cost.
 **Action:** Always check local file system state (e.g., using `.exists()` on the target output path) and skip operations like fetching remote content if the result is already available locally.
+
+## 2026-02-23 - Memoizing React Render Computations
+**Learning:** In Docusaurus React pages, synchronous list filtering (like iterating through large `allPosts` arrays) on every render is an unnecessary bottleneck when routing causes unrelated state/location changes.
+**Action:** Always wrap derived list computations in `useMemo` when the source array is static or infrequently changing, ensuring filtering only fires when the specific dependency (like a filter category) updates.
