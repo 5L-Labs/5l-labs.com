@@ -19,7 +19,7 @@ Pre-Reading:
 ## What to do about this
 
 Others have already showed a GAN can be trained to generate a shared latent space between arbitrary embedding models. What has not been shown:
-- Does the findings hold at scale with modern / proprietary models?
+- Do the findings hold at scale with modern / proprietary models?
 - What's the smallest possible transform between spaces that doesn't lose (that much) semantic shape / geometry? 
 - Can we leverage Matryoshka Representations to further reduce the friction to move between worlds?
 
