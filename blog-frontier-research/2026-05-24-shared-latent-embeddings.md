@@ -57,7 +57,7 @@ flowchart TB
 
     D["Cheap Space"]
     E["Medium Space"]
-    F["Full Embedding SPace"]
+    F["Full Embedding Space"]
 
     E --> E1["Broad matches<br/>cat, feline, pet"]
     F --> G["Decode to OpenAI-compatible space"]
