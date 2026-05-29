@@ -161,6 +161,30 @@ These skills read like design docs. They start with the problem ("Branch protect
 
 Design decision skills tend to include ASCII diagrams of directory structures, git commands with explanatory comments, and "DON'T / DO" comparisons. Code blocks often show what NOT to do before showing the correct approach.
 
+## The Model Dependency Split
+
+Not all skills are equal in what they demand from the model. Some require real reasoning — thematic grouping, summary writing, jargon detection. Others are pure reference or procedural: the agent reads them to know *how* to use a tool, but the execution is mechanical.
+
+| Skill | Archetype | Model Need | Why |
+|-------|-----------|------------|-----|
+| `hn-brief-digest` | Pipeline | Cloud | Browser-scraped content → thematic grouping → top summary → jargon detection. Multi-step reasoning chain. |
+| `x-digest` | Pipeline | Cloud | Tweet content → thematic grouping → prose summary per theme. Requires understanding nuance across 50+ tweets. |
+| `structured-digest` | Pipeline | Cloud | Dense text → identify themes → extract key points → filter filler. Semantic understanding, not pattern matching. |
+| `jargon` | Pipeline | Cloud | Detect unknown acronyms in context → generate plainspeak definitions at 3 sophistication levels. NLU task. |
+| `unified-digest-themes` | Design | Local ✓ | Pure taxonomy table. The agent reads a 7-row lookup table. No reasoning. |
+| `twitterapi-io` | Reference | Local ✓ | API reference doc. Endpoint paths, pricing, response shapes. Pure lookup. |
+| `xurl-cli` | Reference | Local ✓ | CLI reference doc. Auth setup, common commands, gotchas. Pure lookup. |
+| `youtube-transcript-download` | Reference | Local ✓ | Tool instructions. yt-dlp flags, SRT-to-text Python script. Pure lookup. |
+| `github-auto-merge-workflow` | Design | Local ✓ | Design doc + recovery runbook. YAML snippets, failure modes table. Pure lookup. |
+| `nightly-upstream-sync` | Design | Local ✓ | Design doc. Three-path architecture diagram, comparison logic, pitfalls. Pure lookup. |
+| `skill-versioning` | Design | Local ✓ | Design doc. Nightly flow description, decision records, git commands. Pure lookup. |
+
+The split is stark: **4 Pipeline skills need cloud reasoning. 7 Reference/Design skills could run on a local model.** The dividing line isn't the archetype label — it's whether the skill teaches the agent to *think* or to *know*.
+
+This has practical implications for cost and latency. The nightly repo sync job (which loads `skill-versioning` and `nightly-upstream-sync`) could run on a cheap local model — it just needs to execute a Python script and report the diff. The HN Brief digest job can't — it needs to read 20 story summaries, decide which theme each belongs to, write a two-level top summary, and detect jargon. That's a reasoning chain.
+
+The skill format doesn't encode this distinction yet. A `model_tier: local | cloud` field in frontmatter would let the scheduler route jobs to the cheapest model that can handle them. Currently, every cron job uses whatever model is configured globally — even when a local model would suffice.
+
 ## Cross-Cutting Patterns
 
 Beyond the three archetypes, several patterns appear across all 11 skills regardless of type.
