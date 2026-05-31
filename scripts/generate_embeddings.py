@@ -3,6 +3,7 @@
 import json
 import logging
 import os
+import hashlib
 from datetime import datetime
 
 try:
@@ -272,6 +273,7 @@ def save_embedding(
     model: str,
     base_url: str,
     embeddings_dir: str = "embeddings",
+    content_hash: str = None,
 ):
     """
     Saves an individual embedding to a file based on the URL path.
@@ -308,6 +310,9 @@ def save_embedding(
             }
         ],
     }
+
+    if content_hash:
+        embedding_data["metadata"]["content_hash"] = content_hash
 
     # Write to file
     with open(file_path, "w") as f:
@@ -390,7 +395,6 @@ def main():
                 error_count += 1
                 continue
 
-            # Performance Optimization: Check if embedding already exists to avoid network request.
             # Verify containment first so a malformed URL can't probe arbitrary filesystem paths.
             expected_file_path = url_to_file_path(url, replacement_base_url, embeddings_dir)
             try:
@@ -398,10 +402,6 @@ def main():
             except ValueError:
                 logger.warning(f"Skipping {url} - resolved path escapes embeddings dir")
                 error_count += 1
-                continue
-            if expected_file_path.exists():
-                logger.debug(f"Skipping {url} - embedding already exists")
-                skipped_count += 1
                 continue
 
             logger.debug(f"Processing {fetch_url}...")
@@ -414,6 +414,20 @@ def main():
                 error_count += 1
                 continue
 
+            content_hash = hashlib.sha256(content.encode('utf-8')).hexdigest()
+
+            # Security Fix: Hash content to prevent stale embeddings leaking data
+            if expected_file_path.exists():
+                try:
+                    with open(expected_file_path, 'r') as f:
+                        existing_data = json.load(f)
+                    if existing_data.get("metadata", {}).get("content_hash") == content_hash:
+                        logger.debug(f"Skipping {url} - embedding already exists and content is unchanged")
+                        skipped_count += 1
+                        continue
+                except Exception as e:
+                    logger.debug(f"Failed to read/parse existing embedding for {url}: {e}")
+
             embedding = get_embedding(
                 content, api_base, api_key, model, session=session
             )
@@ -425,7 +439,7 @@ def main():
             # Save individual embedding file
             try:
                 save_embedding(
-                    url, embedding, model, replacement_base_url, embeddings_dir
+                    url, embedding, model, replacement_base_url, embeddings_dir, content_hash
                 )
                 success_count += 1
             except Exception as e:
