@@ -65,3 +65,6 @@
 ## 2026-05-18 - Expanding Hit Areas for Table Rows
 **Learning:** Having only text as the clickable area within a table row violates Fitts's Law. Wrapping an entire `<tr>` in an `<a>` or `<Link>` tag is invalid HTML and breaks semantic document structure.
 **Action:** Use relative positioned rows (`position: relative` on `tr`) and absolute positioned `::after` pseudo-elements (`inset: 0; position: absolute; z-index: 1`) on the primary link to safely expand the interactive hit area. Pair this with `:focus-within` styles on the entire row and `z-index: 2` on secondary interactive elements within the row.
+## 2026-05-31 - Hiding Redundant Directional Arrows
+**Learning:** Text-based directional arrows (like `→` and `↗`) used inline for visual affordance are read out loud by screen readers, creating annoying auditory clutter (e.g., reading "Start an inquiry rightwards arrow").
+**Action:** Always wrap text-based decorative arrows in `<span aria-hidden="true">` or `<tspan aria-hidden="true">` (if inside an SVG `<text>` block) to hide them from screen readers while preserving the visual UX.

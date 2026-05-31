@@ -83,7 +83,7 @@ export default function Schematic() {
 
             {/* Loop arrow: consulting → research */}
             <path d="M 640 340 Q 540 390 380 360 Q 300 340 270 280" fill="none" stroke="var(--ink-3)" strokeWidth="1.2" strokeDasharray="4 4" />
-            <text x="420" y="395" fontFamily="Kalam" fontSize="13" fill="var(--ink-3)">funds the research →</text>
+            <text x="420" y="395" fontFamily="Kalam" fontSize="13" fill="var(--ink-3)">funds the research <tspan aria-hidden="true">→</tspan></text>
           </svg>
 
           <Note top={-20} right={-10} arrow={{
@@ -102,7 +102,7 @@ export default function Schematic() {
             <div style={{ fontFamily: 'var(--hand)', fontSize: 22, lineHeight: 1.1, marginBottom: 10 }}>Four beats, published openly.</div>
             {['Frontier Research', 'Applied AI Engineering', 'Self-Hosted IoT', 'Applied Home ML IoT'].map(x => (
               <div key={x} style={{ padding: '8px 0', borderBottom: '1px dashed var(--ink-4)', fontSize: 14 }}>
-                {x} <span className="arrow">→</span>
+                {x} <span className="arrow" aria-hidden="true">→</span>
               </div>
             ))}
           </div>
@@ -115,7 +115,7 @@ export default function Schematic() {
               ['Overlord Kill Switch', 'hardware isolation'],
             ].map(([n, d]) => (
               <div key={n} style={{ padding: '8px 0', borderBottom: '1px dashed var(--ink-4)' }}>
-                <div style={{ fontSize: 14 }}>{n} <span className="arrow">↗</span></div>
+                <div style={{ fontSize: 14 }}>{n} <span className="arrow" aria-hidden="true">↗</span></div>
                 <div className="muted" style={{ fontSize: 12 }}>{d}</div>
               </div>
             ))}
@@ -128,7 +128,7 @@ export default function Schematic() {
             <div className="muted" style={{ fontSize: 13, marginBottom: 14 }}>
               We take <span className="hi">1–2 engagements per quarter</span>. Private ML, on-device inference, IoT audits.
             </div>
-            <a className="btn btn-accent" style={{ width: '100%', justifyContent: 'center' }}>Start an inquiry →</a>
+            <a className="btn btn-accent" style={{ width: '100%', justifyContent: 'center' }}>Start an inquiry <span aria-hidden="true">→</span></a>
             <div className="muted mono" style={{ fontSize: 10, marginTop: 10, textAlign: 'center' }}>
               NEXT AVAILABILITY — Q3 2026
             </div>

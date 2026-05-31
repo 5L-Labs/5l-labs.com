@@ -1,6 +1,6 @@
 {
-  "date": "2026-02-23T00:00:00.000Z",
-  "title": "Learning about learning?",
-  "content": "Exploring the limits of Transformer architectures, the Platonic Representation Hypothesis, and the role of curiosity-driven learning in the next generation of AI.",
-  "url": "/frontier-research/learning-again"
+  "date": "2026-05-29T00:00:00.000Z",
+  "title": "Anatomy of an AI Agent Skill: The Structure Behind 11 Custom Modules",
+  "content": "A field guide to the structure of AI agent skills — the recurring sections, three archetypes, and design philosophy behind 11 custom skill modules that power daily operations.",
+  "url": "/applied-ai-engineering/anatomy-of-an-ai-agent-skill"
 }
