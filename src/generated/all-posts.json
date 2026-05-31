@@ -1,5 +1,23 @@
 [
   {
+    "date": "2026-05-29T00:00:00.000Z",
+    "dateLabel": "2026-05-29",
+    "title": "Anatomy of an AI Agent Skill: The Structure Behind 11 Custom Modules",
+    "area": "applied-ai",
+    "type": "writing",
+    "url": "/applied-ai-engineering/anatomy-of-an-ai-agent-skill",
+    "excerpt": "A field guide to the structure of AI agent skills — the recurring sections, three archetypes, and design philosophy behind 11 custom skill modules that power daily operations."
+  },
+  {
+    "date": "2026-05-24T00:00:00.000Z",
+    "dateLabel": "2026-05-24",
+    "title": "A Shared Latent Space for (Text) Embeddings?",
+    "area": "frontier",
+    "type": "writing",
+    "url": "/frontier-research/shared-latent-embeddings",
+    "excerpt": "Short notes from current work on shared latent spaces and Matryoshka-style embedding layers."
+  },
+  {
     "date": "2026-02-23T00:00:00.000Z",
     "dateLabel": "2026-02-23",
     "title": "Learning about learning?",
