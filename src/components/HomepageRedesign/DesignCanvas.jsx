@@ -9,6 +9,9 @@ const DC = {
   font: '-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif',
 };
 
+// ⚡ Bolt Perf: Hoist static string allocation out of render loop to prevent repeated creation
+const gridSvg = `url("data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M120 0H0v120' fill='none' stroke='${encodeURIComponent(DC.grid)}' stroke-width='1'/%3E%3C/svg%3E")`;
+
 export function DesignCanvas({ children, minScale = 0.1, maxScale = 8, style = {} }) {
   const vpRef = useRef(null);
   const worldRef = useRef(null);
@@ -106,8 +109,6 @@ export function DesignCanvas({ children, minScale = 0.1, maxScale = 8, style = {
       vp.removeEventListener('pointercancel', onPointerUp);
     };
   }, [apply, minScale, maxScale]);
-
-  const gridSvg = `url("data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M120 0H0v120' fill='none' stroke='${encodeURIComponent(DC.grid)}' stroke-width='1'/%3E%3C/svg%3E")`;
 
   return (
     <div
