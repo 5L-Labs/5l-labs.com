@@ -1,5 +1,14 @@
 [
   {
+    "date": "2026-06-12T00:00:00.000Z",
+    "dateLabel": "2026-06-12",
+    "title": "Side-Quest - What Multilingual Wikipedia Reveals About Open Embeddings",
+    "area": "applied-ai",
+    "type": "writing",
+    "url": "/applied-ai-engineering/open-embeddings-multilingual-wikipedia",
+    "excerpt": "A practical Open Embedding Space research demo using multilingual Wikipedia leads, shared latent spaces, and language-specific concept cards."
+  },
+  {
     "date": "2026-05-29T00:00:00.000Z",
     "dateLabel": "2026-05-29",
     "title": "Anatomy of an AI Agent Skill: The Structure Behind 11 Custom Modules",
