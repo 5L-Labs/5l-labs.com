@@ -337,7 +337,7 @@ export default function OpenEmbeddingsConceptDemo() {
 
       <div className={styles.controls}>
         <TopicSelect selected={selected} onSelect={setSelected} />
-        <div className={styles.tabs} role="tablist" aria-label="Featured concept card topics">
+        <div className={styles.tabs} role="group" aria-label="Featured concept card topic shortcuts">
           {conceptTopics.slice(0, 5).map((item) => (
             <button
               key={item.slug}
