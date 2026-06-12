@@ -1,6 +1,6 @@
 {
-  "date": "2026-02-23T00:00:00.000Z",
-  "title": "Learning about learning?",
-  "content": "Exploring the limits of Transformer architectures, the Platonic Representation Hypothesis, and the role of curiosity-driven learning in the next generation of AI.",
-  "url": "/frontier-research/learning-again"
+  "date": "2026-06-12T00:00:00.000Z",
+  "title": "Side-Quest - What Multilingual Wikipedia Reveals About Open Embeddings",
+  "content": "A practical Open Embedding Space research demo using multilingual Wikipedia leads, shared latent spaces, and language-specific concept cards.",
+  "url": "/applied-ai-engineering/open-embeddings-multilingual-wikipedia"
 }
