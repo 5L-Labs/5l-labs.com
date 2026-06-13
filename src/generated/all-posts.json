@@ -27,6 +27,15 @@
     "excerpt": "Short notes from current work on shared latent spaces and Matryoshka-style embedding layers."
   },
   {
+    "date": "2026-04-01T00:00:00.000Z",
+    "dateLabel": "2026-04-01",
+    "title": "5L Labs Is Working on Recursive Self-Improvement",
+    "area": "frontier",
+    "type": "writing",
+    "url": "/frontier-research/recursive-self-improvement",
+    "excerpt": "5L Labs is pursuing recursive self-improvement with a fundamentally new technique derived from genetic algorithms."
+  },
+  {
     "date": "2026-02-23T00:00:00.000Z",
     "dateLabel": "2026-02-23",
     "title": "Learning about learning?",
