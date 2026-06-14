@@ -61,7 +61,7 @@ export default function Inquiry() {
             <h1>Got it.</h1>
             <p>We'll be in touch at <strong>{fields.email}</strong>.</p>
             <p className={styles.muted}>We take on 1–2 engagements per quarter — expect a response within a few business days.</p>
-            <Link to="/" className={styles.backLink}>← back to home</Link>
+            <Link to="/" className={styles.backLink}><span aria-hidden="true">←</span> back to home</Link>
           </div>
         </main>
       </Layout>
@@ -171,7 +171,7 @@ export default function Inquiry() {
             className={styles.submit}
             disabled={status === 'submitting' || !fields.name || !fields.email || !fields.message || !fields.smsConsent}
           >
-            {status === 'submitting' ? 'Sending…' : './send-inquiry →'}
+            {status === 'submitting' ? 'Sending…' : <>./send-inquiry <span aria-hidden="true">→</span></>}
           </button>
 
         </form>
