@@ -33,3 +33,6 @@ This journal documents critical performance learnings for the 5L Labs project.
 ## 2026-02-23 - Memoizing React Render Computations
 **Learning:** In Docusaurus React pages, synchronous list filtering (like iterating through large `allPosts` arrays) on every render is an unnecessary bottleneck when routing causes unrelated state/location changes.
 **Action:** Always wrap derived list computations in `useMemo` when the source array is static or infrequently changing, ensuring filtering only fires when the specific dependency (like a filter category) updates.
+## 2026-06-14 - Memoizing Expensive CSS Toggles
+**Learning:** In Docusaurus React pages, toggling CSS state via React hooks on a root element can cause all child elements to unnecessarily re-render if not wrapped in React.memo.
+**Action:** Always wrap large child components in `React.memo()` and stabilize callback handlers with `useCallback()` when passing them down, specifically when root-level state is only meant to trigger CSS variable/class changes.
