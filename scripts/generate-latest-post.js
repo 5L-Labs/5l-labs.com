@@ -42,18 +42,30 @@ function stripMarkdown(markdown) {
         .trim();
 }
 
-function getAllPosts() {
+async function getAllPosts() {
     const DATE_REGEX = /^(\d{4})-(\d{2})-(\d{2})/;
     const posts = [];
 
-    BLOG_DIRS.forEach(dir => {
+    await Promise.all(BLOG_DIRS.map(async dir => {
         const dirPath = path.join(__dirname, '..', dir);
-        if (!fs.existsSync(dirPath)) return;
+
+        try {
+            await fs.promises.access(dirPath);
+        } catch {
+            return;
+        }
 
         const routeBase = dir.replace('blog-', '');
         const area = AREA_LABELS[dir];
 
-        fs.readdirSync(dirPath).forEach(file => {
+        let files;
+        try {
+            files = await fs.promises.readdir(dirPath);
+        } catch {
+            return;
+        }
+
+        await Promise.all(files.map(async file => {
             if (!file.endsWith('.md') && !file.endsWith('.mdx')) return;
 
             const match = file.match(DATE_REGEX);
@@ -61,7 +73,7 @@ function getAllPosts() {
             const [_, yearStr, monthStr, dayStr] = match;
             const date = new Date(`${yearStr}-${monthStr}-${dayStr}`);
 
-            const raw = fs.readFileSync(path.join(dirPath, file), 'utf-8');
+            const raw = await fs.promises.readFile(path.join(dirPath, file), 'utf-8');
             const { data, content: markdownContent } = matter(raw);
 
             const slug = data.slug ||
@@ -83,26 +95,30 @@ function getAllPosts() {
                 url,
                 excerpt,
             });
-        });
-    });
+        }));
+    }));
 
     return posts.sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
-const allPosts = getAllPosts();
+async function main() {
+    const allPosts = await getAllPosts();
 
-fs.writeFileSync(ALL_OUTPUT, JSON.stringify(allPosts, null, 2));
-console.log(`All posts generated: ${allPosts.length} entries`);
+    await fs.promises.writeFile(ALL_OUTPUT, JSON.stringify(allPosts, null, 2));
+    console.log(`All posts generated: ${allPosts.length} entries`);
 
-if (allPosts.length) {
-    const latest = allPosts[0];
-    fs.writeFileSync(LATEST_OUTPUT, JSON.stringify({
-        date:    latest.date,
-        title:   latest.title,
-        content: latest.excerpt,
-        url:     latest.url,
-    }, null, 2));
-    console.log(`Latest post generated: ${latest.title}`);
-} else {
-    fs.writeFileSync(LATEST_OUTPUT, JSON.stringify({}, null, 2));
+    if (allPosts.length) {
+        const latest = allPosts[0];
+        await fs.promises.writeFile(LATEST_OUTPUT, JSON.stringify({
+            date:    latest.date,
+            title:   latest.title,
+            content: latest.excerpt,
+            url:     latest.url,
+        }, null, 2));
+        console.log(`Latest post generated: ${latest.title}`);
+    } else {
+        await fs.promises.writeFile(LATEST_OUTPUT, JSON.stringify({}, null, 2));
+    }
 }
+
+main().catch(console.error);
