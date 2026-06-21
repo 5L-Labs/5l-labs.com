@@ -95,6 +95,7 @@ export default function Inquiry() {
               onChange={set('name')}
               required
               autoComplete="name"
+              maxLength={100}
             />
           </div>
 
@@ -108,6 +109,7 @@ export default function Inquiry() {
               onChange={set('email')}
               required
               autoComplete="email"
+              maxLength={254}
             />
           </div>
 
@@ -123,6 +125,7 @@ export default function Inquiry() {
               onChange={set('phone')}
               autoComplete="tel"
               placeholder="+1 (555) 000-0000"
+              maxLength={50}
             />
           </div>
 
@@ -136,6 +139,7 @@ export default function Inquiry() {
               required
               rows={6}
               placeholder="What are you trying to build? What's the data sensitivity? Timeline?"
+              maxLength={5000}
             />
           </div>
 
