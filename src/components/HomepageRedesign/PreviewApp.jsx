@@ -86,7 +86,8 @@ function TweaksPanel({ tweaks, onTweak }) {
   );
 }
 
-function CanvasView() {
+// ⚡ Bolt Perf: Wrap heavy CanvasView in React.memo to prevent expensive cascading re-renders when tweaking CSS state at the root level.
+const CanvasView = React.memo(function CanvasView() {
   return (
     <DesignCanvas>
       <DCSection
@@ -108,9 +109,10 @@ function CanvasView() {
       </DCSection>
     </DesignCanvas>
   );
-}
+});
 
-function SingleView({ which }) {
+// ⚡ Bolt Perf: Wrap SingleView in React.memo to prevent unnecessary re-renders when isolated root state updates.
+const SingleView = React.memo(function SingleView({ which }) {
   const components = { '1': Manifesto, '2': Journal, '3': Terminal, '4': Schematic };
   const Comp = components[which];
   return (
@@ -120,7 +122,7 @@ function SingleView({ which }) {
       </div>
     </div>
   );
-}
+});
 
 export default function PreviewApp() {
   const rootRef = useRef(null);
