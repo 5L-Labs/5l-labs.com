@@ -33,3 +33,7 @@ This journal documents critical performance learnings for the 5L Labs project.
 ## 2026-02-23 - Memoizing React Render Computations
 **Learning:** In Docusaurus React pages, synchronous list filtering (like iterating through large `allPosts` arrays) on every render is an unnecessary bottleneck when routing causes unrelated state/location changes.
 **Action:** Always wrap derived list computations in `useMemo` when the source array is static or infrequently changing, ensuring filtering only fires when the specific dependency (like a filter category) updates.
+
+## 2024-05-18 - Hoist Static React Arrays to Module Scope
+**Learning:** Static arrays or objects defined inline within React components (e.g., `['tight', 'roomy'].map(...)`) are recreated on every render cycle, triggering unnecessary memory allocation and garbage collection.
+**Action:** Always extract static configurations, arrays, and objects to module-scoped constants outside the component definition to ensure single allocation and stable references.

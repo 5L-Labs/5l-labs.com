@@ -16,18 +16,23 @@ const TWEAK_DEFAULTS = {
 
 const ACCENT_SWATCHES = ['#c84a1f', '#1e5f8a', '#2a7d4f', '#1a1a1a'];
 
+const TOOLBAR_BUTTONS = [
+  { id: 'canvas', label: 'All · canvas' },
+  { id: '1',      label: '1 · Manifesto' },
+  { id: '2',      label: '2 · Journal' },
+  { id: '3',      label: '3 · Terminal' },
+  { id: '4',      label: '4 · Schematic' },
+];
+
+const DENSITY_OPTIONS = ['tight', 'roomy'];
+const NOTES_OPTIONS = ['show', 'hide'];
+
 function Toolbar({ view, onSetView }) {
-  const buttons = [
-    { id: 'canvas', label: 'All · canvas' },
-    { id: '1',      label: '1 · Manifesto' },
-    { id: '2',      label: '2 · Journal' },
-    { id: '3',      label: '3 · Terminal' },
-    { id: '4',      label: '4 · Schematic' },
-  ];
+
   return (
     <div className="preview-toolbar">
       <span className="mono-label">VIEW</span>
-      {buttons.map((b, i) => (
+      {TOOLBAR_BUTTONS.map((b, i) => (
         <React.Fragment key={b.id}>
           {i === 1 && <div className="sep" />}
           <button className={view === b.id ? 'active' : ''} onClick={() => onSetView(b.id)} aria-pressed={view === b.id}>
@@ -47,7 +52,7 @@ function TweaksPanel({ tweaks, onTweak }) {
       <div className="tweak-row">
         <label>Density</label>
         <div className="seg">
-          {['tight', 'roomy'].map(v => (
+          {DENSITY_OPTIONS.map(v => (
             <button key={v} className={tweaks.density === v ? 'on' : ''} onClick={() => onTweak('density', v)} aria-pressed={tweaks.density === v}>
               {v.charAt(0).toUpperCase() + v.slice(1)}
             </button>
@@ -75,7 +80,7 @@ function TweaksPanel({ tweaks, onTweak }) {
       <div className="tweak-row">
         <label>Annotation notes</label>
         <div className="seg">
-          {['show', 'hide'].map(v => (
+          {NOTES_OPTIONS.map(v => (
             <button key={v} className={tweaks.notes === v ? 'on' : ''} onClick={() => onTweak('notes', v)} aria-pressed={tweaks.notes === v}>
               {v.charAt(0).toUpperCase() + v.slice(1)}
             </button>
