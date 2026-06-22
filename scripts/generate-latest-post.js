@@ -24,20 +24,30 @@ const BOLD_ITALIC_RE = /[*_]{1,3}(.*?)[*_]{1,3}/g;
 const HR_RE          = /^-{3,}$/gm;
 const NEWLINES_RE    = /\n+/g;
 
+// Optimized regex that safely combines patterns not dependent on line-start nesting logic
+// and maps them to an empty string.
+const SAFE_EMPTY_RE = new RegExp(
+    [
+        HTML_TAGS_RE.source,
+        IMAGES_RE.source,
+        CODE_BLOCKS_RE.source,
+        HR_RE.source
+    ].join('|'),
+    'gm'
+);
+
+
 function stripMarkdown(markdown) {
     if (!markdown) return '';
     return markdown
         .replace(TRUNCATE_RE, '')
-        .replace(HTML_TAGS_RE, '')
-        .replace(IMAGES_RE, '')
+        .replace(SAFE_EMPTY_RE, '')
         .replace(LINKS_RE, '$1')
         .replace(HEADINGS_RE, '')
         .replace(BLOCKQUOTES_RE, '')
-        .replace(CODE_BLOCKS_RE, '')
         .replace(INLINE_CODE_RE, '$1')
         .replace(LIST_ITEMS_RE, '')
         .replace(BOLD_ITALIC_RE, '$1')
-        .replace(HR_RE, '')
         .replace(NEWLINES_RE, ' ')
         .trim();
 }

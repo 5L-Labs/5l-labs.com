@@ -33,3 +33,6 @@ This journal documents critical performance learnings for the 5L Labs project.
 ## 2026-02-23 - Memoizing React Render Computations
 **Learning:** In Docusaurus React pages, synchronous list filtering (like iterating through large `allPosts` arrays) on every render is an unnecessary bottleneck when routing causes unrelated state/location changes.
 **Action:** Always wrap derived list computations in `useMemo` when the source array is static or infrequently changing, ensuring filtering only fires when the specific dependency (like a filter category) updates.
+## 2023-10-27 - Safely Combining Regex Replacements for Performance
+**Learning:** When refactoring chained `.replace()` regexes into a single combined regex pass for performance, it is critical to exclude regexes that rely on line-start anchors (`^`) and rely on the sequential mutations of prior replacements. Combining them can break nested markdown parsing logic (like `> - Item`).
+**Action:** Only combine regexes that are purely token-based (e.g., HTML tags, inline images, code blocks) and map to the exact same replacement string (like `''`), ensuring the execution order of structural markers remains unaffected.
