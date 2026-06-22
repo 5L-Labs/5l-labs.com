@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo} from 'react';
 import styles from './styles.module.css';
 
 const conceptTopics = [
@@ -315,7 +315,7 @@ function TopicSelect({selected, onSelect}) {
 
 export default function OpenEmbeddingsConceptDemo() {
   const [selected, setSelected] = useState(conceptTopics[0].slug);
-  const topic = conceptTopics.find((item) => item.slug === selected) ?? conceptTopics[0];
+  const topic = useMemo(() => conceptTopics.find((item) => item.slug === selected) ?? conceptTopics[0], [selected]);
 
   return (
     <div className={styles.demo}>
