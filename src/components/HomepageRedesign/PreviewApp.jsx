@@ -150,11 +150,7 @@ export default function PreviewApp() {
     el.classList.toggle('notes-hidden', tweaks.notes === 'hide');
   }, [tweaks]);
 
-  const rootClasses = [
-    'wf-preview-root',
-    tweaks.density === 'roomy' ? 'roomy' : '',
-    tweaks.notes === 'hide' ? 'notes-hidden' : '',
-  ].filter(Boolean).join(' ');
+  const rootClasses = `wf-preview-root${tweaks.density === 'roomy' ? ' roomy' : ''}${tweaks.notes === 'hide' ? ' notes-hidden' : ''}`;
 
   return (
     <div ref={rootRef} className={rootClasses} style={{ minHeight: '100vh', position: 'relative' }}>
