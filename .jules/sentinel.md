@@ -12,3 +12,8 @@
 **Vulnerability:** Skipping embedding regeneration based purely on file existence causes embeddings to become stale. If sensitive data was present in an older version of a page and later removed, the stale embedding retains the sensitive data, leading to a data leak.
 **Learning:** Caching mechanisms for derived data (like embeddings) must validate the source material hasn't changed.
 **Prevention:** Always validate content changes (e.g., via ETag or file hash like SHA-256) before using a cached derived artifact.
+
+## 2025-06-28 - Missing Input Length Limits
+**Vulnerability:** Client-side Denial of Service (DoS) risk or potential "URI Too Long" errors when users input excessively large payloads into unconstrained form fields.
+**Learning:** React form inputs without explicit limits rely on server-side validation or backend constraints which can still consume bandwidth, log space, or trigger unhandled edge-cases.
+**Prevention:** Always explicitly set reasonable `maxLength` attributes on user-facing `<input>` and `<textarea>` fields in React components.

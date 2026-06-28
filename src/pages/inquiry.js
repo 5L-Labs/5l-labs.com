@@ -91,6 +91,7 @@ export default function Inquiry() {
               id="name"
               className={styles.input}
               type="text"
+              maxLength={100}
               value={fields.name}
               onChange={set('name')}
               required
@@ -104,6 +105,7 @@ export default function Inquiry() {
               id="email"
               className={styles.input}
               type="email"
+              maxLength={254}
               value={fields.email}
               onChange={set('email')}
               required
@@ -119,6 +121,7 @@ export default function Inquiry() {
               id="phone"
               className={styles.input}
               type="tel"
+              maxLength={30}
               value={fields.phone}
               onChange={set('phone')}
               autoComplete="tel"
@@ -131,6 +134,7 @@ export default function Inquiry() {
             <textarea
               id="message"
               className={styles.textarea}
+              maxLength={5000}
               value={fields.message}
               onChange={set('message')}
               required
