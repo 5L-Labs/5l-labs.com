@@ -108,7 +108,7 @@ export default function Home() {
           {remaining > 0 && (
             <div className={styles.loadMore}>
               <Link to={`/archive${area !== 'all' ? `#${area}` : ''}`}>
-                — {remaining} more → full archive —
+                <>— {remaining} more <span aria-hidden="true">→</span> full archive —</>
               </Link>
             </div>
           )}
@@ -156,7 +156,7 @@ export default function Home() {
               <span className={styles.availabilityVal}>{consulting.availability}</span>
             </div>
             <Link to={consulting.inquireUrl} className={styles.btnAccent}>
-              ./inquire →
+              <>./inquire <span aria-hidden="true">→</span></>
             </Link>
           </div>
 
