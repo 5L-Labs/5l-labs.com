@@ -1,4 +1,7 @@
-💡 What: Added `aria-hidden="true"` to text-based directional arrows (`→` and `↗`) used throughout the `HomepageRedesign` components (`Journal`, `Manifesto`, `Schematic`, `Terminal`).
-🎯 Why: Text-based directional arrows provide visual affordance for links, but they are read out loud by screen readers (e.g., reading "Start an inquiry rightwards arrow"), creating confusing auditory clutter. Hiding them preserves the visual UX while vastly improving the screen reader experience.
-📸 Before/After: Visuals remain unchanged.
-♿ Accessibility: Reduces screen reader noise by explicitly hiding decorative text-based symbols.
+💡 What: Wrapped `CanvasView` and `SingleView` components in `React.memo()` in `src/components/HomepageRedesign/PreviewApp.jsx`.
+
+🎯 Why: To prevent expensive cascading re-renders. The `PreviewApp` component contains root-level state for CSS tweaks (like density, accent colors, and note visibility) that change frequently when a user interacts with the sidebar. Because `CanvasView` renders four highly complex wireframe components simultaneously, not memoizing it meant that a simple CSS class toggle at the root was causing all four heavy components to fully re-render synchronously.
+
+📊 Impact: Reduces completely unnecessary React reconciliation and re-render cycles for the heavy `Manifesto`, `Journal`, `Terminal`, and `Schematic` components to 0 when interacting with isolated CSS toggles. This prevents frame dropping on lower-end devices during these tweaks.
+
+🔬 Measurement: Verify by rendering `<PreviewApp />` with React DevTools profiler enabled. Toggle the "Density" or "Accent" controls. Notice that the entire `CanvasView` sub-tree skips rendering.
