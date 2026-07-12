@@ -41,3 +41,7 @@ This journal documents critical performance learnings for the 5L Labs project.
 ## 2023-10-27 - Caching Array Search Results in React
 **Learning:** Performing O(N) array search operations (like `.find()`) inside a React render function without memoization can cause performance degradation, especially if the search depends on state that might not change between all renders.
 **Action:** Always wrap derived list computations and searches in `useMemo` when the source array is static or infrequently changing.
+
+## 2026-02-23 - Cascading Re-renders from Root CSS State
+**Learning:** Storing CSS-only state (like UI density, accent colors, or hidden annotations) at the root of a large unmemoized component tree (like `PreviewApp.jsx`) causes expensive cascading re-renders of heavy static child components (`CanvasView`, `Manifesto`, etc.) every time the state changes, even if the children don't depend on that state directly.
+**Action:** When implementing root-level state that only drives CSS class toggles, always wrap heavy, static child components in `React.memo()` and provide stable function references via `useCallback()` to prevent them from needlessly re-rendering.

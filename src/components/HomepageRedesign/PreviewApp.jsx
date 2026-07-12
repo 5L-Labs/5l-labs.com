@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { DesignCanvas, DCSection, DCArtboard } from './DesignCanvas';
 import Manifesto from './Manifesto';
 import Journal from './Journal';
@@ -16,7 +16,7 @@ const TWEAK_DEFAULTS = {
 
 const ACCENT_SWATCHES = ['#c84a1f', '#1e5f8a', '#2a7d4f', '#1a1a1a'];
 
-function Toolbar({ view, onSetView }) {
+const Toolbar = React.memo(function Toolbar({ view, onSetView }) {
   const buttons = [
     { id: 'canvas', label: 'All · canvas' },
     { id: '1',      label: '1 · Manifesto' },
@@ -37,9 +37,9 @@ function Toolbar({ view, onSetView }) {
       ))}
     </div>
   );
-}
+});
 
-function TweaksPanel({ tweaks, onTweak }) {
+const TweaksPanel = React.memo(function TweaksPanel({ tweaks, onTweak }) {
   return (
     <div className="tweaks-panel">
       <h5>TWEAKS</h5>
@@ -84,9 +84,9 @@ function TweaksPanel({ tweaks, onTweak }) {
       </div>
     </div>
   );
-}
+});
 
-function CanvasView() {
+const CanvasView = React.memo(function CanvasView() {
   return (
     <DesignCanvas>
       <DCSection
@@ -108,9 +108,9 @@ function CanvasView() {
       </DCSection>
     </DesignCanvas>
   );
-}
+});
 
-function SingleView({ which }) {
+const SingleView = React.memo(function SingleView({ which }) {
   const components = { '1': Manifesto, '2': Journal, '3': Terminal, '4': Schematic };
   const Comp = components[which];
   return (
@@ -120,7 +120,7 @@ function SingleView({ which }) {
       </div>
     </div>
   );
-}
+});
 
 export default function PreviewApp() {
   const rootRef = useRef(null);
@@ -131,14 +131,15 @@ export default function PreviewApp() {
 
   const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
 
-  const handleSetView = (v) => {
+  // ⚡ Bolt Perf: Wrap handlers in useCallback to provide stable references to memoized children
+  const handleSetView = useCallback((v) => {
     try { localStorage.setItem(LS_VIEW, v); } catch {}
     setView(v);
-  };
+  }, []);
 
-  const handleTweak = (key, value) => {
+  const handleTweak = useCallback((key, value) => {
     setTweaks(prev => ({ ...prev, [key]: value }));
-  };
+  }, []);
 
   // Apply tweaks via CSS custom properties and class toggles on the root element
   useEffect(() => {
