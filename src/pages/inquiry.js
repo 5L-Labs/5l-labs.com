@@ -130,7 +130,12 @@ export default function Inquiry() {
           </div>
 
           <div className={styles.row}>
-            <label className={styles.fieldLabel} htmlFor="message">Tell us about your project *</label>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+              <label className={styles.fieldLabel} htmlFor="message">Tell us about your project *</label>
+              <span id="message-count" className={styles.optional} aria-live="polite">
+                {fields.message.length} / 1000
+              </span>
+            </div>
             <textarea
               id="message"
               className={styles.textarea}
@@ -140,6 +145,7 @@ export default function Inquiry() {
               rows={6}
               placeholder="What are you trying to build? What's the data sensitivity? Timeline?"
               maxLength={1000}
+              aria-describedby="message-count"
             />
           </div>
 
@@ -162,7 +168,7 @@ export default function Inquiry() {
           </div>
 
           {status === 'error' && (
-            <div className={styles.errorMsg}>
+            <div className={styles.errorMsg} role="alert">
               Something went wrong. Please email us directly at{' '}
               <a href={`mailto:${homepageConfig.contactInfo.email}`}>
                 {homepageConfig.contactInfo.email}
