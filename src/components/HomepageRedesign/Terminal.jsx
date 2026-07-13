@@ -56,7 +56,7 @@ export default function Terminal() {
             <div className="mono" style={{ fontSize: 11, letterSpacing: '0.14em', color: 'var(--ink-3)' }}>
               INDEX OF /&nbsp;·&nbsp;SORT BY:
             </div>
-            <span className="chip chip-accent">DATE ↓</span>
+            <span className="chip chip-accent" aria-label="Sorted by date descending">DATE <span aria-hidden="true">↓</span></span>
             <span className="chip">AREA</span>
             <span className="chip">TYPE</span>
           </div>

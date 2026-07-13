@@ -1,4 +1,7 @@
-💡 What: Added `aria-hidden="true"` to text-based directional arrows (`→` and `↗`) used throughout the `HomepageRedesign` components (`Journal`, `Manifesto`, `Schematic`, `Terminal`).
-🎯 Why: Text-based directional arrows provide visual affordance for links, but they are read out loud by screen readers (e.g., reading "Start an inquiry rightwards arrow"), creating confusing auditory clutter. Hiding them preserves the visual UX while vastly improving the screen reader experience.
-📸 Before/After: Visuals remain unchanged.
-♿ Accessibility: Reduces screen reader noise by explicitly hiding decorative text-based symbols.
+💡 What: Added an `aria-label` to the "DATE" chip indicating the descending sort order and applied `aria-hidden="true"` to the redundant downward arrow `↓` in `src/components/HomepageRedesign/Terminal.jsx`.
+
+🎯 Why: Screen readers announce inline directional arrows used for visual cues (e.g., reading "downwards arrow"), causing auditory clutter and confusing navigation. Furthermore, merely hiding the arrow removes semantic sorting context for non-visual users.
+
+📸 Before/After: Visual UI remains unchanged. The change happens in the DOM.
+
+♿ Accessibility: Ensures that screen reader users hear clear sorting context ("Sorted by date descending") instead of annoying and contextless "downwards arrow" announcements, aligning with our journal's best practices for directional arrows.
