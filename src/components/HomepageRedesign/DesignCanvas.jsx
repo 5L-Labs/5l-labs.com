@@ -9,6 +9,9 @@ const DC = {
   font: '-apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif',
 };
 
+// ⚡ Bolt Perf: Hoist static string out of render loop to prevent memory allocation on every render
+const GRID_SVG = `url("data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M120 0H0v120' fill='none' stroke='${encodeURIComponent(DC.grid)}' stroke-width='1'/%3E%3C/svg%3E")`;
+
 export function DesignCanvas({ children, minScale = 0.1, maxScale = 8, style = {} }) {
   const vpRef = useRef(null);
   const worldRef = useRef(null);
@@ -107,7 +110,7 @@ export function DesignCanvas({ children, minScale = 0.1, maxScale = 8, style = {
     };
   }, [apply, minScale, maxScale]);
 
-  const gridSvg = `url("data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M120 0H0v120' fill='none' stroke='${encodeURIComponent(DC.grid)}' stroke-width='1'/%3E%3C/svg%3E")`;
+
 
   return (
     <div
@@ -133,7 +136,7 @@ export function DesignCanvas({ children, minScale = 0.1, maxScale = 8, style = {
           width: 'max-content', minWidth: '100%',
           minHeight: '100%',
           padding: '60px 0 80px',
-          backgroundImage: gridSvg,
+          backgroundImage: GRID_SVG,
           backgroundSize: '120px 120px',
         }}
       >
