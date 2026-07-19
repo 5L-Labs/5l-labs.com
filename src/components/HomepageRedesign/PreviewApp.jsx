@@ -16,18 +16,19 @@ const TWEAK_DEFAULTS = {
 
 const ACCENT_SWATCHES = ['#c84a1f', '#1e5f8a', '#2a7d4f', '#1a1a1a'];
 
+const BUTTONS = [
+  { id: 'canvas', label: 'All · canvas' },
+  { id: '1',      label: '1 · Manifesto' },
+  { id: '2',      label: '2 · Journal' },
+  { id: '3',      label: '3 · Terminal' },
+  { id: '4',      label: '4 · Schematic' },
+];
+
 const Toolbar = React.memo(function Toolbar({ view, onSetView }) {
-  const buttons = [
-    { id: 'canvas', label: 'All · canvas' },
-    { id: '1',      label: '1 · Manifesto' },
-    { id: '2',      label: '2 · Journal' },
-    { id: '3',      label: '3 · Terminal' },
-    { id: '4',      label: '4 · Schematic' },
-  ];
   return (
     <div className="preview-toolbar">
       <span className="mono-label">VIEW</span>
-      {buttons.map((b, i) => (
+      {BUTTONS.map((b, i) => (
         <React.Fragment key={b.id}>
           {i === 1 && <div className="sep" />}
           <button className={view === b.id ? 'active' : ''} onClick={() => onSetView(b.id)} aria-pressed={view === b.id}>
@@ -110,9 +111,10 @@ const CanvasView = React.memo(function CanvasView() {
   );
 });
 
+const COMPONENTS = { '1': Manifesto, '2': Journal, '3': Terminal, '4': Schematic };
+
 const SingleView = React.memo(function SingleView({ which }) {
-  const components = { '1': Manifesto, '2': Journal, '3': Terminal, '4': Schematic };
-  const Comp = components[which];
+  const Comp = COMPONENTS[which];
   return (
     <div className="single-stage">
       <div className="frame">
