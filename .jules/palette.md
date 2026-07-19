@@ -1,3 +1,7 @@
 ## 2026-07-12 - Added character count and alert role to inquiry form
 **Learning:** Text areas with character limits can be frustrating if users aren't aware of the limit until they hit it. By pairing a live character count (`aria-live="polite"`) with `aria-describedby` on the input, we provide visual and auditory feedback contextually. Additionally, error messages for form submissions require `role="alert"` for screen readers to announce them when they conditionally render.
 **Action:** When adding `maxLength` to text inputs, also introduce a visual character count element linked to the input via `aria-describedby`. Ensure dynamic error messages use `role="alert"`.
+
+## 2026-07-20 - Enable native HTML5 form validation over disabled buttons
+**Learning:** Disabling a submit button dynamically (e.g., based on missing required fields) provides a poor UX, as users are not informed *why* the button is disabled or which fields they need to fix. By enabling native HTML5 form validation (removing `noValidate`, ensuring all required fields have the `required` attribute, and leaving the button enabled), the browser handles highlighting the missing fields and providing accessible, localized feedback to the user.
+**Action:** Always rely on native HTML5 form validation for required fields instead of manually disabling the submit button. Only disable the button during active submission (`status === 'submitting'`) to prevent double submits.
