@@ -45,3 +45,6 @@ This journal documents critical performance learnings for the 5L Labs project.
 ## 2026-02-23 - Cascading Re-renders from Root CSS State
 **Learning:** Storing CSS-only state (like UI density, accent colors, or hidden annotations) at the root of a large unmemoized component tree (like `PreviewApp.jsx`) causes expensive cascading re-renders of heavy static child components (`CanvasView`, `Manifesto`, etc.) every time the state changes, even if the children don't depend on that state directly.
 **Action:** When implementing root-level state that only drives CSS class toggles, always wrap heavy, static child components in `React.memo()` and provide stable function references via `useCallback()` to prevent them from needlessly re-rendering.
+## 2025-05-24 - React Render Loop Optimization
+**Learning:** Avoid recreating complex strings dynamically (like SVG data URIs via template literals) inside a React render function when they only rely on static module constants. This leads to repeated string generation and unnecessary garbage collection pressure on every render.
+**Action:** Always hoist statically generated strings, arrays, or objects to the module scope (as constants) when they do not depend on component state or props.
