@@ -83,7 +83,7 @@ export default function Inquiry() {
           </p>
         </div>
 
-        <form className={styles.form} onSubmit={handleSubmit} noValidate>
+        <form className={styles.form} onSubmit={handleSubmit}>
 
           <div className={styles.row}>
             <label className={styles.fieldLabel} htmlFor="name">Name *</label>
@@ -157,6 +157,7 @@ export default function Inquiry() {
               type="checkbox"
               checked={fields.smsConsent}
               onChange={set('smsConsent')}
+              required
             />
             <label htmlFor="smsConsent" className={styles.consentLabel}>
               I agree to receive SMS messages from 5L Labs regarding my inquiry and project
@@ -179,7 +180,7 @@ export default function Inquiry() {
           <button
             type="submit"
             className={styles.submit}
-            disabled={status === 'submitting' || !fields.name || !fields.email || !fields.message || !fields.smsConsent}
+            disabled={status === 'submitting'}
           >
             {status === 'submitting' ? 'Sending…' : <>./send-inquiry <span aria-hidden="true">→</span></>}
           </button>
