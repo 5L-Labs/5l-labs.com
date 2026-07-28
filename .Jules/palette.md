@@ -54,3 +54,17 @@
 ## 2026-04-26 - Hardcoded Heading Levels in Reusable Components
 **Learning:** Hardcoding specific heading levels (like `<h3>`) inside reusable UI components (like cards) often breaks semantic document structure when the component is placed in different contexts on a page, causing screen readers to skip levels or announce confusing hierarchies.
 **Action:** Always ensure nested headings (like card titles) properly increment relative to their parent container's heading level, or consider passing the appropriate heading level as a prop to the component to maintain strict HTML semantics.
+## 2024-05-03 - Redundant Link Icons Announcement
+**Learning:** Decorative icons indicating external or internal links (like `↗`) that are appended to already readable links cause frustrating redundant screen reader announcements (e.g., reading "North East Arrow" immediately after reading the link text) and create confusing double tab-stops if wrapped in separate interactive elements.
+**Action:** Always add `aria-hidden="true"` to decorative link icons or elements. If an icon must be inside its own link but points to the same destination as a preceding adjacent text link, also add `tabIndex="-1"` to prevent it from receiving keyboard focus, streamlining navigation.
+
+## 2026-05-10 - Expanding Hit Areas for Block Elements
+**Learning:** Having only text as the clickable area within a larger logical block (like a project listing or card) violates Fitts's Law and frustrates mobile users who try to tap the area around the text.
+**Action:** Always wrap the entire logical block in a `<Link>` (or `<a>` tag) and apply `display: block` to expand the interactive hit area. Pair this with hover and `:focus-visible` styles on the entire block, and use transforms on trailing icons (e.g., `↗`) to provide clear visual affordance.
+
+## 2026-05-18 - Expanding Hit Areas for Table Rows
+**Learning:** Having only text as the clickable area within a table row violates Fitts's Law. Wrapping an entire `<tr>` in an `<a>` or `<Link>` tag is invalid HTML and breaks semantic document structure.
+**Action:** Use relative positioned rows (`position: relative` on `tr`) and absolute positioned `::after` pseudo-elements (`inset: 0; position: absolute; z-index: 1`) on the primary link to safely expand the interactive hit area. Pair this with `:focus-within` styles on the entire row and `z-index: 2` on secondary interactive elements within the row.
+## 2026-05-31 - Hiding Redundant Directional Arrows
+**Learning:** Text-based directional arrows (like `→` and `↗`) used inline for visual affordance are read out loud by screen readers, creating annoying auditory clutter (e.g., reading "Start an inquiry rightwards arrow").
+**Action:** Always wrap text-based decorative arrows in `<span aria-hidden="true">` or `<tspan aria-hidden="true">` (if inside an SVG `<text>` block) to hide them from screen readers while preserving the visual UX.

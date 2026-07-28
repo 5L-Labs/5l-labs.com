@@ -1,0 +1,105 @@
+---
+slug: open-embeddings-multilingual-wikipedia
+title: Side-Quest - What Multilingual Wikipedia Reveals About Open Embeddings
+authors: [njl]
+tags: [blog, embeddings, open-embeddings, multilingual, applied-ai]
+description: A practical Open Embedding Space research demo using multilingual Wikipedia leads, shared latent spaces, and language-specific concept cards.
+---
+
+import OpenEmbeddingsConceptDemo from '@site/src/components/OpenEmbeddingsConceptDemo';
+
+## A nice rabbit hole for data-nerdery
+
+While talking to the affable [Rafi](https://www.linkedin.com/in/rafibinnun/) on Private AI, we riffed on an interesting side-quest for Embedding Spaces. As most polyglots know, there are certain concepts that are easier expressed with cultural / semantic "embeddings" that do not smoothly come out across languages.
+
+Japanese よろしくお願いします (vs even the polite form of よろしくお願い致します) has no direct equivalent in English, but it does have equivalent concepts of politeness and deference. So what interesting concepts are hiding in Wikipedia across languages?
+
+## Looking at Wikipedia
+I have been testing that question with a deliberately messy corpus: multilingual Wikipedia.
+
+1. Do Embedding spaces converge across L1...LN (Oddly supporting [The Platonic Representation Hypothesis](https://arxiv.org/abs/2405.07987))
+2. If we run the difference between the converged space, does something interesting pop out?
+
+### Unanswered questions - Longer term
+3. Can we discover useful semantic structure from a publisher without downloading and re-embedding the original content?
+
+The short version: the scatter plots are useful, but the better product primitive is a **publisher-controlled concept card**: an English-normalized claim, backed by source-language evidence and searchable embeddings.
+
+<!-- truncate -->
+
+## Parlor Tricks with Data
+
+The current local experiment pulls Wikipedia summaries for ten topics.
+
+| Corpus slice | Topics | Language coverage |
+|---|---|---:|
+| Expanded baseline | `Turkey`, `Europe`, `Jesus`, `United States` | 61 languages |
+| Candidate pass | `Earth`, `Cat`, `Dog`, `Christianity`, `Islam`, `World War II` | 10 languages |
+
+Each row is embedded in several spaces using open models. Short of anyone sending us free API credits, these local models make the experiment cheap enough to run repeatedly.
+
+| Family | Spaces |
+|---|---|
+| Raw local models | `Nomic v1.5`, `Nomic v2 MoE`, `Qwen3 0.6B`, `Granite 97M multilingual` |
+| Shared latent projections | Qwen and Granite at `128d` and `1024d` |
+
+### What concept appears in one language's article that does not appear in another language's article, and can we expose that concept in English?
+
+A publisher should not only publish raw vectors. A publisher can also publish concept cards.
+
+| Field | Why it matters |
+|---|---|
+| English concept label | A consumer can search without knowing every source language. |
+| Source language and snippet | The card stays auditable. |
+| L0 (English) translation | English readers can read the evidence quickly. |
+| Embedding representation | Consumers can choose native, prefix, or shared-latent search. |
+| Recoverability metadata | The publisher can show which representation actually finds the evidence. |
+
+While additional work is needed, we potentially have a path to let a consumer search across the publisher's multilingual concept layer without translating or downloading every page.
+
+:::warning
+The remaining article is fully AI-written for expediency.
+Caveat lector.
+:::
+
+
+## Concept Cards
+
+<OpenEmbeddingsConceptDemo />
+
+Examples from the current run:
+
+- Russian `World War II` foregrounds nuclear weapons and civilian casualties.
+- Polish `Cat` includes an invasive-species caveat.
+- Catalan `Europe` expands the continent through nearby islands and archipelagos.
+- Turkey pages differ on whether they foreground Istanbul, Ottoman succession, Kurdish population framing, secular governance, or strategic waterways.
+- Other processed topics include `Earth`, `Dog`, `Christianity`, `Islam`, `Jesus`, and `United States`; those are in the selector too.
+
+This is the beginning of a publisher-controlled semantic layer.
+
+## What about Chunking?
+
+One caveat: Wikipedia leads are long enough to carry several concepts at once. So the experiment checks whether retrieval improves when the searchable unit changes.
+
+| Chunking strategy | Question it answers |
+|---|---|
+| Full lead | Can one vector represent the whole article intro? |
+| Sentence | Does a smaller unit recover rare concepts better? |
+| Two-sentence window | Is nearby context useful without swallowing the whole lead? |
+| Clause-like chunks | Does fine segmentation rescue concepts hidden inside dense prose? |
+
+This matters because a miss may not mean the embedding model failed. It may mean we asked one vector to represent too many concepts.
+
+In the current Turkey concept search, smaller chunks help some models but do not fully explain the gap. That is good to know before turning this into a format recommendation.
+
+## Current Caveats
+
+This is still a research demo.
+
+- Wikipedia leads are not true translations.
+- Some leads are terse, others are dense.
+- The candidate topics are not all at the same language count yet.
+- Granite needed a 700-character cap in this run because the local server had a 512-token physical batch limit.
+- Concept cards are currently curated from captured rows, not fully automated.
+
+Still, the shape is promising: Open Embeddings can be more than "publish vectors." It can become a publisher-controlled semantic index for the open web.

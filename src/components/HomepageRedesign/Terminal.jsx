@@ -67,7 +67,7 @@ export default function Terminal() {
                   <th key={h} style={{
                     padding: '8px 4px', fontWeight: 500, fontSize: 11, letterSpacing: '0.08em',
                     textAlign: i === 4 ? 'right' : 'left',
-                  }}>{h}</th>
+                  }} aria-hidden={i === 4 ? "true" : undefined}>{h}</th>
                 ))}
               </tr>
             </thead>
@@ -80,7 +80,7 @@ export default function Terminal() {
                   </td>
                   <td style={{ padding: '10px 4px', color: 'var(--ink-3)' }}>{row[2]}</td>
                   <td style={{ padding: '10px 4px', fontFamily: 'var(--hand-tight)', fontSize: 15 }}>{row[3]}</td>
-                  <td style={{ padding: '10px 4px', textAlign: 'right', color: 'var(--ink-3)' }}>{row[4]}</td>
+                  <td style={{ padding: '10px 4px', textAlign: 'right', color: 'var(--ink-3)' }}><span aria-hidden="true">{row[4]}</span></td>
                 </tr>
               ))}
             </tbody>
@@ -118,7 +118,7 @@ export default function Terminal() {
             <div className="muted mono" style={{ fontSize: 11, letterSpacing: '0.1em', marginBottom: 6 }}>
               CURRENT AVAILABILITY: <span className="accent">Q3 2026</span>
             </div>
-            <a className="btn btn-accent">./inquire →</a>
+            <a className="btn btn-accent">./inquire <span aria-hidden="true">→</span></a>
           </div>
         </div>
 

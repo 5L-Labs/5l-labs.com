@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import { useLocation } from '@docusaurus/router';
@@ -20,7 +20,8 @@ export default function Archive() {
     }
   }, [location.hash]);
 
-  const entries = area === 'all' ? allPosts : allPosts.filter(p => p.area === area);
+  // ⚡ Bolt Perf: Memoize array filtering to prevent redundant O(N) operations on every component re-render unless the area filter changes.
+  const entries = useMemo(() => area === 'all' ? allPosts : allPosts.filter(p => p.area === area), [area]);
 
   return (
     <Layout
@@ -75,7 +76,7 @@ export default function Archive() {
                 <th>TYPE</th>
                 <th className={styles.hideOnMobile}>AREA</th>
                 <th>TITLE</th>
-                <th>↗</th>
+                <th aria-hidden="true">↗</th>
               </tr>
             </thead>
             <tbody>
@@ -95,7 +96,7 @@ export default function Archive() {
                   <td className={styles.colTitle}>
                     <Link to={entry.url}>{entry.title}</Link>
                   </td>
-                  <td><Link to={entry.url}>↗</Link></td>
+                  <td><Link to={entry.url} aria-hidden="true" tabIndex="-1">↗</Link></td>
                 </tr>
               ))}
             </tbody>

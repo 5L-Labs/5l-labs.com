@@ -1,0 +1,3 @@
+## 2026-07-12 - Added character count and alert role to inquiry form
+**Learning:** Text areas with character limits can be frustrating if users aren't aware of the limit until they hit it. By pairing a live character count (`aria-live="polite"`) with `aria-describedby` on the input, we provide visual and auditory feedback contextually. Additionally, error messages for form submissions require `role="alert"` for screen readers to announce them when they conditionally render.
+**Action:** When adding `maxLength` to text inputs, also introduce a visual character count element linked to the input via `aria-describedby`. Ensure dynamic error messages use `role="alert"`.

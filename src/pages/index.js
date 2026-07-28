@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
@@ -13,7 +13,8 @@ export default function Home() {
   const { siteConfig } = useDocusaurusContext();
   const [area, setArea] = useState('all');
 
-  const filtered = area === 'all' ? allPosts : allPosts.filter(p => p.area === area);
+  // ⚡ Bolt Perf: Memoize array filtering to prevent redundant O(N) operations on every component re-render unless the area filter changes.
+  const filtered = useMemo(() => area === 'all' ? allPosts : allPosts.filter(p => p.area === area), [area]);
   const entries = filtered.slice(0, PREVIEW_COUNT);
   const remaining = filtered.length - PREVIEW_COUNT;
 
@@ -78,7 +79,7 @@ export default function Home() {
                 <th>TYPE</th>
                 <th className={styles.hideOnMobile}>AREA</th>
                 <th>TITLE</th>
-                <th>↗</th>
+                <th aria-hidden="true">↗</th>
               </tr>
             </thead>
             <tbody>
@@ -98,7 +99,7 @@ export default function Home() {
                   <td className={styles.colTitle}>
                     <Link to={entry.url}>{entry.title}</Link>
                   </td>
-                  <td><Link to={entry.url}>↗</Link></td>
+                  <td><Link to={entry.url} aria-hidden="true" tabIndex="-1">↗</Link></td>
                 </tr>
               ))}
             </tbody>
@@ -107,7 +108,7 @@ export default function Home() {
           {remaining > 0 && (
             <div className={styles.loadMore}>
               <Link to={`/archive${area !== 'all' ? `#${area}` : ''}`}>
-                — {remaining} more → full archive —
+                <>— {remaining} more <span aria-hidden="true">→</span> full archive —</>
               </Link>
             </div>
           )}
@@ -118,17 +119,32 @@ export default function Home() {
 
           <div className={styles.box}>
             <div className={styles.boxLabel}>~/projects</div>
-            {homepageConfig.products.map((p) => (
-              <div key={p.title} className={styles.projectGroup}>
-                <div className={styles.projectRow}>
-                  <Link to={p.link} className={styles.projectName}>
-                    {p.title.toLowerCase().replace(/\s*\(.*?\)/, '')}
-                  </Link>
-                  <span className={styles.projectMeta}>↗</span>
-                </div>
-                <div className={styles.projectDesc}>{p.description}</div>
-              </div>
-            ))}
+            {homepageConfig.products.map((p) => {
+              const isExternal = p.link && p.link.startsWith('http');
+              return (
+                <Link
+                  key={p.title}
+                  to={p.link}
+                  className={styles.projectGroupLink}
+                  {...(isExternal
+                    ? {
+                        target: "_blank",
+                        rel: "noopener noreferrer",
+                        "aria-label": `${p.title} (opens in a new tab)`,
+                        title: p.title,
+                      }
+                    : {})}
+                >
+                  <div className={styles.projectRow}>
+                    <span className={styles.projectName}>
+                      {p.title.toLowerCase().replace(/\s*\(.*?\)/, '')}
+                    </span>
+                    <span className={styles.projectMeta} aria-hidden="true">↗</span>
+                  </div>
+                  <div className={styles.projectDesc}>{p.description}</div>
+                </Link>
+              );
+            })}
           </div>
 
           <div className={styles.box}>
@@ -140,7 +156,7 @@ export default function Home() {
               <span className={styles.availabilityVal}>{consulting.availability}</span>
             </div>
             <Link to={consulting.inquireUrl} className={styles.btnAccent}>
-              ./inquire →
+              <>./inquire <span aria-hidden="true">→</span></>
             </Link>
           </div>
 

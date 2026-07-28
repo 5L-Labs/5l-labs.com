@@ -93,7 +93,7 @@ export default function Journal() {
               <div className="muted" style={{ fontSize: 13 }}>
                 We split our time between applied consulting and open research. Writing is the main output.
               </div>
-              <div style={{ marginTop: 14 }}><a className="btn">Hire us →</a></div>
+              <div style={{ marginTop: 14 }}><a className="btn">Hire us <span aria-hidden="true">→</span></a></div>
             </div>
 
             <div style={{ marginBottom: 24 }}>
@@ -104,7 +104,7 @@ export default function Journal() {
                 ['Overlord Kill Switch', 'hardware network isolator'],
               ].map(([n, d]) => (
                 <div key={n} style={{ padding: '10px 0', borderBottom: '1px dashed var(--ink-4)' }}>
-                  <div style={{ fontFamily: 'var(--hand)', fontSize: 18 }}>{n} <span className="arrow">↗</span></div>
+                  <div style={{ fontFamily: 'var(--hand)', fontSize: 18 }}>{n} <span className="arrow" aria-hidden="true">↗</span></div>
                   <div className="muted" style={{ fontSize: 12 }}>{d}</div>
                 </div>
               ))}

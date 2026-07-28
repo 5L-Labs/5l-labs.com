@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { DesignCanvas, DCSection, DCArtboard } from './DesignCanvas';
 import Manifesto from './Manifesto';
 import Journal from './Journal';
@@ -16,30 +16,31 @@ const TWEAK_DEFAULTS = {
 
 const ACCENT_SWATCHES = ['#c84a1f', '#1e5f8a', '#2a7d4f', '#1a1a1a'];
 
-function Toolbar({ view, onSetView }) {
-  const buttons = [
-    { id: 'canvas', label: 'All · canvas' },
-    { id: '1',      label: '1 · Manifesto' },
-    { id: '2',      label: '2 · Journal' },
-    { id: '3',      label: '3 · Terminal' },
-    { id: '4',      label: '4 · Schematic' },
-  ];
+const BUTTONS = [
+  { id: 'canvas', label: 'All · canvas' },
+  { id: '1',      label: '1 · Manifesto' },
+  { id: '2',      label: '2 · Journal' },
+  { id: '3',      label: '3 · Terminal' },
+  { id: '4',      label: '4 · Schematic' },
+];
+
+const Toolbar = React.memo(function Toolbar({ view, onSetView }) {
   return (
     <div className="preview-toolbar">
       <span className="mono-label">VIEW</span>
-      {buttons.map((b, i) => (
+      {BUTTONS.map((b, i) => (
         <React.Fragment key={b.id}>
           {i === 1 && <div className="sep" />}
-          <button className={view === b.id ? 'active' : ''} onClick={() => onSetView(b.id)}>
+          <button className={view === b.id ? 'active' : ''} onClick={() => onSetView(b.id)} aria-pressed={view === b.id}>
             {b.label}
           </button>
         </React.Fragment>
       ))}
     </div>
   );
-}
+});
 
-function TweaksPanel({ tweaks, onTweak }) {
+const TweaksPanel = React.memo(function TweaksPanel({ tweaks, onTweak }) {
   return (
     <div className="tweaks-panel">
       <h5>TWEAKS</h5>
@@ -48,7 +49,7 @@ function TweaksPanel({ tweaks, onTweak }) {
         <label>Density</label>
         <div className="seg">
           {['tight', 'roomy'].map(v => (
-            <button key={v} className={tweaks.density === v ? 'on' : ''} onClick={() => onTweak('density', v)}>
+            <button key={v} className={tweaks.density === v ? 'on' : ''} onClick={() => onTweak('density', v)} aria-pressed={tweaks.density === v}>
               {v.charAt(0).toUpperCase() + v.slice(1)}
             </button>
           ))}
@@ -64,6 +65,9 @@ function TweaksPanel({ tweaks, onTweak }) {
               className={tweaks.accent === c ? 'on' : ''}
               style={{ background: c }}
               onClick={() => onTweak('accent', c)}
+              aria-label={`Select accent color ${c}`}
+              title={`Accent color ${c}`}
+              aria-pressed={tweaks.accent === c}
             />
           ))}
         </div>
@@ -73,7 +77,7 @@ function TweaksPanel({ tweaks, onTweak }) {
         <label>Annotation notes</label>
         <div className="seg">
           {['show', 'hide'].map(v => (
-            <button key={v} className={tweaks.notes === v ? 'on' : ''} onClick={() => onTweak('notes', v)}>
+            <button key={v} className={tweaks.notes === v ? 'on' : ''} onClick={() => onTweak('notes', v)} aria-pressed={tweaks.notes === v}>
               {v.charAt(0).toUpperCase() + v.slice(1)}
             </button>
           ))}
@@ -81,9 +85,9 @@ function TweaksPanel({ tweaks, onTweak }) {
       </div>
     </div>
   );
-}
+});
 
-function CanvasView() {
+const CanvasView = React.memo(function CanvasView() {
   return (
     <DesignCanvas>
       <DCSection
@@ -105,11 +109,12 @@ function CanvasView() {
       </DCSection>
     </DesignCanvas>
   );
-}
+});
 
-function SingleView({ which }) {
-  const components = { '1': Manifesto, '2': Journal, '3': Terminal, '4': Schematic };
-  const Comp = components[which];
+const COMPONENTS = { '1': Manifesto, '2': Journal, '3': Terminal, '4': Schematic };
+
+const SingleView = React.memo(function SingleView({ which }) {
+  const Comp = COMPONENTS[which];
   return (
     <div className="single-stage">
       <div className="frame">
@@ -117,7 +122,7 @@ function SingleView({ which }) {
       </div>
     </div>
   );
-}
+});
 
 export default function PreviewApp() {
   const rootRef = useRef(null);
@@ -128,14 +133,15 @@ export default function PreviewApp() {
 
   const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
 
-  const handleSetView = (v) => {
+  // ⚡ Bolt Perf: Wrap handlers in useCallback to provide stable references to memoized children
+  const handleSetView = useCallback((v) => {
     try { localStorage.setItem(LS_VIEW, v); } catch {}
     setView(v);
-  };
+  }, []);
 
-  const handleTweak = (key, value) => {
+  const handleTweak = useCallback((key, value) => {
     setTweaks(prev => ({ ...prev, [key]: value }));
-  };
+  }, []);
 
   // Apply tweaks via CSS custom properties and class toggles on the root element
   useEffect(() => {
@@ -147,11 +153,8 @@ export default function PreviewApp() {
     el.classList.toggle('notes-hidden', tweaks.notes === 'hide');
   }, [tweaks]);
 
-  const rootClasses = [
-    'wf-preview-root',
-    tweaks.density === 'roomy' ? 'roomy' : '',
-    tweaks.notes === 'hide' ? 'notes-hidden' : '',
-  ].filter(Boolean).join(' ');
+  // ⚡ Bolt Perf: Avoid intermediate array allocations for dynamic class names on every render
+  const rootClasses = `wf-preview-root${tweaks.density === 'roomy' ? ' roomy' : ''}${tweaks.notes === 'hide' ? ' notes-hidden' : ''}`;
 
   return (
     <div ref={rootRef} className={rootClasses} style={{ minHeight: '100vh', position: 'relative' }}>

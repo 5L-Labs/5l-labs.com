@@ -1,0 +1,4 @@
+💡 What: Added `aria-hidden="true"` to text-based directional arrows (`→` and `↗`) used throughout the `HomepageRedesign` components (`Journal`, `Manifesto`, `Schematic`, `Terminal`).
+🎯 Why: Text-based directional arrows provide visual affordance for links, but they are read out loud by screen readers (e.g., reading "Start an inquiry rightwards arrow"), creating confusing auditory clutter. Hiding them preserves the visual UX while vastly improving the screen reader experience.
+📸 Before/After: Visuals remain unchanged.
+♿ Accessibility: Reduces screen reader noise by explicitly hiding decorative text-based symbols.

@@ -61,7 +61,7 @@ export default function Inquiry() {
             <h1>Got it.</h1>
             <p>We'll be in touch at <strong>{fields.email}</strong>.</p>
             <p className={styles.muted}>We take on 1–2 engagements per quarter — expect a response within a few business days.</p>
-            <Link to="/" className={styles.backLink}>← back to home</Link>
+            <Link to="/" className={styles.backLink}><><span aria-hidden="true">←</span> back to home</></Link>
           </div>
         </main>
       </Layout>
@@ -83,7 +83,7 @@ export default function Inquiry() {
           </p>
         </div>
 
-        <form className={styles.form} onSubmit={handleSubmit} noValidate>
+        <form className={styles.form} onSubmit={handleSubmit}>
 
           <div className={styles.row}>
             <label className={styles.fieldLabel} htmlFor="name">Name *</label>
@@ -95,6 +95,7 @@ export default function Inquiry() {
               onChange={set('name')}
               required
               autoComplete="name"
+              maxLength={100}
             />
           </div>
 
@@ -108,6 +109,7 @@ export default function Inquiry() {
               onChange={set('email')}
               required
               autoComplete="email"
+              maxLength={100}
             />
           </div>
 
@@ -123,11 +125,17 @@ export default function Inquiry() {
               onChange={set('phone')}
               autoComplete="tel"
               placeholder="+1 (555) 000-0000"
+              maxLength={20}
             />
           </div>
 
           <div className={styles.row}>
-            <label className={styles.fieldLabel} htmlFor="message">Tell us about your project *</label>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+              <label className={styles.fieldLabel} htmlFor="message">Tell us about your project *</label>
+              <span id="message-count" className={styles.optional} aria-live="polite">
+                {fields.message.length} / 1000
+              </span>
+            </div>
             <textarea
               id="message"
               className={styles.textarea}
@@ -136,6 +144,8 @@ export default function Inquiry() {
               required
               rows={6}
               placeholder="What are you trying to build? What's the data sensitivity? Timeline?"
+              maxLength={1000}
+              aria-describedby="message-count"
             />
           </div>
 
@@ -147,6 +157,7 @@ export default function Inquiry() {
               type="checkbox"
               checked={fields.smsConsent}
               onChange={set('smsConsent')}
+              required
             />
             <label htmlFor="smsConsent" className={styles.consentLabel}>
               I agree to receive SMS messages from 5L Labs regarding my inquiry and project
@@ -158,7 +169,7 @@ export default function Inquiry() {
           </div>
 
           {status === 'error' && (
-            <div className={styles.errorMsg}>
+            <div className={styles.errorMsg} role="alert">
               Something went wrong. Please email us directly at{' '}
               <a href={`mailto:${homepageConfig.contactInfo.email}`}>
                 {homepageConfig.contactInfo.email}
@@ -169,9 +180,9 @@ export default function Inquiry() {
           <button
             type="submit"
             className={styles.submit}
-            disabled={status === 'submitting' || !fields.name || !fields.email || !fields.message || !fields.smsConsent}
+            disabled={status === 'submitting'}
           >
-            {status === 'submitting' ? 'Sending…' : './send-inquiry →'}
+            {status === 'submitting' ? 'Sending…' : <>./send-inquiry <span aria-hidden="true">→</span></>}
           </button>
 
         </form>

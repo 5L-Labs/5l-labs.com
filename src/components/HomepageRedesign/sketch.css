@@ -405,3 +405,11 @@
   outline: 2px solid #1a1a1a;
   outline-offset: 2px;
 }
+
+/* Accessibility focus-visible styles for preview toolbar and tweaks panel */
+.wf-preview-root .preview-toolbar button:focus-visible,
+.wf-preview-root .tweaks-panel .seg button:focus-visible,
+.wf-preview-root .tweaks-panel .swatches button:focus-visible {
+  outline: 2px solid #333;
+  outline-offset: 2px;
+}

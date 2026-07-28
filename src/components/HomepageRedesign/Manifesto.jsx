@@ -33,7 +33,7 @@ export default function Manifesto() {
           </div>
 
           <div style={{ marginTop: 32, display: 'flex', gap: 14 }}>
-            <a className="btn btn-accent">Hire us for consulting →</a>
+            <a className="btn btn-accent">Hire us for consulting <span aria-hidden="true">→</span></a>
             <a className="btn btn-ghost">See the research</a>
           </div>
 

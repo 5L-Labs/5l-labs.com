@@ -112,6 +112,11 @@
   box-shadow: none;
 }
 .submit:not(:disabled):hover { opacity: 0.9; }
+.submit:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+}
+
 
 .errorMsg {
   font-size: 13px;

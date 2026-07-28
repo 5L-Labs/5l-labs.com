@@ -1,5 +1,41 @@
 [
   {
+    "date": "2026-06-12T00:00:00.000Z",
+    "dateLabel": "2026-06-12",
+    "title": "Side-Quest - What Multilingual Wikipedia Reveals About Open Embeddings",
+    "area": "applied-ai",
+    "type": "writing",
+    "url": "/applied-ai-engineering/open-embeddings-multilingual-wikipedia",
+    "excerpt": "A practical Open Embedding Space research demo using multilingual Wikipedia leads, shared latent spaces, and language-specific concept cards."
+  },
+  {
+    "date": "2026-05-29T00:00:00.000Z",
+    "dateLabel": "2026-05-29",
+    "title": "Anatomy of an AI Agent Skill: The Structure Behind 11 Custom Modules",
+    "area": "applied-ai",
+    "type": "writing",
+    "url": "/applied-ai-engineering/anatomy-of-an-ai-agent-skill",
+    "excerpt": "A field guide to the structure of AI agent skills — the recurring sections, three archetypes, and design philosophy behind 11 custom skill modules that power daily operations."
+  },
+  {
+    "date": "2026-05-24T00:00:00.000Z",
+    "dateLabel": "2026-05-24",
+    "title": "A Shared Latent Space for (Text) Embeddings?",
+    "area": "frontier",
+    "type": "writing",
+    "url": "/frontier-research/shared-latent-embeddings",
+    "excerpt": "Short notes from current work on shared latent spaces and Matryoshka-style embedding layers."
+  },
+  {
+    "date": "2026-04-01T00:00:00.000Z",
+    "dateLabel": "2026-04-01",
+    "title": "5L Labs Is Working on Recursive Self-Improvement",
+    "area": "frontier",
+    "type": "writing",
+    "url": "/frontier-research/recursive-self-improvement",
+    "excerpt": "5L Labs is pursuing recursive self-improvement with a fundamentally new technique derived from genetic algorithms."
+  },
+  {
     "date": "2026-02-23T00:00:00.000Z",
     "dateLabel": "2026-02-23",
     "title": "Learning about learning?",
