@@ -162,7 +162,8 @@ I would include actual routed LAN prefixes such as `10.88.100.0/24`, `10.88.20.0
 * `rp_filter` was set to `0` on `all`, `default`, `eth0`, and `wg1`.
 * NAT was removed and was not the reason Bookworm worked.
 * Disabling SSH `IPQoS` did not help.
-* Disabling EEE, TX checksum, TSO, GSO, and GRO on the Pi 5 did not help.
+* Disabling TX checksum, TSO, GSO, and GRO on the Pi 5 did not help.
+* Disabling EEE on the Trixie Pi 4 did not help.
   * This was all ruled out once I flashed an RPI 4 to 6.18.
 * Moving the client from Wi-Fi to wired did not help.
 * Moving the Pi to another router port did not help.
