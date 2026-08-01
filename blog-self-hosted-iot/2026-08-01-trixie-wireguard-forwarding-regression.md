@@ -4,7 +4,7 @@ title: Trixie is Trixie! How my VPN forwarder stopped working.
 authors: [njl]
 tags: [raspberry-pi, debian, trixie, bookworm, wireguard, networking, tcp, routing]
 description: Upgrading from Bookworm to Debian Trixie should be easy...
-embedding_url: /embeddings/self-hosted-iot/trixie-wireguard-forwarding-regression.embedding.json
+embedding_url: /embeddings/self-hosted-iot/trixie-is-trixie.embedding.json
 ---
 
 
@@ -16,11 +16,11 @@ So what the heck changed?
 
 <!-- truncate -->
 
-it turns out tolerance for asymetry changed - Exactly what I don't know. I've now got a PR to my wireguard scripts to add src-based routing on the Raspberry PI VPN Gateway for every route that has a static route on local router.
+It turns out tolerance for asymmetry changed - exactly what I don't know. I've now got a PR to my wireguard scripts to add src-based routing on the Raspberry Pi VPN gateway for every route that has a static route on the local router.
 
 ## Was AI completely useless?
 
-No. Once we got going, AI was verygood at coordinating test harnesses / collecting evidence / writing up the below technical snapshots. It sent us down a few rabbit holes of research that were complete B.S., but I emerged with a better understanding of L3/L2 networks in a non-enterprise setting. I talso helped me get my thoughts together into a clever google search that pulled us back onto the right path.
+No. Once we got going, AI was very good at coordinating test harnesses / collecting evidence / writing up the below technical snapshots. It sent us down a few rabbit holes of research that were complete B.S., but I emerged with a better understanding of L3/L2 networks in a non-enterprise setting. It also helped me get my thoughts together into a clever Google search that pulled us back onto the right path.
 
 ### What I wish I had done at the start?
 
@@ -28,7 +28,7 @@ As it was 02:00 AM, probably agreed to just leave things broken (and ignore the 
 
 ### Why don't you have a full RCA?
 
-Time. At some point the direct path gets cached and things normalize. The static route is a shim. I want to verify this behaviour back in the US on another network segment to make sure the Buffalo router wasn't a contibuting factor.
+Time. At some point the direct path gets cached and things normalize. The static route is a shim. I want to verify this behaviour back in the US on another network segment to make sure the Buffalo router wasn't a contributing factor.
 
 ## Topology
 
