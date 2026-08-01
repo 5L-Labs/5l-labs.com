@@ -121,7 +121,7 @@ That is not a scalable fix. The cleaner gateway-side workaround is source-policy
 Example:
 
 ```sh
-sudo ip route replace default via 10.77.3.1 dev eth0 src 10.77.3.100 table 100
+sudo ip route replace default via 10.77.3.1 dev eth0 src 10.77.3.105 table 100
 
 sudo ip rule add from 10.88.100.0/24 table 100 priority 1000
 sudo ip rule add from 10.88.20.0/24 table 100 priority 1001
