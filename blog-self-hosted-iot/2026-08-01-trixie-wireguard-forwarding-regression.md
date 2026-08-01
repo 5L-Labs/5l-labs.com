@@ -1,37 +1,54 @@
 ---
-slug: trixie-wireguard-forwarding-regression
-title: Raspberry Pi OS Trixie, WireGuard, and a Very Specific TCP Forwarding Failure
+slug: trixie-is-trixie
+title: Trixie is Trixie! How my VPN forwarder stopped working.
 authors: [njl]
 tags: [raspberry-pi, debian, trixie, bookworm, wireguard, networking, tcp, routing]
-description: Notes from reproducing a Raspberry Pi OS Trixie TCP forwarding failure through WireGuard where ICMP works, TCP SYN-ACKs leave the gateway, and the client never completes the handshake.
+description: Upgrading from Bookworm to Debian Trixie should be easy...
 embedding_url: /embeddings/self-hosted-iot/trixie-wireguard-forwarding-regression.embedding.json
 ---
 
-I am writing this down while it is still raw because it is the kind of network bug people do not believe until there are packet captures.
 
-Short version: a Raspberry Pi acting as a WireGuard IPv4 forwarder works on Bookworm, but a Trixie build with a Raspberry Pi 6.18 kernel fails for TCP in a very specific asymmetric LAN routing path. ICMP still works.
+I usually under-estimate how long it will take to "Maintain" my extended home network. Six hours later and an AI Assist later, I have a workaround but not a super awesome understanding of what got strict between Kernel 6.12 and 6.18. I wrote this up briefly so others might find it on Google.
+
+As a reminder, we had one Bookworm Raspberry Pi acting as a WireGuard IPv4 forwarder sending traffic across the planet. After upgrading to Trixie, tcp connectivity stopped working but ping went through. None of the usual suspects helped - AI was generally useless.
+
+So what the heck changed?
 
 <!-- truncate -->
+
+it turns out tolerance for asymetry changed - Exactly what I don't know. I've now got a PR to my wireguard scripts to add src-based routing on the Raspberry PI VPN Gateway for every route that has a static route on local router.
+
+## Was AI completely useless?
+
+No. Once we got going, AI was verygood at coordinating test harnesses / collecting evidence / writing up the below technical snapshots. It sent us down a few rabbit holes of research that were complete B.S., but I emerged with a better understanding of L3/L2 networks in a non-enterprise setting. I talso helped me get my thoughts together into a clever google search that pulled us back onto the right path.
+
+### What I wish I had done at the start?
+
+As it was 02:00 AM, probably agreed to just leave things broken (and ignore the pages going off that the VPN was down...).
+
+### Why don't you have a full RCA?
+
+Time. At some point the direct path gets cached and things normalize. The static route is a shim. I want to verify this behaviour back in the US on another network segment to make sure the Buffalo router wasn't a contibuting factor.
 
 ## Topology
 
 The intended path:
 
 ```text
-192.168.3.42 client
-  -> 192.168.3.1 LAN router
-  -> 192.168.3.105 Raspberry Pi forwarder
+10.77.3.42 client
+  -> 10.77.3.1 LAN router
+  -> 10.77.3.105 Raspberry Pi forwarder
   -> WireGuard
-  -> 192.168.100.10 remote TCP host
+  -> 10.88.100.10 remote TCP host
 ```
 
 The return path from the Pi is naturally direct, because the client is on-link:
 
 ```text
-192.168.100.10
+10.88.100.10
   -> WireGuard
-  -> 192.168.3.105 Raspberry Pi forwarder
-  -> 192.168.3.42 client MAC directly
+  -> 10.77.3.105 Raspberry Pi forwarder
+  -> 10.77.3.42 client MAC directly
 ```
 
 That asymmetry is not ideal, but it has worked for a long time on Bookworm.
@@ -39,21 +56,21 @@ That asymmetry is not ideal, but it has worked for a long time on Bookworm.
 ## Reproducer Matrix
 
 ```text
-192.168.3.101
+10.77.3.101
   Raspberry Pi 4
   Debian Bookworm
   6.12.34+rpt-rpi-v8
   bcmgenet
   works
 
-192.168.3.105
+10.77.3.105
   Raspberry Pi 4
   Debian Trixie
   6.18.39+rpt-rpi-v8
   bcmgenet
   fails
 
-192.168.3.100
+10.77.3.100
   Raspberry Pi 5
   Debian Trixie
   6.18.34+rpt-rpi-2712
@@ -61,7 +78,7 @@ That asymmetry is not ideal, but it has worked for a long time on Bookworm.
   also failed earlier
 ```
 
-The important one is `.105`: same Pi 4 hardware class and same `bcmgenet` driver as the working Bookworm node, but Trixie / Raspberry Pi kernel 6.18.
+The important one is the Trixie Pi 4: same Pi 4 hardware class and same `bcmgenet` driver as the working Bookworm node, but Trixie / Raspberry Pi kernel 6.18.
 
 ## The Packet Shape
 
@@ -69,32 +86,32 @@ On the failing Trixie Pi 4, tcpdump shows:
 
 ```text
 router MAC -> Pi MAC
-192.168.3.42:ephemeral -> 192.168.100.10:22 SYN
+10.77.3.42:ephemeral -> 10.88.100.10:22 SYN
 
 Pi MAC -> client MAC
-192.168.100.10:22 -> 192.168.3.42:ephemeral SYN-ACK
+10.88.100.10:22 -> 10.77.3.42:ephemeral SYN-ACK
 
 Pi MAC -> client MAC
-192.168.100.10:22 -> 192.168.3.42:ephemeral SYN-ACK retransmit
+10.88.100.10:22 -> 10.77.3.42:ephemeral SYN-ACK retransmit
 ```
 
 The normal client ACK does not come back before timeout.
 
 The same failure reproduced on multiple TCP protocols, not just SSH. SSH is just the easiest way to generate a clean TCP test.
 
-## What Does Work
+## Client-side Static Routes
 
 A client-side static route directly to the Pi proves the problem:
 
 ```sh
-sudo route add -host 192.168.100.10 192.168.3.105
-route get 192.168.100.10
+sudo route add -host 10.88.100.10 10.77.3.105
+route get 10.88.100.10
 ```
 
 The key is that `route get` must show:
 
 ```text
-gateway: 192.168.3.105
+gateway: 10.77.3.105
 ```
 
 When the client sends directly to the Pi, the TCP flow completes.
@@ -104,12 +121,12 @@ That is not a scalable fix. The cleaner gateway-side workaround is source-policy
 Example:
 
 ```sh
-sudo ip route replace default via 192.168.3.1 dev eth0 src 192.168.3.100 table 100
+sudo ip route replace default via 10.77.3.1 dev eth0 src 10.77.3.100 table 100
 
-sudo ip rule add from 192.168.100.0/24 table 100 priority 1000
-sudo ip rule add from 192.168.20.0/24 table 100 priority 1001
-sudo ip rule add from 192.168.4.0/24 table 100 priority 1002
-sudo ip rule add from 192.168.5.0/24 table 100 priority 1003
+sudo ip rule add from 10.88.100.0/24 table 100 priority 1000
+sudo ip rule add from 10.88.20.0/24 table 100 priority 1001
+sudo ip rule add from 10.88.4.0/24 table 100 priority 1002
+sudo ip rule add from 10.88.5.0/24 table 100 priority 1003
 
 sudo ip route flush cache
 ```
@@ -117,13 +134,13 @@ sudo ip route flush cache
 Then verify the return leg:
 
 ```sh
-ip route get 192.168.3.42 from 192.168.100.10 iif wg1
+ip route get 10.77.3.42 from 10.88.100.10 iif wg1
 ```
 
 The desired result is:
 
 ```text
-192.168.3.42 from 192.168.100.10 via 192.168.3.1 dev eth0 table 100
+10.77.3.42 from 10.88.100.10 via 10.77.3.1 dev eth0 table 100
 ```
 
 This keeps the original remote source IPs, avoids NAT, and removes the asymmetric L2 return path.
@@ -138,26 +155,14 @@ table 100:
   default via <local-lan-router> dev <lan-interface> src <pi-lan-ip>
 ```
 
-I would include real routed LAN prefixes such as `192.168.100.0/24`, `192.168.20.0/24`, `192.168.4.0/24`, and `192.168.5.0/24`. I would not include WireGuard tunnel endpoint `/32`s unless those addresses are actually used as source addresses for routed client traffic.
+I would include actual routed LAN prefixes such as `10.88.100.0/24`, `10.88.20.0/24`, `10.88.4.0/24`, and `10.88.5.0/24`. I would not include WireGuard tunnel endpoint `/32`s unless those addresses are actually used as source addresses for routed client traffic.
 
-## Things We Ruled Out
+### False Leads (Before we knew )
 
-`rp_filter` was set to `0` on `all`, `default`, `eth0`, and `wg1`.
-
-NAT was removed and was not the reason Bookworm worked.
-
-Disabling SSH `IPQoS` did not help.
-
-Disabling TX checksum, TSO, GSO, and GRO on the Pi 5 did not help.
-
-Disabling EEE on the Trixie Pi 4 did not help.
-
-Moving the client from Wi-Fi to wired did not help.
-
-Moving the Pi to another network port did not help.
-
-## Current Suspicion
-
-This now looks like a Raspberry Pi kernel 6.18 forwarding or route/neighbor interaction exposed by same-LAN asymmetric return traffic.
-
-The next test is to flash the Trixie Pi 4 down to a 6.12 kernel and repeat the same router-first test. If that works, the bug is very likely in the Raspberry Pi kernel jump from 6.12 to 6.18 rather than in WireGuard or local configuration.
+* `rp_filter` was set to `0` on `all`, `default`, `eth0`, and `wg1`.
+* NAT was removed and was not the reason Bookworm worked.
+* Disabling SSH `IPQoS` did not help.
+* Disabling EEE, TX checksum, TSO, GSO, and GRO on the Pi 5 did not help.
+  * This was all ruled out once I flashed an RPI 4 to 6.18.
+* Moving the client from Wi-Fi to wired did not help.
+* Moving the Pi to another router port did not help.
