@@ -84,7 +84,7 @@ The same failure reproduced on multiple TCP protocols, not just SSH. SSH is just
 
 ## What Does Work
 
-A client-side static route directly to the Pi makes TCP work:
+A client-side static route directly to the Pi proves the problem:
 
 ```sh
 sudo route add -host 192.168.100.10 192.168.3.105
@@ -98,6 +98,47 @@ gateway: 192.168.3.105
 ```
 
 When the client sends directly to the Pi, the TCP flow completes.
+
+That is not a scalable fix. The cleaner gateway-side workaround is source-policy routing on the Pi. For every remote LAN in the WireGuard peer's `AllowedIPs`, route packets sourced from that remote LAN back to the local router instead of letting the Pi send them directly to the local client MAC.
+
+Example:
+
+```sh
+sudo ip route replace default via 192.168.3.1 dev eth0 src 192.168.3.100 table 100
+
+sudo ip rule add from 192.168.100.0/24 table 100 priority 1000
+sudo ip rule add from 192.168.20.0/24 table 100 priority 1001
+sudo ip rule add from 192.168.4.0/24 table 100 priority 1002
+sudo ip rule add from 192.168.5.0/24 table 100 priority 1003
+
+sudo ip route flush cache
+```
+
+Then verify the return leg:
+
+```sh
+ip route get 192.168.3.42 from 192.168.100.10 iif wg1
+```
+
+The desired result is:
+
+```text
+192.168.3.42 from 192.168.100.10 via 192.168.3.1 dev eth0 table 100
+```
+
+This keeps the original remote source IPs, avoids NAT, and removes the asymmetric L2 return path.
+
+In Ansible terms, the sustainable rule is:
+
+```text
+for each remote LAN subnet in WireGuard AllowedIPs:
+  add "ip rule from <remote-lan-subnet> lookup 100"
+
+table 100:
+  default via <local-lan-router> dev <lan-interface> src <pi-lan-ip>
+```
+
+I would include real routed LAN prefixes such as `192.168.100.0/24`, `192.168.20.0/24`, `192.168.4.0/24`, and `192.168.5.0/24`. I would not include WireGuard tunnel endpoint `/32`s unless those addresses are actually used as source addresses for routed client traffic.
 
 ## Things We Ruled Out
 
@@ -117,7 +158,6 @@ Moving the Pi to another network port did not help.
 
 ## Current Suspicion
 
-This now looks like a Raspberry Pi kernel 6.18 forwarding or Ethernet interaction exposed by same-LAN asymmetric return traffic.
+This now looks like a Raspberry Pi kernel 6.18 forwarding or route/neighbor interaction exposed by same-LAN asymmetric return traffic.
 
 The next test is to flash the Trixie Pi 4 down to a 6.12 kernel and repeat the same router-first test. If that works, the bug is very likely in the Raspberry Pi kernel jump from 6.12 to 6.18 rather than in WireGuard or local configuration.
-
