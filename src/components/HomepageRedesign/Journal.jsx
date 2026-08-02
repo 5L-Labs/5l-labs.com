@@ -9,6 +9,14 @@ const posts = [
   ['Oct 2025', 'Applied AI', 'What recruiter-ranking data actually measures', 'Our methodology, our biases, our priors.', false],
 ];
 
+
+// ⚡ Bolt Perf: Hoist static arrays out of the render function to avoid unnecessary allocations on every render
+const PROJECTS_LIST = [
+  ['Open Embeddings', 'open community registry'],
+  ['Recruiter Rankings', 'verified performance data'],
+  ['Overlord Kill Switch', 'hardware network isolator'],
+];
+
 export default function Journal() {
   return (
     <div className="wf wf-browser" data-screen-label="02 Journal">
@@ -98,11 +106,7 @@ export default function Journal() {
 
             <div style={{ marginBottom: 24 }}>
               <div className="mono muted" style={{ fontSize: 11, letterSpacing: '0.14em', marginBottom: 10 }}>PROJECTS</div>
-              {[
-                ['Open Embeddings', 'open community registry'],
-                ['Recruiter Rankings', 'verified performance data'],
-                ['Overlord Kill Switch', 'hardware network isolator'],
-              ].map(([n, d]) => (
+              {PROJECTS_LIST.map(([n, d]) => (
                 <div key={n} style={{ padding: '10px 0', borderBottom: '1px dashed var(--ink-4)' }}>
                   <div style={{ fontFamily: 'var(--hand)', fontSize: 18 }}>{n} <span className="arrow" aria-hidden="true">↗</span></div>
                   <div className="muted" style={{ fontSize: 12 }}>{d}</div>

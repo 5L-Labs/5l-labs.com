@@ -11,6 +11,15 @@ const entries = [
   ['2025-11-22', 'writing',  'frontier',   'differential privacy without the accuracy cliff',    '11 min'],
 ];
 
+
+// ⚡ Bolt Perf: Hoist static arrays out of the render function to avoid unnecessary allocations on every render
+const TABLE_HEADERS = ['DATE', 'TYPE', 'AREA', 'TITLE', '↗'];
+const PROJECTS_LIST = [
+  ['open-embeddings',      '★ 1.2k', 'community registry for open vector embeddings'],
+  ['recruiter-rankings',   'preview', 'industry rankings backed by verified data'],
+  ['overlord-kill-switch', '★ 340',  'hardware network isolator for commercial envs'],
+];
+
 export default function Terminal() {
   return (
     <div className="wf wf-browser" data-screen-label="03 Terminal">
@@ -63,7 +72,7 @@ export default function Terminal() {
           <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: 'var(--mono)', fontSize: 13 }}>
             <thead>
               <tr style={{ borderBottom: '1.5px solid var(--ink)', textAlign: 'left', color: 'var(--ink-3)' }}>
-                {['DATE', 'TYPE', 'AREA', 'TITLE', '↗'].map((h, i) => (
+                {TABLE_HEADERS.map((h, i) => (
                   <th key={h} style={{
                     padding: '8px 4px', fontWeight: 500, fontSize: 11, letterSpacing: '0.08em',
                     textAlign: i === 4 ? 'right' : 'left',
@@ -94,11 +103,7 @@ export default function Terminal() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 28 }}>
           <div className="box" style={{ padding: 18 }}>
             <div className="mono accent" style={{ fontSize: 11, letterSpacing: '0.14em', marginBottom: 10 }}>~/projects</div>
-            {[
-              ['open-embeddings',      '★ 1.2k', 'community registry for open vector embeddings'],
-              ['recruiter-rankings',   'preview', 'industry rankings backed by verified data'],
-              ['overlord-kill-switch', '★ 340',  'hardware network isolator for commercial envs'],
-            ].map(([n, meta, d]) => (
+            {PROJECTS_LIST.map(([n, meta, d]) => (
               <div key={n} style={{ padding: '10px 0', borderBottom: '1px dashed var(--ink-4)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 14 }}>
                   <span>{n}</span><span className="muted">{meta}</span>

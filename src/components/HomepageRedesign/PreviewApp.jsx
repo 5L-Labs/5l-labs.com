@@ -24,6 +24,11 @@ const BUTTONS = [
   { id: '4',      label: '4 · Schematic' },
 ];
 
+
+// ⚡ Bolt Perf: Hoist static arrays out of the render function to avoid unnecessary allocations on every render
+const DENSITY_OPTIONS = ['tight', 'roomy'];
+const NOTES_OPTIONS = ['show', 'hide'];
+
 const Toolbar = React.memo(function Toolbar({ view, onSetView }) {
   return (
     <div className="preview-toolbar">
@@ -48,7 +53,7 @@ const TweaksPanel = React.memo(function TweaksPanel({ tweaks, onTweak }) {
       <div className="tweak-row">
         <label>Density</label>
         <div className="seg">
-          {['tight', 'roomy'].map(v => (
+          {DENSITY_OPTIONS.map(v => (
             <button key={v} className={tweaks.density === v ? 'on' : ''} onClick={() => onTweak('density', v)} aria-pressed={tweaks.density === v}>
               {v.charAt(0).toUpperCase() + v.slice(1)}
             </button>
@@ -76,7 +81,7 @@ const TweaksPanel = React.memo(function TweaksPanel({ tweaks, onTweak }) {
       <div className="tweak-row">
         <label>Annotation notes</label>
         <div className="seg">
-          {['show', 'hide'].map(v => (
+          {NOTES_OPTIONS.map(v => (
             <button key={v} className={tweaks.notes === v ? 'on' : ''} onClick={() => onTweak('notes', v)} aria-pressed={tweaks.notes === v}>
               {v.charAt(0).toUpperCase() + v.slice(1)}
             </button>

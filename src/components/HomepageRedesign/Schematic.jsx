@@ -1,6 +1,15 @@
 import React from 'react';
 import { Nav, Footer, Note } from './shared';
 
+
+// ⚡ Bolt Perf: Hoist static arrays out of the render function to avoid unnecessary allocations on every render
+const RESEARCH_AREAS = ['Frontier Research', 'Applied AI Engineering', 'Self-Hosted IoT', 'Applied Home ML IoT'];
+const PRODUCTS_LIST = [
+  ['Open Embeddings', 'embeddings registry'],
+  ['Recruiter Rankings', 'verified perf data'],
+  ['Overlord Kill Switch', 'hardware isolation'],
+];
+
 export default function Schematic() {
   return (
     <div className="wf wf-browser" data-screen-label="04 Schematic">
@@ -100,7 +109,7 @@ export default function Schematic() {
           <div>
             <div className="mono accent" style={{ fontSize: 11, letterSpacing: '0.14em', marginBottom: 10 }}>FIG. 02 — RESEARCH</div>
             <div style={{ fontFamily: 'var(--hand)', fontSize: 22, lineHeight: 1.1, marginBottom: 10 }}>Four beats, published openly.</div>
-            {['Frontier Research', 'Applied AI Engineering', 'Self-Hosted IoT', 'Applied Home ML IoT'].map(x => (
+            {RESEARCH_AREAS.map(x => (
               <div key={x} style={{ padding: '8px 0', borderBottom: '1px dashed var(--ink-4)', fontSize: 14 }}>
                 {x} <span className="arrow" aria-hidden="true">→</span>
               </div>
@@ -109,11 +118,7 @@ export default function Schematic() {
           <div>
             <div className="mono accent" style={{ fontSize: 11, letterSpacing: '0.14em', marginBottom: 10 }}>FIG. 03 — PRODUCTS</div>
             <div style={{ fontFamily: 'var(--hand)', fontSize: 22, lineHeight: 1.1, marginBottom: 10 }}>Free, open, self-hostable.</div>
-            {[
-              ['Open Embeddings', 'embeddings registry'],
-              ['Recruiter Rankings', 'verified perf data'],
-              ['Overlord Kill Switch', 'hardware isolation'],
-            ].map(([n, d]) => (
+            {PRODUCTS_LIST.map(([n, d]) => (
               <div key={n} style={{ padding: '8px 0', borderBottom: '1px dashed var(--ink-4)' }}>
                 <div style={{ fontSize: 14 }}>{n} <span className="arrow" aria-hidden="true">↗</span></div>
                 <div className="muted" style={{ fontSize: 12 }}>{d}</div>

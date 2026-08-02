@@ -1,6 +1,14 @@
 import React from 'react';
 import { Nav, Footer, Note, PH, Lines } from './shared';
 
+
+// ⚡ Bolt Perf: Hoist static arrays out of the render function to avoid unnecessary allocations on every render
+const PILLARS = [
+  ['01', 'Privacy is a feature, not a tax.', 'Differential privacy, federated learning, on-device inference. Techniques, not promises.'],
+  ['02', 'Own the silicon. Own the data.', 'Self-hosted IoT from the chip up. No cloud middleman between you and your home.'],
+  ['03', 'Open source the boring parts.', 'Embeddings, templates, kill-switches. The plumbing should be free.'],
+];
+
 export default function Manifesto() {
   return (
     <div className="wf wf-browser" data-screen-label="01 Manifesto">
@@ -61,11 +69,7 @@ export default function Manifesto() {
             03 — WHAT WE BELIEVE
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 36 }}>
-            {[
-              ['01', 'Privacy is a feature, not a tax.', 'Differential privacy, federated learning, on-device inference. Techniques, not promises.'],
-              ['02', 'Own the silicon. Own the data.', 'Self-hosted IoT from the chip up. No cloud middleman between you and your home.'],
-              ['03', 'Open source the boring parts.', 'Embeddings, templates, kill-switches. The plumbing should be free.'],
-            ].map(([n, t, d]) => (
+            {PILLARS.map(([n, t, d]) => (
               <div key={n}>
                 <div className="hand accent" style={{ fontSize: 48, lineHeight: 1, marginBottom: 8 }}>{n}</div>
                 <div style={{ fontFamily: 'var(--hand)', fontSize: 22, lineHeight: 1.15, marginBottom: 10 }}>{t}</div>
