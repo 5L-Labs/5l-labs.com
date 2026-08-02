@@ -1,4 +1,4 @@
-## 2025-07-05 - DoS vulnerability due to lack of input length limit
-**Vulnerability:** User inputs (name, email, phone, message) in `src/pages/inquiry.js` lack explicitly defined maximum lengths, which might lead to excessive memory consumption on the client or DoS on external integrations (like Formspree or Email clients) if abused with extremely large inputs.
-**Learning:** It's important to set a reasonable `maxLength` on user-facing inputs to protect against client-side and upstream service degradation.
-**Prevention:** Always define `maxLength` on `<input>` and `<textarea>` fields in React forms as a basic defense-in-depth practice.
+## 2025-05-18 - Prevent DoS via Unbounded API Response
+**Vulnerability:** The `get_embedding` function in `scripts/generate_embeddings.py` called `requests.post()` without a context manager or `stream=True`, potentially leading to connection leaks and memory exhaustion if the remote endpoint returns an unexpectedly massive payload.
+**Learning:** Even internal or configured API calls (like to a local Ollama instance or OpenAI-compatible endpoint) can be vectors for Denial of Service if they lack response size limits, especially when processing numerous requests in a loop.
+**Prevention:** Wrap all network I/O calls (including `requests.post`) in a context manager (`with req_func(...) as response:`), enable streaming (`stream=True`), and enforce a strict byte limit when reading the response content iteratively.
