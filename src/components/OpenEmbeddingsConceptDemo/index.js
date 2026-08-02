@@ -347,7 +347,8 @@ export default function OpenEmbeddingsConceptDemo() {
               key={item.slug}
               type="button"
               className={item.slug === topic.slug ? `${styles.tab} ${styles.tabActive}` : styles.tab}
-              onClick={() => setSelected(item.slug)}>
+              onClick={() => setSelected(item.slug)}
+              aria-pressed={item.slug === topic.slug}>
               {item.title}
             </button>
           ))}
