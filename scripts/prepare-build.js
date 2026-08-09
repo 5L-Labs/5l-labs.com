@@ -9,7 +9,7 @@ const generatePostScript = path.join(__dirname, 'generate-latest-post.js');
 console.log(`Executing ${generatePostScript}...`);
 try {
     // Use execFileSync to execute the script directly without a shell for safety
-    execFileSync('bun', [generatePostScript], { stdio: 'inherit' });
+    execFileSync('node', [generatePostScript], { stdio: 'inherit' });
 } catch (error) {
     console.error('Failed to run generate-latest-post.js:', error);
     process.exit(1);

@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "bun scripts/prepare-build.js && docusaurus start",
-    "build": "bun scripts/prepare-build.js && docusaurus build",
+    "start": "node scripts/prepare-build.js && docusaurus start",
+    "build": "node scripts/prepare-build.js && docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
