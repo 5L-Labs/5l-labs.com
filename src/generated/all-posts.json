@@ -1,5 +1,14 @@
 [
   {
+    "date": "2026-08-01T00:00:00.000Z",
+    "dateLabel": "2026-08-01",
+    "title": "Trixie is Trixie! How my VPN forwarder stopped working.",
+    "area": "self-hosted-iot",
+    "type": "writing",
+    "url": "/self-hosted-iot/trixie-is-trixie",
+    "excerpt": "Upgrading from Bookworm to Debian Trixie should be easy..."
+  },
+  {
     "date": "2026-06-12T00:00:00.000Z",
     "dateLabel": "2026-06-12",
     "title": "Side-Quest - What Multilingual Wikipedia Reveals About Open Embeddings",
@@ -29,11 +38,110 @@
   {
     "date": "2026-04-01T00:00:00.000Z",
     "dateLabel": "2026-04-01",
+    "title": "NVIDIA GTC 2026: Vertical AI: Healthcare, Auto & Finance",
+    "area": "applied-ai",
+    "type": "writing",
+    "url": "/applied-ai-engineering/nvidia-gtc-2026-vertical-ai",
+    "excerpt": "Exploring the specialized models and platforms for vertical industries at GTC 2026."
+  },
+  {
+    "date": "2026-04-01T00:00:00.000Z",
+    "dateLabel": "2026-04-01",
     "title": "5L Labs Is Working on Recursive Self-Improvement",
     "area": "frontier",
     "type": "writing",
     "url": "/frontier-research/recursive-self-improvement",
     "excerpt": "5L Labs is pursuing recursive self-improvement with a fundamentally new technique derived from genetic algorithms."
+  },
+  {
+    "date": "2026-03-31T00:00:00.000Z",
+    "dateLabel": "2026-03-31",
+    "title": "NVIDIA GTC 2026: Security & Observability",
+    "area": "applied-ai",
+    "type": "writing",
+    "url": "/applied-ai-engineering/nvidia-gtc-2026-security-observability",
+    "excerpt": "Protecting the AI stack—how security and observability are evolving for the AI factory."
+  },
+  {
+    "date": "2026-03-30T00:00:00.000Z",
+    "dateLabel": "2026-03-30",
+    "title": "NVIDIA GTC 2026: AI-RAN & Telco",
+    "area": "applied-ai",
+    "type": "writing",
+    "url": "/applied-ai-engineering/nvidia-gtc-2026-telco-ran",
+    "excerpt": "The integration of AI into cellular networks—AI-RAN and the path to AI-native 6G seen at GTC 2026."
+  },
+  {
+    "date": "2026-03-29T00:00:00.000Z",
+    "dateLabel": "2026-03-29",
+    "title": "NVIDIA GTC 2026: Edge AI & Industrial Computing",
+    "area": "applied-ai",
+    "type": "writing",
+    "url": "/applied-ai-engineering/nvidia-gtc-2026-edge-industrial",
+    "excerpt": "Taking AI out of the data center and into the field—the edge AI hardware and software seen at GTC 2026."
+  },
+  {
+    "date": "2026-03-28T00:00:00.000Z",
+    "dateLabel": "2026-03-28",
+    "title": "NVIDIA GTC 2026: Enterprise AI: POC to Production",
+    "area": "applied-ai",
+    "type": "writing",
+    "url": "/applied-ai-engineering/nvidia-gtc-2026-enterprise-ai",
+    "excerpt": "How consulting firms are bridging the gap between AI hype and industrial-scale production."
+  },
+  {
+    "date": "2026-03-27T00:00:00.000Z",
+    "dateLabel": "2026-03-27",
+    "title": "NVIDIA GTC 2026: Agentic SDKs & NIMs",
+    "area": "applied-ai",
+    "type": "writing",
+    "url": "/applied-ai-engineering/nvidia-gtc-2026-software-nims",
+    "excerpt": "The software layer—NVIDIA Inference Microservices (NIMs) and agentic frameworks—that makes AI deployment trivial."
+  },
+  {
+    "date": "2026-03-26T00:00:00.000Z",
+    "dateLabel": "2026-03-26",
+    "title": "NVIDIA GTC 2026: Blackwell & The GPU Mesh",
+    "area": "applied-ai",
+    "type": "writing",
+    "url": "/applied-ai-engineering/nvidia-gtc-2026-blackwell-mesh",
+    "excerpt": "A deep dive into the hardware architecture—NVLink switches, GB200, and the GPU mesh—that dominated GTC 2026."
+  },
+  {
+    "date": "2026-03-25T00:00:00.000Z",
+    "dateLabel": "2026-03-25",
+    "title": "NVIDIA GTC 2026: The Cooling Crisis",
+    "area": "applied-ai",
+    "type": "writing",
+    "url": "/applied-ai-engineering/nvidia-gtc-2026-cooling-infra",
+    "excerpt": "Liquid cooling is no longer a luxury—it's a requirement for the next generation of AI hardware."
+  },
+  {
+    "date": "2026-03-24T00:00:00.000Z",
+    "dateLabel": "2026-03-24",
+    "title": "NVIDIA GTC 2026: Physical AI & Robotics",
+    "area": "applied-ai",
+    "type": "writing",
+    "url": "/applied-ai-engineering/nvidia-gtc-2026-robotics",
+    "excerpt": "Exploring the physical side of AI—robotics, humanoid workers, and the Isaac platform at GTC 2026."
+  },
+  {
+    "date": "2026-03-23T00:00:00.000Z",
+    "dateLabel": "2026-03-23",
+    "title": "NVIDIA GTC 2026: The New Sovereign Clouds",
+    "area": "applied-ai",
+    "type": "writing",
+    "url": "/applied-ai-engineering/nvidia-gtc-2026-sovereign-clouds",
+    "excerpt": "A look at how specialized AI clouds are challenging the hyperscalers at GTC 2026."
+  },
+  {
+    "date": "2026-03-22T00:00:00.000Z",
+    "dateLabel": "2026-03-22",
+    "title": "NVIDIA GTC 2026: The AI Factory Era",
+    "area": "applied-ai",
+    "type": "writing",
+    "url": "/applied-ai-engineering/nvidia-gtc-2026-intro",
+    "excerpt": "A high-level recap of our week at NVIDIA GTC 2026 in San Jose, where we spoke to nearly 400 companies about the future of the AI Factory."
   },
   {
     "date": "2026-02-23T00:00:00.000Z",

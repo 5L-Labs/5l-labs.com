@@ -95,12 +95,18 @@
 }
 
 .selectWrap {
+  transition: outline 0.2s ease;
   display: grid;
   gap: 0.28rem;
   padding: 0.35rem 0.55rem;
   border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.64);
+}
+
+.selectWrap:focus-within {
+  outline: 2px solid var(--ifm-color-primary, #2563eb);
+  outline-offset: 2px;
 }
 
 [data-theme='dark'] .selectWrap {
@@ -156,6 +162,11 @@
 .tab:hover {
   color: var(--text-main);
   transform: translateY(-1px);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--ifm-color-primary, #2563eb);
+  outline-offset: 2px;
 }
 
 .tabActive {
