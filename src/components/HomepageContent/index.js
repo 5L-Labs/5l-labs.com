@@ -64,14 +64,7 @@ function Section({ title, items }) {
                       <Link
                         to={item.link}
                         className="inline-flex items-center gap-1 group"
-                        {...(isExternal
-                          ? {
-                              target: "_blank",
-                              rel: "noopener noreferrer",
-                              "aria-label": `${item.title} (opens in a new tab)`,
-                              title: item.title,
-                            }
-                          : {})}
+
                       >
                         {item.title}
                         {isExternal ? (

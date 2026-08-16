@@ -126,14 +126,7 @@ export default function Home() {
                   key={p.title}
                   to={p.link}
                   className={styles.projectGroupLink}
-                  {...(isExternal
-                    ? {
-                        target: "_blank",
-                        rel: "noopener noreferrer",
-                        "aria-label": `${p.title} (opens in a new tab)`,
-                        title: p.title,
-                      }
-                    : {})}
+
                 >
                   <div className={styles.projectRow}>
                     <span className={styles.projectName}>

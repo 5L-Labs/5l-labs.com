@@ -7,11 +7,8 @@ export default function OpenEmbeddingsBadge() {
         <div className={styles.badgeWrapper}>
             <Link
                 to="https://www.open-embeddings.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Open Embeddings (opens in a new tab)"
-                title="Open Embeddings"
                 className={styles.badgeLink}
+                aria-label="Open Embeddings"
             >
                 OE
             </Link>

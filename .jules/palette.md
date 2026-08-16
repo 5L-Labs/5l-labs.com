@@ -1,3 +1,7 @@
 ## 2026-07-12 - Added character count and alert role to inquiry form
 **Learning:** Text areas with character limits can be frustrating if users aren't aware of the limit until they hit it. By pairing a live character count (`aria-live="polite"`) with `aria-describedby` on the input, we provide visual and auditory feedback contextually. Additionally, error messages for form submissions require `role="alert"` for screen readers to announce them when they conditionally render.
 **Action:** When adding `maxLength` to text inputs, also introduce a visual character count element linked to the input via `aria-describedby`. Ensure dynamic error messages use `role="alert"`.
+
+## 2026-07-13 - Avoid masking meaningful child content with wrapper aria-labels
+**Learning:** When adding aria-label to wrapper elements like Docusaurus's <Link> component for external links, the screen reader reads the aria-label instead of the child content. This causes meaningful information, like product descriptions inside a project card, to be completely hidden from screen reader users. Additionally, Docusaurus automatically handles target="_blank" and rel="noopener noreferrer" for external links, making manual additions redundant.
+**Action:** Do not manually add target="_blank" or rel="noopener noreferrer" to Docusaurus <Link> components. Avoid adding aria-label to the parent <Link> if it masks meaningful child content for screen readers; instead, apply accessible labels directly to the specific inner elements that need them.
