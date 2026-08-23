@@ -182,7 +182,7 @@ export default function Inquiry() {
             className={styles.submit}
             disabled={status === 'submitting'}
           >
-            {status === 'submitting' ? 'Sending…' : <>./send-inquiry <span aria-hidden="true">→</span></>}
+            {status === 'submitting' ? (<><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className={styles.spinner} aria-hidden="true"><circle cx="12" cy="12" r="10" strokeOpacity="0.25" /><path d="M12 2a10 10 0 0 1 10 10" /></svg>Sending…</>) : (<>./send-inquiry <span aria-hidden="true">→</span></>)}
           </button>
 
         </form>
