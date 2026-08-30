@@ -274,6 +274,33 @@ def verify_content_type_check():
 
     return True
 
+
+def verify_embedding_response_size_limit():
+    print("\nVerifying embedding response size limit...")
+
+    # Stream size check for get_embedding
+    with patch('requests.post') as mock_post:
+        mock_resp = MagicMock()
+        mock_resp.__enter__.return_value = mock_resp
+        mock_resp.raise_for_status.return_value = None
+        # Generator yielding 1MB chunks
+        def oversized_generator():
+            chunk = "A" * (1024 * 1024) # 1MB
+            for _ in range(15): # 15MB total
+                yield chunk
+
+        mock_resp.iter_content.return_value = oversized_generator()
+        mock_post.return_value = mock_resp
+
+        result = generate_embeddings.get_embedding("test text", "http://example.com", "fake_key", "fake_model")
+        if result is None:
+            print("✅ Embedding stream size check passed (returned None for >10MB stream)")
+        else:
+            print(f"❌ Embedding stream size check failed (returned content)")
+            return False
+
+    return True
+
 if __name__ == "__main__":
     success = True
     if not verify_path_traversal():
@@ -287,5 +314,7 @@ if __name__ == "__main__":
     if not verify_content_type_check():
         success = False
 
+    if not verify_embedding_response_size_limit():
+        success = False
     if not success:
         sys.exit(1)

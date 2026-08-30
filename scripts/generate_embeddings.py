@@ -68,19 +68,32 @@ def get_embedding(text, api_base, api_key, model, session=None):
     data = {"model": model, "input": text}
 
     try:
-        if session:
-            response = session.post(
-                f"{api_base}/embeddings", headers=headers, json=data, timeout=30
-            )
-        else:
-            response = requests.post(
-                f"{api_base}/embeddings", headers=headers, json=data, timeout=30
-            )
-        response.raise_for_status()
-        embedding_data = response.json()
-        return embedding_data["data"][0]["embedding"]
+        req_func = session.post if session else requests.post
+        with req_func(
+            f"{api_base}/embeddings", headers=headers, json=data, timeout=30, stream=True
+        ) as response:
+            response.raise_for_status()
+
+            # Security: enforce a 10MB limit on the response
+            max_size = 10 * 1024 * 1024
+            content_chunks = []
+            current_size = 0
+            for chunk in response.iter_content(chunk_size=8192, decode_unicode=True):
+                if chunk:
+                    content_chunks.append(chunk)
+                    current_size += len(chunk)
+                    if current_size > max_size:
+                        logger.error(f"Error getting embedding: Response exceeds limit {max_size}")
+                        return None
+
+            full_content = "".join(content_chunks)
+            embedding_data = json.loads(full_content)
+            return embedding_data["data"][0]["embedding"]
     except requests.exceptions.RequestException as e:
         logger.error(f"Error getting embedding: {e}")
+        return None
+    except Exception as e:
+        logger.error(f"Error getting embedding: Failed to process response: {e}")
         return None
 
 
