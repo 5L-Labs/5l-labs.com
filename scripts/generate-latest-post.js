@@ -12,12 +12,15 @@ const ALL_OUTPUT    = path.join(__dirname, '../src/generated/all-posts.json');
 
 // Supports both <!-- truncate --> (.md) and {/* truncate */} (.mdx)
 const TRUNCATE_RE    = /(?:<!-- truncate -->|\{\/\* truncate \*\/\})[\s\S]*$/;
-const HTML_TAGS_RE   = /<[^>]*>/g;
-const IMAGES_RE      = /!\[(.*?)\]\(.*?\)/g;
+// ⚡ Bolt Perf: Combine independent regex replacements to reduce string passes. Line-start dependent regexes are kept separate to prevent nesting regressions.
+const COMBINED_REMOVE_RE = new RegExp([
+    '<[^>]*>',
+    '!\\[(.*?)\\]\\(.*?\\)',
+    '```[\\s\\S]*?```'
+].join('|'), 'g');
 const LINKS_RE       = /\[(.*?)\]\(.*?\)/g;
 const HEADINGS_RE    = /^#+\s+/gm;
 const BLOCKQUOTES_RE = /^>\s+/gm;
-const CODE_BLOCKS_RE = /```[\s\S]*?```/g;
 const INLINE_CODE_RE = /`([^`]+)`/g;
 const LIST_ITEMS_RE  = /^[\*\-\+]\s+/gm;   // must run before BOLD_ITALIC_RE
 const BOLD_ITALIC_RE = /[*_]{1,3}(.*?)[*_]{1,3}/g;
@@ -28,12 +31,10 @@ function stripMarkdown(markdown) {
     if (!markdown) return '';
     return markdown
         .replace(TRUNCATE_RE, '')
-        .replace(HTML_TAGS_RE, '')
-        .replace(IMAGES_RE, '')
+        .replace(COMBINED_REMOVE_RE, '')
         .replace(LINKS_RE, '$1')
         .replace(HEADINGS_RE, '')
         .replace(BLOCKQUOTES_RE, '')
-        .replace(CODE_BLOCKS_RE, '')
         .replace(INLINE_CODE_RE, '$1')
         .replace(LIST_ITEMS_RE, '')
         .replace(BOLD_ITALIC_RE, '$1')

@@ -50,3 +50,7 @@ This journal documents critical performance learnings for the 5L Labs project.
 **Learning:** Static arrays, objects, and strings defined inside a React component's render function (like `buttons` or `gridSvg`) are re-created on every single render. In heavy components or those that re-render frequently (e.g., in a preview environment or when user tweaking state updates the root class), this causes unnecessary memory allocation and garbage collection churn. A local benchmark showed a ~62% execution time improvement just by moving object creation out of a hot loop.
 
 **Action:** Always inspect functional components for static configuration objects, arrays, and template strings that don't depend on props or state. Hoist them out of the component to the module level. Ensure you prefix with comments (e.g. `// ⚡ Bolt Perf: ...`) to explain why they are outside the component.
+
+## 2026-02-23 - Combining Independent Regexes
+**Learning:** Chaining many `.replace()` calls with distinct regexes is slower than combining independent non-line-start dependent regexes into a single alternation pattern `(a|b|c)`. Combining line-start dependent regexes (e.g., headings, blockquotes) can cause parsing regressions in nested markdown structures.
+**Action:** When performing multiple regex replacements on the same string, combine patterns that do not rely on line anchors (`^` or `$`) to reduce string passes.
