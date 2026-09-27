@@ -116,6 +116,11 @@
   text-transform: uppercase;
 }
 
+.selectWrap:focus-within {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+}
+
 .selectWrap select {
   width: 100%;
   border: 0;
@@ -156,6 +161,11 @@
 .tab:hover {
   color: var(--text-main);
   transform: translateY(-1px);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
 }
 
 .tabActive {
@@ -296,6 +306,11 @@
   font-size: 0.72rem;
   font-weight: 800;
   text-decoration: none;
+}
+
+.sources a:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
 }
 
 .sources a:hover {
