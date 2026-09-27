@@ -6,3 +6,7 @@
 **Vulnerability:** The `get_embedding` API client loaded the entire response into memory via `response.json()` without size limits, making it susceptible to DoS via memory exhaustion if the remote API returned an oversized payload.
 **Learning:** Even trusted or internal API endpoints should be treated defensively. The same protections (stream=True, context managers, byte limits) applied to untrusted web scraping must be applied to API clients.
 **Prevention:** Always use `stream=True` and wrap `requests` calls in context managers (`with requests.get(...) as response:`). Enforce explicit size limits before calling `.json()` or `.content`.
+## 2024-05-24 - Missing noopener on target=_blank link
+**Vulnerability:** Found a `<a target="_blank">` tag without `rel="noopener noreferrer"`.
+**Learning:** Using `target="_blank"` without `rel="noopener"` allows the opened page to access `window.opener`, potentially enabling phishing attacks.
+**Prevention:** Always add `rel="noopener noreferrer"` when using `target="_blank"` in links.
