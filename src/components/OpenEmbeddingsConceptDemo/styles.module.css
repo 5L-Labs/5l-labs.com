@@ -349,3 +349,15 @@
     max-width: none;
   }
 }
+
+/* Fix select wrapper focus */
+.selectWrap:focus-within { outline: 2px solid #0284c7; outline-offset: 2px; }
+[data-theme='dark'] .selectWrap:focus-within { outline-color: #38bdf8; }
+
+/* Fix tab focus */
+.tab:focus-visible { outline: 2px solid #0f172a; outline-offset: 2px; }
+[data-theme='dark'] .tab:focus-visible { outline-color: #22c55e; }
+
+/* Fix source link focus and mirror hover */
+.sources a:focus-visible { outline: 2px solid #0284c7; outline-offset: 2px; background: rgba(14, 165, 233, 0.16); text-decoration: none; }
+[data-theme='dark'] .sources a:focus-visible { outline-color: #38bdf8; }

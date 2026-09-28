@@ -290,7 +290,7 @@ function SourceLinks({sources}) {
   return (
     <div className={styles.sources} aria-label="Source articles">
       {sources.map(([label, href]) => (
-        <a key={`${label}-${href}`} href={href} target="_blank" rel="noreferrer">
+        <a key={`${label}-${href}`} href={href} target="_blank" rel="noreferrer" aria-label={`Wikipedia article in ${label} (opens in a new tab)`}>
           {label}
         </a>
       ))}

@@ -68,3 +68,7 @@
 ## 2026-05-31 - Hiding Redundant Directional Arrows
 **Learning:** Text-based directional arrows (like `→` and `↗`) used inline for visual affordance are read out loud by screen readers, creating annoying auditory clutter (e.g., reading "Start an inquiry rightwards arrow").
 **Action:** Always wrap text-based decorative arrows in `<span aria-hidden="true">` or `<tspan aria-hidden="true">` (if inside an SVG `<text>` block) to hide them from screen readers while preserving the visual UX.
+
+## 2026-09-06 - Missing Focus Indicators on Custom Wrappers
+**Learning:** Native elements like `<select>` are often given `outline: none` when nested inside custom-styled wrappers (like `.selectWrap`), completely destroying keyboard focus visibility for the control.
+**Action:** Always apply `:focus-within` to the custom wrapper when removing the native focus outline of an inner interactive element to ensure keyboard users retain visual navigation context.
