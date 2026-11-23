@@ -72,3 +72,13 @@ When consolidating multiple pull requests (local forks or upstream) into a unifi
 - **PR Backlog Cleanup**: Close all redundant or superseded PRs across all remotes with the standard comment: `"Addressed via the new consolidated PR #[Number]"`.
 - **Rebaseline Fork**: Once merged upstream, update the fork's `main` to match the new baseline.
 
+---
+
+## Cloud Prep, Local Finish
+
+Cloud threads (Amp orbs) prepare work; the owner finishes and publishes it from their Mac.
+
+1. **Prep in the cloud.** Research, write and check the change in the orb. Push it to a branch and open a **draft** PR. Keep personal details out of anything pushed: LAN IPs, device ids and serials, host and room names, internal ticket keys and Amp thread links.
+2. **Hand off locally.** Start a thread on the owner's Mac runner (`Father.local`, under `/Users/njl/dev/src/external_websites` for website and public repos). It checks out the PR branch, opens the changed files, and reports path, branch, `git log` and `git status` without editing, committing or pushing.
+3. **Finish locally.** The owner edits, cleans up and marks the PR ready or merges it.
+4. **Publishing is the owner's call.** Do not merge, release or deploy from the cloud, including Render deploys, unless the owner asks for that specific action. Whether cloud threads may publish is deferred.
