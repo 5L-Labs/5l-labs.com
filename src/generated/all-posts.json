@@ -1,5 +1,23 @@
 [
   {
+    "date": "2026-11-27T00:00:00.000Z",
+    "dateLabel": "2026-11-27",
+    "title": "HN Brief - More Local, More Private",
+    "area": "home-ml-iot",
+    "type": "writing",
+    "url": "/applied-home-ml-iot/hn-brief-local-news-pipeline",
+    "excerpt": "HN News Summarized and Delivered Locally."
+  },
+  {
+    "date": "2026-11-23T00:00:00.000Z",
+    "dateLabel": "2026-11-23",
+    "title": "One Port, Many Hermes - An nginx Terminator for Hermes Desktop",
+    "area": "home-ml-iot",
+    "type": "writing",
+    "url": "/applied-home-ml-iot/hermes-nginx-webapp-terminator",
+    "excerpt": "Several self-hosted Hermes agents behind one nginx HTTPS port with rootless Podman; Webapp locally, beta Hermes app over WireGuard/Tailscale."
+  },
+  {
     "date": "2026-10-07T00:00:00.000Z",
     "dateLabel": "2026-10-07",
     "title": "Talk-to-My-Agent - Real-World Dealership Negotiation from the Terminal",
